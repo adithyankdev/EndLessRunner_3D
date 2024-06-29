@@ -3,12 +3,21 @@
 
 #include "Player/RunningPlayer.h"
 
-// Sets default values
 ARunningPlayer::ARunningPlayer()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
+	RootComponent = BoxComp;
+
+	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
+	SpringArm->SetupAttachment(RootComponent);
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
+
+	DirectionArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DirectionArrow"));
+	DirectionArrow->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -25,10 +34,4 @@ void ARunningPlayer::Tick(float DeltaTime)
 
 }
 
-// Called to bind functionality to input
-void ARunningPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 

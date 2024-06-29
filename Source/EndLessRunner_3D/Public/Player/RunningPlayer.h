@@ -4,6 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Components/BoxComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
+#include "Components/ArrowComponent.h"
 #include "RunningPlayer.generated.h"
 
 UCLASS()
@@ -12,18 +16,26 @@ class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
+	
 	ARunningPlayer();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Player Base")
+	UBoxComponent* BoxComp;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	UCameraComponent* CameraComponent;
+
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	UArrowComponent* DirectionArrow;
 
 };
