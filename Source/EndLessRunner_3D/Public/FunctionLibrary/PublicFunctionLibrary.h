@@ -4,7 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Level/LevelManager.h"
 #include "PublicFunctionLibrary.generated.h"
+
+
+
 
 /**
  * 
@@ -13,5 +17,11 @@ UCLASS()
 class ENDLESSRUNNER_3D_API UPublicFunctionLibrary : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
+	
+public:
+     
+	static FLevelManagerInfo GetLevelManagerInfo(UWorld* GetWorld);
+	static bool LineTraceCheck(UWorld* World, FVector Location);
+	
 	
 };

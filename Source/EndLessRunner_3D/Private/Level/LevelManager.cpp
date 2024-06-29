@@ -8,9 +8,9 @@ ALevelManager::ALevelManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	NumberOfLane = 3;
-	LaneWidth = 100.0f;
-	LevelSpwanningSpeed = 50;
+	ValueStruct.NumberOfLane = 3;
+	ValueStruct.LaneWidth = 100.0f;
+	ValueStruct.LevelSpawningSpeed = 50.0f;
 }
 
 // Called when the game starts or when spawned
