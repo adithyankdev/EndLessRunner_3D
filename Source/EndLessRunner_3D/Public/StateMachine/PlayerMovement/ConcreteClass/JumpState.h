@@ -3,13 +3,23 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "StateMachine/PlayerMovement/PlayerMoveAbstract.h"
+
 
 /**
  * 
  */
-class ENDLESSRUNNER_3D_API JumpState
+class ENDLESSRUNNER_3D_API JumpState : public PlayerMoveAbstract
 {
 public:
 	JumpState();
 	~JumpState();
+
+	FTimerHandle ApplyGravityTimer;
+
+	bool bIsJumping;
+
+	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
+
+
 };
