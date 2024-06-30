@@ -10,3 +10,8 @@ JumpState::JumpState()
 JumpState::~JumpState()
 {
 }
+
+void JumpState::EnterState(ARunningPlayer* Player, UWorld* World)
+{
+
+}

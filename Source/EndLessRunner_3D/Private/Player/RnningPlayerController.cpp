@@ -4,20 +4,53 @@
 #include "Player/RnningPlayerController.h"
 #include "Player/PlayerInputComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Player/RunningPlayer.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "Kismet/GameplayStatics.h"
+
+ARnningPlayerController::ARnningPlayerController()
+{
+	PlayerInputComp = CreateDefaultSubobject<UPlayerInputComponent>(TEXT("CustomPlayerInputComponent"));
+	PlayerInputComp->RegisterComponent();
+	PlayerInputComp->SetupInputBindings();
+	PlayerInputComp->Activate();
+	this->InputComponent = PlayerInputComp;
+}
+
 
 void ARnningPlayerController::BeginPlay()
-{
-	if (UPlayerInputComponent* PlayerInputComp = Cast <UPlayerInputComponent>(this))
+{	
+	ARunningPlayer* MainPlayer = GetOwnerPlayer();
+	Possess(MainPlayer);
+
+	if(UEnhancedInputLocalPlayerSubsystem* Subsystem = GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>())
 	{
-		PlayerInputComp->RegisterComponent();
-		PlayerInputComp->SetupInputBindings();
-		PlayerInputComp->Activate();
-		this->InputComponent = PlayerInputComp;
-	}
-	else
-	{
-		FString D = TEXT("Custom input componnet failed");
-		UKismetSystemLibrary::PrintString(GetWorld(), D, true, true, FLinearColor::Red, 4);
+		Subsystem->ClearAllMappings();
+		Subsystem->AddMappingContext(PlayerInputComp->PlayerMappingContext, 0);
 	}
 
+	// Binding Inpuut and Its Functionality
+	PlayerInputComp->BindAction(PlayerInputComp->MoveInput, ETriggerEvent::Started, MainPlayer, &ARunningPlayer::SideMoveAction);
+
+}
+
+
+
+//Helper Functions ... 
+ARunningPlayer* ARnningPlayerController::GetOwnerPlayer()
+{
+	TArray<AActor*>PlayerClasses;
+
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ARunningPlayer::StaticClass(), PlayerClasses);
+
+	if (PlayerClasses.Num() > 0)
+	{
+		if (ARunningPlayer* GetPlayer = Cast <ARunningPlayer>(PlayerClasses[0]))
+		{
+			return GetPlayer;
+		}
+	}
+
+	return nullptr;
 }

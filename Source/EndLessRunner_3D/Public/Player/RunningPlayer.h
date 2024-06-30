@@ -7,8 +7,10 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "InputActionValue.h"
 #include "Components/ArrowComponent.h"
 #include "RunningPlayer.generated.h"
+
 
 UCLASS()
 class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
@@ -16,10 +18,12 @@ class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
-	
 	ARunningPlayer();
 
 protected:
+
+	
+
 	virtual void BeginPlay() override;
 
 public:	
@@ -37,5 +41,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
 	UArrowComponent* DirectionArrow;
+
+	void SideMoveAction(const FInputActionValue& InputValue);
 
 };

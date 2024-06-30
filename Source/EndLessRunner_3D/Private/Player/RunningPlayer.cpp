@@ -2,6 +2,9 @@
 
 
 #include "Player/RunningPlayer.h"
+#include "StateMachine/PlayerMovement/ConcreteClass/SideMoveState.h"
+#include "StateMachine/PlayerMovement/ConcreteClass/JumpState.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 ARunningPlayer::ARunningPlayer()
 {
@@ -18,6 +21,7 @@ ARunningPlayer::ARunningPlayer()
 
 	DirectionArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DirectionArrow"));
 	DirectionArrow->SetupAttachment(RootComponent);
+
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +36,11 @@ void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
+{
+	
 }
 
 
