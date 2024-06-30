@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "LevelManager.generated.h"
 
+class UObjectPoolComp;
+
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor
 {
@@ -13,6 +15,9 @@ class ENDLESSRUNNER_3D_API ALevelManager : public AActor
 	
 public:	
 	ALevelManager();
+
+	UPROPERTY(VisibleDefaultsOnly)
+	UObjectPoolComp* ObjectPoolComponent;
 
 protected:
 	

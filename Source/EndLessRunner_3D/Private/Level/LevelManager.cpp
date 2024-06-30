@@ -3,6 +3,8 @@
 
 #include "Level/LevelManager.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "ObjectPool/ObjectPoolComp.h"
+
 
 
 // Sets default values
@@ -13,6 +15,8 @@ ALevelManager::ALevelManager()
 	NumberOfLane = 3;
     LaneWidth = 100.0f;
     LevelSpwaningSpeed= 50.0f;
+
+	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComp>(TEXT("ActorComponent"));
 }
 
 // Called when the game starts or when spawned
