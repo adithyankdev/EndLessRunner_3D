@@ -20,7 +20,7 @@ class ENDLESSRUNNER_3D_API UPublicFunctionLibrary : public UBlueprintFunctionLib
 	
 public:
      
-	static FLevelManagerInfo GetLevelManagerInfo(UWorld* GetWorld);
+//	static FLevelManagerInfo & GetLevelManagerInfo(UWorld* World);
 	static bool LineTraceCheck(UWorld* World, FVector Location);
 	
 	

@@ -6,25 +6,12 @@
 #include "GameFramework/Actor.h"
 #include "LevelManager.generated.h"
 
-USTRUCT()
-struct FLevelManagerInfo
-{
-	GENERATED_BODY()
-
-	int NumberOfLane;
-	float LaneWidth;
-	float LevelSpawningSpeed;
-
-};
-
-
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
-	
 	ALevelManager();
 
 protected:
@@ -35,13 +22,12 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
-	FLevelManagerInfo ValueStruct;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	int NumberOfLane;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	float LaneWidth;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
-	float LevelSpwanningSpeed;
+	float LevelSpwaningSpeed;
 
 };

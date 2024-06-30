@@ -2,15 +2,17 @@
 
 
 #include "Level/LevelManager.h"
+#include "Kismet/KismetSystemLibrary.h"
+
 
 // Sets default values
 ALevelManager::ALevelManager()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
-	ValueStruct.NumberOfLane = 3;
-	ValueStruct.LaneWidth = 100.0f;
-	ValueStruct.LevelSpawningSpeed = 50.0f;
+	NumberOfLane = 3;
+    LaneWidth = 100.0f;
+    LevelSpwaningSpeed= 50.0f;
 }
 
 // Called when the game starts or when spawned
@@ -18,6 +20,8 @@ void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
+
 }
 
 // Called every frame

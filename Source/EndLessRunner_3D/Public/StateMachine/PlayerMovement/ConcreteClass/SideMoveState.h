@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Level/LevelManager.h"
 #include "StateMachine/PlayerMovement/PlayerMoveAbstract.h"
 
 
@@ -13,18 +14,23 @@ class ENDLESSRUNNER_3D_API SideMoveState : public PlayerMoveAbstract
 {
 public:
 	SideMoveState();
-	~SideMoveState();
+	virtual ~SideMoveState();
+
+	bool FirstCheck;
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
 
+	virtual void ExitState(ARunningPlayer* Player) override;
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	UPROPERTY();
 	int CurrentLane;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	UPROPERTY()
 	int TotalNumberOfLane;
-
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
+	UPROPERTY()
 	float LaneWidth;
+
+	
+
+	void GetLvlManagerInfo(UWorld* World);
 
 };

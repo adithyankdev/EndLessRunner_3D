@@ -5,11 +5,9 @@
 #include "Kismet/GameplayStatics.h"
 
 
-FLevelManagerInfo UPublicFunctionLibrary::GetLevelManagerInfo(UWorld* GetWorld)
-{
-	FLevelManagerInfo ValueStruct;
-	return ValueStruct;
-}
+//FLevelManagerInfo& UPublicFunctionLibrary::GetLevelManagerInfo(UWorld* World)
+//{
+//}
 
 //This LineTrace Check Wheather The Player Is On Ground Or Not .....
 bool UPublicFunctionLibrary::LineTraceCheck(UWorld* World, FVector Location)

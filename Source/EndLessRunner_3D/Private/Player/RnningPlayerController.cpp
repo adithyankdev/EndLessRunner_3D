@@ -32,6 +32,7 @@ void ARnningPlayerController::BeginPlay()
 
 	// Binding Inpuut and Its Functionality
 	PlayerInputComp->BindAction(PlayerInputComp->MoveInput, ETriggerEvent::Started, MainPlayer, &ARunningPlayer::SideMoveAction);
+	PlayerInputComp->BindAction(PlayerInputComp->JumpInput, ETriggerEvent::Triggered, MainPlayer, &ARunningPlayer::JumpAction);
 
 }
 

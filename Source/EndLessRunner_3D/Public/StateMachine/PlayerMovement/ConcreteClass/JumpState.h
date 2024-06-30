@@ -11,9 +11,14 @@
  */
 class ENDLESSRUNNER_3D_API JumpState : public PlayerMoveAbstract
 {
+
+protected:
+
+	FTimerHandle StopJumpTime;
+
 public:
 	JumpState();
-	~JumpState();
+	virtual ~JumpState();
 
 	FTimerHandle ApplyGravityTimer;
 
@@ -21,5 +26,8 @@ public:
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
 
+	virtual void ExitState(ARunningPlayer* Player) override;
+
+	bool OnGround(ARunningPlayer* Player, UWorld* World);
 
 };

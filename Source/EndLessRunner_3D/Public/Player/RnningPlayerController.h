@@ -25,7 +25,6 @@ public:
 
 	UPlayerInputComponent* PlayerInputComp;
 
-
 	ARunningPlayer* GetOwnerPlayer();
 
 	virtual void BeginPlay() override;

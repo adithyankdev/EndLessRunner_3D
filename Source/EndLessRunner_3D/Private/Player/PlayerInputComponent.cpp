@@ -14,8 +14,8 @@ void UPlayerInputComponent::SetupInputBindings()
     JumpInput = NewObject<UInputAction>(this);
 
     MoveInput->ValueType = EInputActionValueType::Axis1D;
-    PlayerMappingContext->MapKey(MoveInput, EKeys::Right);
-    FEnhancedActionKeyMapping& Mapping = PlayerMappingContext->MapKey(MoveInput, EKeys::Left);
+    PlayerMappingContext->MapKey(MoveInput, EKeys::Left);
+    FEnhancedActionKeyMapping& Mapping = PlayerMappingContext->MapKey(MoveInput, EKeys::Right);
     UInputModifierNegate* Negate = NewObject<UInputModifierNegate>(this);
     Mapping.Modifiers.Add(Negate);
 

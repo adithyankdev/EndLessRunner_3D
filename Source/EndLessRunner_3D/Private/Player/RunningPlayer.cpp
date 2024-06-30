@@ -10,8 +10,8 @@ ARunningPlayer::ARunningPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
-	RootComponent = BoxComp;
+	//BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
+	//RootComponent = BoxComp;
 
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(RootComponent);
@@ -21,6 +21,11 @@ ARunningPlayer::ARunningPlayer()
 
 	DirectionArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DirectionArrow"));
 	DirectionArrow->SetupAttachment(RootComponent);
+
+	PlayerSideMove = new SideMoveState();
+	PlayerJump = new JumpState();
+	CurrentState = nullptr;    // PlayerCurrently Doing Nothing  ...... Moving Forward (In Tick)
+
 
 }
 
@@ -36,11 +41,35 @@ void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	float Speed = (GetActorForwardVector().X * 100.0f)*DeltaTime;
+	AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
+
 }
 
 void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
 {
+	CurrentMoveValue = InputValue.Get<float>();
+	StateTransition(PlayerSideMove);
+}
+
+void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
+{
+	StateTransition(PlayerJump);
 	
 }
+
+// Helper Function .... 
+void ARunningPlayer::StateTransition(PlayerMoveAbstract* NextState)
+{
+	if (NextState != CurrentState)
+	{
+		PlayerMoveAbstract* PreviousState = CurrentState;
+		CurrentState = NextState;
+		NextState->EnterState(this, GetWorld());
+	}
+	
+}
+
+
 
 

@@ -11,6 +11,10 @@
 #include "Components/ArrowComponent.h"
 #include "RunningPlayer.generated.h"
 
+class PlayerMoveAbstract;
+class SideMoveState;
+class JumpState;
+
 
 UCLASS()
 class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
@@ -18,6 +22,11 @@ class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
 	GENERATED_BODY()
 
 public:
+
+	PlayerMoveAbstract* CurrentState;
+	SideMoveState* PlayerSideMove;
+	JumpState* PlayerJump;
+
 	ARunningPlayer();
 
 protected:
@@ -29,6 +38,7 @@ protected:
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	float CurrentMoveValue;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Player Base")
 	UBoxComponent* BoxComp;
@@ -43,5 +53,8 @@ public:
 	UArrowComponent* DirectionArrow;
 
 	void SideMoveAction(const FInputActionValue& InputValue);
+	void JumpAction(const FInputActionValue& InputValue);
+
+	void StateTransition(PlayerMoveAbstract * NextState);
 
 };
