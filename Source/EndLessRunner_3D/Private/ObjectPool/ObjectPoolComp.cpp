@@ -15,7 +15,6 @@ UObjectPoolComp::UObjectPoolComp()
 }
 
 
-
 void UObjectPoolComp::BeginPlay()
 {
 	Super::BeginPlay();
@@ -46,7 +45,11 @@ void UObjectPoolComp::InitializePool()
 			}
 			else
 			{
+				
 				SpawnTransform = FTransform::Identity;
+				FTimerHandle NextBatchTimer;
+				GetWorld()->GetTimerManager().SetTimer(NextBatchTimer, [this, itr](){BatchingSpawn(itr);}, 2.0f, false);
+				break;
 			}
 
 
@@ -115,3 +118,12 @@ FTransform UObjectPoolComp::QuickActorTransform(AActor* SpawnActor)
 	return FTransform::Identity;
 }
 
+void UObjectPoolComp::BatchingSpawn(int index)
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	for (int itr = index; itr < PoolSize; itr++)
+	{
+		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,FTransform::Identity, SpawnParams);
+	}
+}

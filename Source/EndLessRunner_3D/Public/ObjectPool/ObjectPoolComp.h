@@ -38,6 +38,8 @@ protected:
 	
 	virtual void BeginPlay() override;
 
+	FTimerHandle SpawnBatchingTimer;
+
 	UFUNCTION()
 	void InitializePool();
 
@@ -51,6 +53,9 @@ protected:
 	 
 	 UFUNCTION()
 	 FTransform QuickActorTransform(AActor* SpawnActor);
+
+	 UFUNCTION()
+	 void BatchingSpawn(int inde);
 	
 	//UFUNCTION()
 	//void UpdateLatestRearFloor();

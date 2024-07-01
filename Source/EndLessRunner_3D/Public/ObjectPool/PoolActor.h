@@ -51,7 +51,7 @@ protected:
 	UFUNCTION()
 	void SetInUse(bool InUse);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable)
 	void SetNotUse();
 
 public:	
