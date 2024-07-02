@@ -4,16 +4,20 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interface/GetLvlManagerMembers.h"
 #include "LevelManager.generated.h"
 
 class UObjectPoolComp;
 
 UCLASS()
-class ENDLESSRUNNER_3D_API ALevelManager : public AActor
+class ENDLESSRUNNER_3D_API ALevelManager : public AActor , IGetLvlManagerMembers
 {
 	GENERATED_BODY()
 	
-public:	
+public:
+	 
+	virtual int  GetRandomInteger() override;
+
 	ALevelManager();
 
 	UPROPERTY(VisibleDefaultsOnly)

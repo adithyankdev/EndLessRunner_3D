@@ -7,6 +7,11 @@
 
 
 
+int ALevelManager::GetRandomInteger()
+{
+	return 0;
+}
+
 // Sets default values
 ALevelManager::ALevelManager()
 {

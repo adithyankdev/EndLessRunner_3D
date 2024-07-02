@@ -36,7 +36,15 @@ APoolActor::APoolActor()
 
 	Arrowcomponent = CreateDefaultSubobject<UArrowComponent>(TEXT("TileSpawnPoint"));
 	Arrowcomponent->SetupAttachment(RootComponent);
+    
+	ObstacleArrowcomp_One = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointOne"));
+	ObstacleArrowcomp_One->SetupAttachment(RootComponent);
 
+	ObstacleArrowcom_Two = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointTwo"));
+	ObstacleArrowcom_Two->SetupAttachment(RootComponent);
+
+	ObstacleArrowcomp_Three = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointThree"));
+	ObstacleArrowcomp_Three->SetupAttachment(RootComponent);
 }
 
 
@@ -61,6 +69,55 @@ void APoolActor::SetInUse(bool InUse)
 void APoolActor::SetNotUse()
 {
 	SetInUse(false);
+}
+
+void APoolActor::SetComponentTransform()
+{
+	//ObstacleTransform.Add(ObstacleArrowcomp_One->GetComponentTransform());
+	//ObstacleTransform.Add(ObstacleArrowcom_Two->GetComponentTransform());
+	//ObstacleTransform.Add(ObstacleArrowcomp_Three->GetComponentTransform());
+	ObstacleTras.Add(ObstacleArrowcomp_One);
+	ObstacleTras.Add(ObstacleArrowcom_Two);
+	ObstacleTras.Add(ObstacleArrowcomp_Three);
+}
+
+//Need To Be On The Level Manager Class ...
+int APoolActor::GetRandomTransform()
+{
+	int RandomInt = FMath::RandRange(0, ObstacleTransform.Num() - 1);
+	if (LatestRandomNumbers.Num()==3)
+	{
+		if (LatestRandomNumbers[0] == LatestRandomNumbers[1] && LatestRandomNumbers[1] == LatestRandomNumbers[2])
+		{
+			if (LatestRandomNumbers[0] == RandomInt)
+			{
+				while (RandomInt == LatestRandomNumbers[0])
+				{
+					RandomInt = FMath::RandRange(0, ObstacleTransform.Num() - 1);
+				}
+			}	
+		}
+			LatestRandomNumbers.Empty();
+			LatestRandomNumbers.Add(RandomInt);
+	}
+	else
+	{
+		LatestRandomNumbers.Add(RandomInt);
+	}
+	
+	return RandomInt;
+}
+
+void APoolActor::SpawnObstacle()
+{
+	int value = GetRandomTransform();
+
+	if(UChildActorComponent* ChildComponent = NewObject<UChildActorComponent>(this))
+	{
+		ChildComponent->SetChildActorClass(ObstacleClasses);
+		ChildComponent->RegisterComponent();
+		ChildComponent->AttachToComponent(ObstacleTras[value], FAttachmentTransformRules::KeepRelativeTransform);
+	}
 }
 
 // Called every frame

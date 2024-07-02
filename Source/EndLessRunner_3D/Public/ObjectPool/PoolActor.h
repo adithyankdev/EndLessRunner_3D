@@ -37,8 +37,14 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* Arrowcomponent;
 
-	//UPROPERTY(VisibleDefaultsOnly)
-	//UObjectPoolComp* ObjectPoolComponent;
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* ObstacleArrowcomp_One;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* ObstacleArrowcom_Two;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* ObstacleArrowcomp_Three;
 
 
 protected:
@@ -53,6 +59,20 @@ protected:
 
 	UFUNCTION(BlueprintCallable)
 	void SetNotUse();
+
+	TArray<FTransform>ObstacleTransform;
+	TArray<UArrowComponent*>ObstacleTras;
+
+	TArray<int>LatestRandomNumbers{3};
+
+	UPROPERTY(BlueprintReadOnly,EditAnywhere)
+	TSubclassOf<AActor>ObstacleClasses;
+
+	void SetComponentTransform();
+	int GetRandomTransform();
+	void SpawnObstacle();
+
+
 
 public:	
 	// Called every frame
