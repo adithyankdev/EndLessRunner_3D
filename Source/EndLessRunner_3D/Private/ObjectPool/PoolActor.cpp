@@ -3,6 +3,9 @@
 
 #include "ObjectPool/PoolActor.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Level/LevelManager.h"
+#include "Kismet\GameplayStatics.h"
+
 
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
@@ -53,6 +56,9 @@ void APoolActor::BeginPlay()
 	Super::BeginPlay();
 	SetInUse(false);
 
+	SetComponentTransform();
+	SpawnObstacle();
+
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnPlayerBeginOverlap);
 }
 
@@ -73,50 +79,40 @@ void APoolActor::SetNotUse()
 
 void APoolActor::SetComponentTransform()
 {
-	//ObstacleTransform.Add(ObstacleArrowcomp_One->GetComponentTransform());
-	//ObstacleTransform.Add(ObstacleArrowcom_Two->GetComponentTransform());
-	//ObstacleTransform.Add(ObstacleArrowcomp_Three->GetComponentTransform());
 	ObstacleTras.Add(ObstacleArrowcomp_One);
 	ObstacleTras.Add(ObstacleArrowcom_Two);
 	ObstacleTras.Add(ObstacleArrowcomp_Three);
 }
 
-//Need To Be On The Level Manager Class ...
+//Call The Interface On Lvl Manager --(Checking For Wheather The NumberIs Repeatative on Three Times)-- And Return Integer ...
 int APoolActor::GetRandomTransform()
 {
-	int RandomInt = FMath::RandRange(0, ObstacleTransform.Num() - 1);
-	if (LatestRandomNumbers.Num()==3)
-	{
-		if (LatestRandomNumbers[0] == LatestRandomNumbers[1] && LatestRandomNumbers[1] == LatestRandomNumbers[2])
-		{
-			if (LatestRandomNumbers[0] == RandomInt)
-			{
-				while (RandomInt == LatestRandomNumbers[0])
-				{
-					RandomInt = FMath::RandRange(0, ObstacleTransform.Num() - 1);
-				}
-			}	
-		}
-			LatestRandomNumbers.Empty();
-			LatestRandomNumbers.Add(RandomInt);
-	}
-	else
-	{
-		LatestRandomNumbers.Add(RandomInt);
-	}
-	
-	return RandomInt;
-}
+	int RandomInt = FMath::RandRange(0, ObstacleTras.Num() - 1);
 
+	TArray<AActor*>LevelManagerClass;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelManager::StaticClass(), LevelManagerClass);
+
+	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
+	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+	{
+		if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
+		{
+			RandomInt = Interface->GetRandomInteger(RandomInt);
+		}
+	}
+	return RandomInt;
+	
+}
+//Function That Set The ChildActorClass and Attach To ArrowComponent ...
 void APoolActor::SpawnObstacle()
 {
-	int value = GetRandomTransform();
+	int Index = GetRandomTransform();
 
 	if(UChildActorComponent* ChildComponent = NewObject<UChildActorComponent>(this))
 	{
 		ChildComponent->SetChildActorClass(ObstacleClasses);
 		ChildComponent->RegisterComponent();
-		ChildComponent->AttachToComponent(ObstacleTras[value], FAttachmentTransformRules::KeepRelativeTransform);
+		ChildComponent->AttachToComponent(ObstacleTras[Index], FAttachmentTransformRules::KeepRelativeTransform);
 	}
 }
 

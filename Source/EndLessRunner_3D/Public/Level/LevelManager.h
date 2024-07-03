@@ -10,13 +10,13 @@
 class UObjectPoolComp;
 
 UCLASS()
-class ENDLESSRUNNER_3D_API ALevelManager : public AActor , IGetLvlManagerMembers
+class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManagerMembers
 {
 	GENERATED_BODY()
 	
 public:
 	 
-	virtual int  GetRandomInteger() override;
+	virtual int  GetRandomInteger(int RandomNumber) override;
 
 	ALevelManager();
 
@@ -25,6 +25,10 @@ public:
 
 protected:
 	
+	//Array To Store RandomInteger From Obstacle(1) Arrays
+	TArray<int>LatestRandomNumbers{3};
+	const int Arraysize = 3;
+
 	virtual void BeginPlay() override;
 
 public:	

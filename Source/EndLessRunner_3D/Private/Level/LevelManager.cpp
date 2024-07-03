@@ -6,10 +6,29 @@
 #include "ObjectPool/ObjectPoolComp.h"
 
 
-
-int ALevelManager::GetRandomInteger()
+//Interface Function That Check Wheather Random Number Is Repetative For Spawning Obstcles On Floor Tile ; 
+int ALevelManager::GetRandomInteger(int RandomNumber)
 {
-	return 0;
+	if (LatestRandomNumbers.Num() == Arraysize)
+	{
+		if (LatestRandomNumbers[0] == LatestRandomNumbers[1] && LatestRandomNumbers[1] == LatestRandomNumbers[2])
+		{
+			if (LatestRandomNumbers[0] == RandomNumber)
+			{
+				while (RandomNumber == LatestRandomNumbers[0])
+				{
+					 RandomNumber = FMath::RandRange(0,LatestRandomNumbers.Num() - 1);
+				}
+			}
+		}
+		LatestRandomNumbers.Empty();
+		LatestRandomNumbers.Add(RandomNumber);
+	}
+	else
+	{
+		LatestRandomNumbers.Add(RandomNumber);
+	}
+	return RandomNumber ;
 }
 
 // Sets default values
@@ -29,6 +48,8 @@ void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	FString D = FString::Printf(TEXT("%d"), Arraysize);
+	UKismetSystemLibrary::PrintString(GetWorld(), D);
 	
 
 }

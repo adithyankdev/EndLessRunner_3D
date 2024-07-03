@@ -23,5 +23,5 @@ class ENDLESSRUNNER_3D_API IGetLvlManagerMembers
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual int GetRandomInteger() = 0;
+	virtual int GetRandomInteger(int RandomNumber) = 0;
 };

@@ -60,16 +60,17 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void SetNotUse();
 
-	TArray<FTransform>ObstacleTransform;
+	//Array Store ArrowComponent To Attach The Obstacles ....
 	TArray<UArrowComponent*>ObstacleTras;
-
-	TArray<int>LatestRandomNumbers{3};
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere)
 	TSubclassOf<AActor>ObstacleClasses;
 
+	UFUNCTION()
 	void SetComponentTransform();
+	UFUNCTION()
 	int GetRandomTransform();
+	UFUNCTION()
 	void SpawnObstacle();
 
 
