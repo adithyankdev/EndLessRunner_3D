@@ -34,6 +34,11 @@ public:
 
 	UObjectPoolComp();
 
+	FTransform SpawnTransform;
+
+	UFUNCTION()
+	AActor* UseFromPool();
+
 protected:
 	
 	virtual void BeginPlay() override;
@@ -42,9 +47,6 @@ protected:
 
 	UFUNCTION()
 	void InitializePool();
-
-	UFUNCTION(BlueprintCallable)
-	AActor* UseFromPool(FTransform UseTransform);
 
 	UFUNCTION()
 	AActor* GetNotInUseActor();
@@ -56,15 +58,5 @@ protected:
 
 	 UFUNCTION()
 	 void BatchingSpawn(int inde);
-	
-	//UFUNCTION()
-	//void UpdateLatestRearFloor();
 
-	
-
-public:	
-	// Called every frame
-	//virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 };

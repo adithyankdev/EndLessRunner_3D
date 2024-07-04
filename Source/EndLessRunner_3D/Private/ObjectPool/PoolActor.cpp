@@ -4,7 +4,10 @@
 #include "ObjectPool/PoolActor.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Level/LevelManager.h"
-#include "Kismet\GameplayStatics.h"
+#include "Kismet/GameplayStatics.h"
+#include "Engine/EngineTypes.h"
+#include "Player/RunningPlayer.h"
+
 
 
 
@@ -19,6 +22,7 @@ bool APoolActor::CurrentActorUseState()
 void APoolActor::SetActorInUse()
 {
 	SetInUse(true);
+
 }
 
 //Getting The ArrowComponent  For Spawning The Next Tile ...
@@ -39,7 +43,7 @@ APoolActor::APoolActor()
 
 	Arrowcomponent = CreateDefaultSubobject<UArrowComponent>(TEXT("TileSpawnPoint"));
 	Arrowcomponent->SetupAttachment(RootComponent);
-    
+
 	ObstacleArrowcomp_One = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointOne"));
 	ObstacleArrowcomp_One->SetupAttachment(RootComponent);
 
@@ -48,6 +52,10 @@ APoolActor::APoolActor()
 
 	ObstacleArrowcomp_Three = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointThree"));
 	ObstacleArrowcomp_Three->SetupAttachment(RootComponent);
+
+
+	 ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
+	
 }
 
 
@@ -55,21 +63,26 @@ void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInUse(false);
-
 	SetComponentTransform();
 	SpawnObstacle();
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
+}
 
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnPlayerBeginOverlap);
+void APoolActor::Tick(float DeltaTime)
+{   
+	float Speed = ((GetActorForwardVector().X)*-100.0f )*DeltaTime;
+	AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
 }
 
 //Function That Set Property When The Actor Is On Use ..
 void APoolActor::SetInUse(bool InUse)
 {
+;
 	CurrentlyUse = InUse;
 	SetActorTickEnabled(InUse);
 	SetActorEnableCollision(InUse);
 	SetActorHiddenInGame(!InUse);
-	
+
 }
 //Function That Always Make The Actor Not Use  ...
 void APoolActor::SetNotUse()
@@ -77,6 +90,7 @@ void APoolActor::SetNotUse()
 	SetInUse(false);
 }
 
+//Function That Add Current To Array For (Spawnning Child)
 void APoolActor::SetComponentTransform()
 {
 	ObstacleTras.Add(ObstacleArrowcomp_One);
@@ -89,10 +103,7 @@ int APoolActor::GetRandomTransform()
 {
 	int RandomInt = FMath::RandRange(0, ObstacleTras.Num() - 1);
 
-	TArray<AActor*>LevelManagerClass;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ALevelManager::StaticClass(), LevelManagerClass);
-
-	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
+	LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
 	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
 	{
 		if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
@@ -101,32 +112,46 @@ int APoolActor::GetRandomTransform()
 		}
 	}
 	return RandomInt;
-	
+
 }
+
 //Function That Set The ChildActorClass and Attach To ArrowComponent ...
 void APoolActor::SpawnObstacle()
 {
 	int Index = GetRandomTransform();
 
-	if(UChildActorComponent* ChildComponent = NewObject<UChildActorComponent>(this))
+	if (ChildComponent )
 	{
 		ChildComponent->SetChildActorClass(ObstacleClasses);
 		ChildComponent->RegisterComponent();
 		ChildComponent->AttachToComponent(ObstacleTras[Index], FAttachmentTransformRules::KeepRelativeTransform);
+		
 	}
 }
 
-// Called every frame
-void APoolActor::Tick(float DeltaTime)
+//BeginOverlap Functin For Using The Next Tile On The Front And Not Using the Last Tile ...
+void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	Super::Tick(DeltaTime);
-
+	if (OtherActor && OtherActor->IsA(ARunningPlayer::StaticClass()))
+	{
+		if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+		{
+			if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
+			{
+				FString D = TEXT("Interface Called");
+				UKismetSystemLibrary::PrintString(GetWorld(), D);
+				Interface->GetSpawnTransform();
+				if (GetWorld()->GetTimerManager().IsTimerActive(NotUseActorTimer))GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
+				GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 6.0f, false);				
+			}
+		}
+	}	
 }
 
-// Begin Player For Making The Tile NotUse
-
-void APoolActor::OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+//Function That Set The Actor Not To Use ...
+void APoolActor::StopUsingTheActor()
 {
-	
+	SetNotUse();
 }
+
 

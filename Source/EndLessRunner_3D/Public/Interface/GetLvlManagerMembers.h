@@ -24,4 +24,5 @@ class ENDLESSRUNNER_3D_API IGetLvlManagerMembers
 public:
 
 	virtual int GetRandomInteger(int RandomNumber) = 0;
+	virtual void GetSpawnTransform() = 0;
 };

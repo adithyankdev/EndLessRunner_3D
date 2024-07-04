@@ -30,7 +30,7 @@ void UObjectPoolComp::InitializePool()
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	int SpawnedCount = 0;
-	FTransform SpawnTransform;
+	
 	for (int itr = 0; itr < PoolSize; itr++)
 	{
 		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,SpawnTransform , SpawnParams);
@@ -45,13 +45,10 @@ void UObjectPoolComp::InitializePool()
 			}
 			else
 			{
-				
-				SpawnTransform = FTransform::Identity;
 				FTimerHandle NextBatchTimer;
 				GetWorld()->GetTimerManager().SetTimer(NextBatchTimer, [this, itr](){BatchingSpawn(itr);}, 2.0f, false);
 				break;
 			}
-
 
 		}
 
@@ -60,29 +57,28 @@ void UObjectPoolComp::InitializePool()
 
 //Function That Set The Actor To Use And Set Its World Transform ...
 
-AActor* UObjectPoolComp::UseFromPool(FTransform UseTransform)
+AActor* UObjectPoolComp::UseFromPool()
 {
-	if (AActor* ActorToUse = GetNotInUseActor())
+	
+	if(AActor* ActorToUse = GetNotInUseActor())
 	{
-
-	//	ActorToUse->SetActorLocation(UseLocation);
-		ActorToUse->SetActorTransform(UseTransform);
+	  //SpawnTransform = QuickActorTransform(ActorToUse);
+		ActorToUse->SetActorTransform(SpawnTransform);
 
 		if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
 			Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
+			SpawnTransform = QuickActorTransform(ActorToUse);
 			return ActorToUse;
-			FString Debug = TEXT("Actor Is Good");
-			UKismetSystemLibrary::PrintString(GetWorld(), Debug, true, true, FLinearColor::Yellow, 5);
 		}
+	
 	}
-	else
-	{
-		FString Debug = TEXT("UseFromPool Function Recived NUll Valid Pointer");
-		UKismetSystemLibrary::PrintString(GetWorld(), Debug, true, true, FLinearColor::Red, 5);
-	}
+
+
 	return nullptr;
 }
+
+
 
 
 // Function Return The First Actor That Is Not Currently Using ...
@@ -90,7 +86,8 @@ AActor* UObjectPoolComp::UseFromPool(FTransform UseTransform)
 AActor* UObjectPoolComp::GetNotInUseActor()
 {
 	for (AActor* Act :PoolActorArray)
-	{
+	{	
+	
 		if (Act->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
 			if (!Cast<IGetActorPoolMembers>(Act)->CurrentActorUseState())
@@ -98,9 +95,13 @@ AActor* UObjectPoolComp::GetNotInUseActor()
 				return Act;
 			}
 		}
+		
 	}
 	return nullptr;
 }
+
+
+
 
 //Function Return The World Transform For the Tile To Spawn 
 
@@ -118,12 +119,15 @@ FTransform UObjectPoolComp::QuickActorTransform(AActor* SpawnActor)
 	return FTransform::Identity;
 }
 
+
+//Function That Just Spawn The Pool Actors To The World (Batching Method) ...
 void UObjectPoolComp::BatchingSpawn(int index)
 {
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	for (int itr = index; itr < PoolSize; itr++)
+	for (int itr = index+1; itr < PoolSize; itr++)
 	{
 		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,FTransform::Identity, SpawnParams);
+		PoolActorArray.AddUnique(SpawnActor);
 	}
 }

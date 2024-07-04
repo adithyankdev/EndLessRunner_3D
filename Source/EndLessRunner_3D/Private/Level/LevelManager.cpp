@@ -31,6 +31,11 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 	return RandomNumber ;
 }
 
+void ALevelManager::GetSpawnTransform()
+{
+	ObjectPoolComponent->UseFromPool();
+}
+
 // Sets default values
 ALevelManager::ALevelManager()
 {
@@ -41,15 +46,13 @@ ALevelManager::ALevelManager()
     LevelSpwaningSpeed= 50.0f;
 
 	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComp>(TEXT("ActorComponent"));
+
 }
 
 // Called when the game starts or when spawned
 void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	FString D = FString::Printf(TEXT("%d"), Arraysize);
-	UKismetSystemLibrary::PrintString(GetWorld(), D);
 	
 
 }

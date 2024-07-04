@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "ObjectPool/ObjectPoolComp.h"
 #include "Interface/GetLvlManagerMembers.h"
 #include "LevelManager.generated.h"
 
@@ -17,14 +18,17 @@ class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManager
 public:
 	 
 	virtual int  GetRandomInteger(int RandomNumber) override;
+	virtual void GetSpawnTransform() override; 
 
 	ALevelManager();
+
+	
+
+protected:
 
 	UPROPERTY(VisibleDefaultsOnly)
 	UObjectPoolComp* ObjectPoolComponent;
 
-protected:
-	
 	//Array To Store RandomInteger From Obstacle(1) Arrays
 	TArray<int>LatestRandomNumbers{3};
 	const int Arraysize = 3;

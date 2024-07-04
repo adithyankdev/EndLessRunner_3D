@@ -20,13 +20,15 @@ class ENDLESSRUNNER_3D_API APoolActor : public AActor , public IGetActorPoolMemb
 public:	
 	APoolActor();
 
-	
+	//Interface Function
+
 	virtual bool CurrentActorUseState()override;
 
 	virtual void SetActorInUse()override;
 
 	virtual FTransform ArrowTransform() override;
 
+protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	USceneComponent* SceneComponent;
@@ -46,10 +48,10 @@ public:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* ObstacleArrowcomp_Three;
 
-
-protected:
+	UChildActorComponent* ChildComponent;
 	
-	virtual void BeginPlay() override;
+	UPROPERTY()
+	AActor* LevelManager;
 
 	UPROPERTY()
 	bool CurrentlyUse;
@@ -57,8 +59,13 @@ protected:
 	UFUNCTION()
 	void SetInUse(bool InUse);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION()
 	void SetNotUse();
+
+
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
 
 	//Array Store ArrowComponent To Attach The Obstacles ....
 	TArray<UArrowComponent*>ObstacleTras;
@@ -68,17 +75,23 @@ protected:
 
 	UFUNCTION()
 	void SetComponentTransform();
+
 	UFUNCTION()
 	int GetRandomTransform();
+
 	UFUNCTION()
 	void SpawnObstacle();
 
+	FTimerHandle NotUseActorTimer;
 
+	UFUNCTION()
+	void StopUsingTheActor();
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
-	void OnPlayerBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult);
 
 };

@@ -41,8 +41,8 @@ void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	float Speed = (GetActorForwardVector().X * 100.0f)*DeltaTime;
-	AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
+	//float Speed = (GetActorForwardVector().X * 100.0f)*DeltaTime;
+	//AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
 
 }
 
