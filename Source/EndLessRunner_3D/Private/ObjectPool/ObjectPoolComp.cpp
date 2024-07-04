@@ -42,6 +42,8 @@ void UObjectPoolComp::InitializePool()
 			if (SpawnedCount <= QuickSpwanCount)
 			{
 				SpawnTransform = QuickActorTransform(SpawnActor);
+				LatestRearFloor = SpawnActor;
+			
 			}
 			else
 			{
@@ -59,16 +61,23 @@ void UObjectPoolComp::InitializePool()
 
 AActor* UObjectPoolComp::UseFromPool()
 {
-	
+
 	if(AActor* ActorToUse = GetNotInUseActor())
 	{
 	  //SpawnTransform = QuickActorTransform(ActorToUse);
-		ActorToUse->SetActorTransform(SpawnTransform);
+		//
 
+		if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
+		{
+			FTransform GetTransform = ActorInterface->ArrowTransform();
+			ActorToUse->SetActorTransform(GetTransform);
+			//ActorInterface->SetActorInUse();
+		}
 		if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
 			Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
-			SpawnTransform = QuickActorTransform(ActorToUse);
+		//	SpawnTransform = QuickActorTransform(ActorToUse);
+			LatestRearFloor = ActorToUse;
 			return ActorToUse;
 		}
 	
