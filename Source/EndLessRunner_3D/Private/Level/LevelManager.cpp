@@ -33,7 +33,18 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 
 void ALevelManager::GetSpawnTransform()
 {
-	ObjectPoolComponent->UseFromPool();
+	if (StraightTileSpawnCount <= 3)
+	{
+		ObjectPoolComponent->UseFromPool(); 
+		StraightTileSpawnCount++;
+	}
+	else
+	{
+		ObjectPoolComponent->UseTurnTileFromPool();
+		StraightTileSpawnCount = 0;
+	} 
+
+
 }
 
 // Sets default values
@@ -44,7 +55,7 @@ ALevelManager::ALevelManager()
 	NumberOfLane = 3;
     LaneWidth = 100.0f;
     LevelSpwaningSpeed= 50.0f;
-
+	StraightTileSpawnCount = 0; 
 	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComp>(TEXT("ActorComponent"));
 
 }

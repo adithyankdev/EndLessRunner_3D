@@ -74,20 +74,22 @@ protected:
 	TSubclassOf<AActor>ObstacleClasses;
 
 	UFUNCTION()
-	void SetComponentTransform();
+	 virtual void SetComponentTransform();
 
 	UFUNCTION()
-	int GetRandomTransform();
+	virtual int GetRandomTransform();
 
 	UFUNCTION()
-	void SpawnObstacle();
+	virtual void SpawnObstacle();
 
 	FTimerHandle NotUseActorTimer;
 
 	UFUNCTION()
-	void StopUsingTheActor();
+	virtual void StopUsingTheActor();
 
 public:	
+
+	
 
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

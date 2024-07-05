@@ -39,6 +39,8 @@ public:
 	
 	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY()
+	int StraightTileSpawnCount;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	int NumberOfLane;

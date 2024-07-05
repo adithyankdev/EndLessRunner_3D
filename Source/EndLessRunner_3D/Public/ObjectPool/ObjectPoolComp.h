@@ -59,4 +59,19 @@ protected:
 	 UFUNCTION()
 	 void BatchingSpawn(int inde);
 
+	 //Turn Tile Spawning Methods And Variables
+
+	 UPROPERTY(BlueprintReadWrite , EditDefaultsOnly , Category = "ObjectPool Base")
+	 TArray<TSubclassOf<AActor>>TurnTileClass;
+	 UPROPERTY()
+	 TArray<AActor*>TurnTileArray;
+
+	 UFUNCTION()
+	 void SpawnTurnTile();
+
+public:
+	UFUNCTION()
+	void UseTurnTileFromPool();
+	
+
 };

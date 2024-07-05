@@ -64,8 +64,7 @@ AActor* UObjectPoolComp::UseFromPool()
 
 	if(AActor* ActorToUse = GetNotInUseActor())
 	{
-	  //SpawnTransform = QuickActorTransform(ActorToUse);
-		//
+	  //SpawnTransform = QuickActorTransform(ActorToUse);		//
 
 		if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
 		{
@@ -97,7 +96,7 @@ AActor* UObjectPoolComp::GetNotInUseActor()
 	for (AActor* Act :PoolActorArray)
 	{	
 	
-		if (Act->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
+		if (!Act->IsA(TurnTileClass[0]->StaticClass()) && Act->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
 			if (!Cast<IGetActorPoolMembers>(Act)->CurrentActorUseState())
 			{
@@ -108,9 +107,6 @@ AActor* UObjectPoolComp::GetNotInUseActor()
 	}
 	return nullptr;
 }
-
-
-
 
 //Function Return The World Transform For the Tile To Spawn 
 
@@ -138,5 +134,42 @@ void UObjectPoolComp::BatchingSpawn(int index)
 	{
 		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,FTransform::Identity, SpawnParams);
 		PoolActorArray.AddUnique(SpawnActor);
+	}
+	SpawnTurnTile();
+}
+
+void UObjectPoolComp::SpawnTurnTile()
+{
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	for (int itr = 0; itr <=1; itr++)
+	{
+		AActor* SpawnTileActor = GetWorld()->SpawnActor<AActor>(TurnTileClass[itr], FTransform::Identity, SpawnParams);
+		//PoolActorArray.AddUnique(SpawnTileActor);
+		TurnTileArray.AddUnique(SpawnTileActor);
+		
+		
+	}
+}
+//Function  That Use Trun Tile From Pool
+void UObjectPoolComp::UseTurnTileFromPool()
+{
+	int RandomInt = FMath::RandRange(0, 1);
+
+
+	AActor* ActorToUse = TurnTileArray[RandomInt];
+		{
+			if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
+			{
+				FTransform GetTransform = ActorInterface->ArrowTransform();
+				ActorToUse->SetActorTransform(GetTransform);
+			}
+			if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
+			{
+				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
+			}
+			LatestRearFloor = ActorToUse;
+		//	break;
+		//}
 	}
 }

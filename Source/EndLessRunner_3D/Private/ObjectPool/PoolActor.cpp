@@ -70,14 +70,13 @@ void APoolActor::BeginPlay()
 
 void APoolActor::Tick(float DeltaTime)
 {   
-	float Speed = ((GetActorForwardVector().X)*-100.0f )*DeltaTime;
+	float Speed = ((GetActorForwardVector().X)*-200.0f )*DeltaTime;
 	AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
 }
 
 //Function That Set Property When The Actor Is On Use ..
 void APoolActor::SetInUse(bool InUse)
 {
-;
 	CurrentlyUse = InUse;
 	SetActorTickEnabled(InUse);
 	SetActorEnableCollision(InUse);
@@ -141,7 +140,10 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 				FString D = TEXT("Interface Called");
 				UKismetSystemLibrary::PrintString(GetWorld(), D);
 				Interface->GetSpawnTransform();
-				if (GetWorld()->GetTimerManager().IsTimerActive(NotUseActorTimer))GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
+				if (GetWorld()->GetTimerManager().IsTimerActive(NotUseActorTimer))
+				{
+					GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
+				}
 				GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 6.0f, false);				
 			}
 		}
