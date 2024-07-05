@@ -66,10 +66,16 @@ protected:
 	 UPROPERTY()
 	 TArray<AActor*>TurnTileArray;
 
+	 
 	 UFUNCTION()
 	 void SpawnTurnTile();
 
+
 public:
+
+	//Variable For Changing Pool Actor Movement When the Turn Taken ...
+	 bool Turnhappend;
+
 	UFUNCTION()
 	void UseTurnTileFromPool();
 	

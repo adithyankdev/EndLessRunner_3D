@@ -33,7 +33,7 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 
 void ALevelManager::GetSpawnTransform()
 {
-	if (StraightTileSpawnCount <= 3)
+	if (StraightTileSpawnCount <= 10)
 	{
 		ObjectPoolComponent->UseFromPool(); 
 		StraightTileSpawnCount++;

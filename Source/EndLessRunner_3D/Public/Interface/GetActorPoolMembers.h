@@ -26,4 +26,5 @@ public:
 	virtual bool CurrentActorUseState() = 0;
 	virtual void SetActorInUse() = 0;
 	virtual FTransform ArrowTransform()=0;
+	virtual void SetDirectionValue(FVector LocationValue) =  0;
 };

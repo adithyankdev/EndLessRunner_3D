@@ -28,6 +28,8 @@ public:
 
 	virtual FTransform ArrowTransform() override;
 
+	void SetDirectionValue(FVector LocationValue) override;
+
 protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
@@ -87,12 +89,12 @@ protected:
 	UFUNCTION()
 	virtual void StopUsingTheActor();
 
+	FVector CurrentDirection;
+
 public:	
 
-	
-
 	UFUNCTION()
-	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult& SweepResult);
 

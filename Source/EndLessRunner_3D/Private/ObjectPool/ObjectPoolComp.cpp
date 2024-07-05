@@ -74,9 +74,11 @@ AActor* UObjectPoolComp::UseFromPool()
 		}
 		if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
-			Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
+			IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(ActorToUse);
+			Interface->SetActorInUse();
 		//	SpawnTransform = QuickActorTransform(ActorToUse);
 			LatestRearFloor = ActorToUse;
+			if (Turnhappend)Interface->SetDirectionValue(ActorToUse->GetActorForwardVector());
 			return ActorToUse;
 		}
 	
@@ -138,6 +140,7 @@ void UObjectPoolComp::BatchingSpawn(int index)
 	SpawnTurnTile();
 }
 
+//Function That Spawn Tile Actor Into The World And Adding It Into The Array ...
 void UObjectPoolComp::SpawnTurnTile()
 {
 	FActorSpawnParameters SpawnParams;
@@ -146,11 +149,10 @@ void UObjectPoolComp::SpawnTurnTile()
 	{
 		AActor* SpawnTileActor = GetWorld()->SpawnActor<AActor>(TurnTileClass[itr], FTransform::Identity, SpawnParams);
 		//PoolActorArray.AddUnique(SpawnTileActor);
-		TurnTileArray.AddUnique(SpawnTileActor);
-		
-		
+		TurnTileArray.AddUnique(SpawnTileActor);		
 	}
 }
+
 //Function  That Use Trun Tile From Pool
 void UObjectPoolComp::UseTurnTileFromPool()
 {
@@ -169,7 +171,6 @@ void UObjectPoolComp::UseTurnTileFromPool()
 				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
 			}
 			LatestRearFloor = ActorToUse;
-		//	break;
-		//}
+			Turnhappend = true;
 	}
 }

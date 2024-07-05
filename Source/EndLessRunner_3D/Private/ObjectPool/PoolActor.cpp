@@ -30,6 +30,11 @@ FTransform APoolActor::ArrowTransform()
 {
 	return Arrowcomponent->GetComponentTransform();
 }
+ 
+void APoolActor::SetDirectionValue(FVector LocationValue)
+{
+	CurrentDirection = LocationValue; 
+}
 
 // Sets default values
 APoolActor::APoolActor()
@@ -63,6 +68,7 @@ void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInUse(false);
+	CurrentDirection = GetActorForwardVector()*-1; 
 	SetComponentTransform();
 	SpawnObstacle();
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
@@ -70,8 +76,8 @@ void APoolActor::BeginPlay()
 
 void APoolActor::Tick(float DeltaTime)
 {   
-	float Speed = ((GetActorForwardVector().X)*-200.0f )*DeltaTime;
-	AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
+	FVector Speed = ((CurrentDirection)*200.0f )*DeltaTime;
+	AddActorLocalOffset(Speed);
 }
 
 //Function That Set Property When The Actor Is On Use ..
@@ -127,6 +133,7 @@ void APoolActor::SpawnObstacle()
 		
 	}
 }
+
 
 //BeginOverlap Functin For Using The Next Tile On The Front And Not Using the Last Tile ...
 void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
