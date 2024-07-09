@@ -23,6 +23,9 @@ class ENDLESSRUNNER_3D_API IGetLvlManagerMembers
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
+	virtual void LvlManagerLaneValues(int& TotalLanes , float& WidthOfLane)=0;
 	virtual int GetRandomInteger(int RandomNumber) = 0;
 	virtual void GetSpawnTransform() = 0;
+	virtual void SetCanPlayerTurn(bool Value) = 0; 
+	virtual bool GetCanPlayerTurn() = 0;
 };

@@ -13,5 +13,10 @@ UCLASS()
 class ENDLESSRUNNER_3D_API ALeftTurnTile : public APoolActor
 {
 	GENERATED_BODY()
+
+public :
+	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
+		const FHitResult& SweepResult) override;
 	
 };

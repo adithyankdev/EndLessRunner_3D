@@ -7,6 +7,7 @@
 #include "Interface/GetActorPoolMembers.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
+#include "Interface/GetLvlManagerMembers.h"
 #include "Components/SceneComponent.h"
 #include "PoolActor.generated.h"
 
@@ -32,6 +33,9 @@ public:
 
 protected:
 
+	UPROPERTY()
+	TScriptInterface<IGetLvlManagerMembers>LvlManagerInterface;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	USceneComponent* SceneComponent;
 
@@ -51,9 +55,6 @@ protected:
 	UArrowComponent* ObstacleArrowcomp_Three;
 
 	UChildActorComponent* ChildComponent;
-	
-	UPROPERTY()
-	AActor* LevelManager;
 
 	UPROPERTY()
 	bool CurrentlyUse;

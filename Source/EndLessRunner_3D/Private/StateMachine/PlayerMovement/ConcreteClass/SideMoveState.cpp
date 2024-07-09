@@ -24,14 +24,9 @@ SideMoveState::~SideMoveState()
 void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
 {	
 	if (!FirstCheck)GetLvlManagerInfo(World); FirstCheck = true;
-
-	FString Debug = FString::Printf(TEXT("%d"), LaneWidth);
-	UKismetSystemLibrary::PrintString(World, Debug,true,true,FLinearColor::Red,5);
 	
 	if (Player->CurrentMoveValue > 0 and CurrentLane < TotalNumberOfLane)
 	{
-		FString D = TEXT("Go Right");
-		UKismetSystemLibrary::PrintString(World, D);
 		float TargetPosition = Player->GetActorLocation().Y - LaneWidth;
 		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
 		Player->SetActorLocation(NewLocation);
@@ -40,8 +35,7 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
 	}
 	else if (Player->CurrentMoveValue < 0 and CurrentLane > 1)
 	{
-		FString D = TEXT("Go Left");
-		UKismetSystemLibrary::PrintString(World, D);
+
 		float TargetPosition = Player->GetActorLocation().Y + LaneWidth;
 		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
 		Player->SetActorLocation(NewLocation);
@@ -60,18 +54,17 @@ void SideMoveState::ExitState(ARunningPlayer* Player)
 
 // Helper Function ... 
 
-
 void SideMoveState::GetLvlManagerInfo(UWorld*World)
 {
-	TArray<AActor*>LevelClasses;
-	UGameplayStatics::GetAllActorsOfClass(World, ALevelManager::StaticClass(), LevelClasses);
-	if (LevelClasses.Num() > 0)
+	AActor* LvlActor =  UGameplayStatics::GetActorOfClass(World, ALevelManager::StaticClass());
+	if (LvlActor)
 	{
-	ALevelManager* lvlManger = Cast <ALevelManager>(LevelClasses[0]);
-
-	 TotalNumberOfLane = lvlManger->NumberOfLane;
-	 CurrentLane = (lvlManger->NumberOfLane / 2) + 1;
-	 LaneWidth = lvlManger->LaneWidth;
+		if (LvlActor->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+		{
+			IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);
+			Interface->LvlManagerLaneValues(TotalNumberOfLane, LaneWidth);
+			CurrentLane = (TotalNumberOfLane / 2) + 1;
+	    }
 	}
 	
 }

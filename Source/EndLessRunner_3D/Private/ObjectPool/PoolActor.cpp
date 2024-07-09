@@ -60,7 +60,7 @@ APoolActor::APoolActor()
 
 
 	 ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
-	
+	LvlManagerInterface = nullptr ;
 }
 
 
@@ -69,6 +69,13 @@ void APoolActor::BeginPlay()
 	Super::BeginPlay();
 	SetInUse(false);
 	CurrentDirection = GetActorForwardVector()*-1; 
+	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
+	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+	{
+
+		LvlManagerInterface.SetObject(LevelManager);
+		LvlManagerInterface.SetInterface(Cast<IGetLvlManagerMembers>(LevelManager));
+	}
 	SetComponentTransform();
 	SpawnObstacle();
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
@@ -108,14 +115,14 @@ int APoolActor::GetRandomTransform()
 {
 	int RandomInt = FMath::RandRange(0, ObstacleTras.Num() - 1);
 
-	LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
-	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
-	{
-		if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
-		{
-			RandomInt = Interface->GetRandomInteger(RandomInt);
-		}
-	}
+	//LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
+	//if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+	//{
+	//	if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
+	//	{
+			RandomInt = LvlManagerInterface->GetRandomInteger(RandomInt);
+	//	}
+	//}
 	return RandomInt;
 
 }
@@ -140,21 +147,21 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (OtherActor && OtherActor->IsA(ARunningPlayer::StaticClass()))
 	{
-		if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
-		{
-			if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
-			{
+	//	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
+	//	{
+	//		if (IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LevelManager))
+		//	{
 				FString D = TEXT("Interface Called");
 				UKismetSystemLibrary::PrintString(GetWorld(), D);
-				Interface->GetSpawnTransform();
+				LvlManagerInterface->GetSpawnTransform();
 				if (GetWorld()->GetTimerManager().IsTimerActive(NotUseActorTimer))
 				{
 					GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
 				}
 				GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 6.0f, false);				
-			}
+			//}
 		}
-	}	
+	//}	
 }
 
 //Function That Set The Actor Not To Use ...

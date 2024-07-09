@@ -17,8 +17,11 @@ class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManager
 	
 public:
 	 
+	virtual void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
 	virtual int  GetRandomInteger(int RandomNumber) override;
 	virtual void GetSpawnTransform() override; 
+	virtual void SetCanPlayerTurn(bool Value) override;
+	virtual bool GetCanPlayerTurn() override;
 
 	ALevelManager();
 
@@ -35,8 +38,12 @@ protected:
 
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	bool PlayerTurn;
+
 public:	
 	
+
 	virtual void Tick(float DeltaTime) override;
 
 	UPROPERTY()
