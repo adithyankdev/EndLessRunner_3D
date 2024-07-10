@@ -34,7 +34,7 @@ protected:
 
 	//Array To Store RandomInteger From Obstacle(1) Arrays
 	TArray<int>LatestRandomNumbers{3};
-	const int Arraysize = 3;
+	const int ArraySize = 2;
 
 	virtual void BeginPlay() override;
 

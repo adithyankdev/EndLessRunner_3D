@@ -14,23 +14,26 @@ void ALevelManager::LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane)
 //Interface Function That Check Wheather Random Number Is Repetative For Spawning Obstcles On Floor Tile ; 
 int ALevelManager::GetRandomInteger(int RandomNumber)
 {
-	if (LatestRandomNumbers.Num() == Arraysize)
+	if (LatestRandomNumbers.Num() >= ArraySize)
 	{
-		if (LatestRandomNumbers[0] == LatestRandomNumbers[1] && LatestRandomNumbers[0] == LatestRandomNumbers[2] && LatestRandomNumbers[0] == RandomNumber)
+		while (LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == LatestRandomNumbers[LatestRandomNumbers.Num() - 2] &&
+			/*LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == LatestRandomNumbers[LatestRandomNumbers.Num() - 3] &&*/
+			LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == RandomNumber)
 		{
-	    	while (RandomNumber == LatestRandomNumbers[0])
-			{
-			   RandomNumber = FMath::RandRange(0,LatestRandomNumbers.Num() - 1);
-			}	
+			RandomNumber = FMath::RandRange(0, ArraySize - 1);
 		}
-		LatestRandomNumbers.Empty();
-		LatestRandomNumbers.Add(RandomNumber);
 	}
-	else
+
+	// Add the new random number to the array
+	LatestRandomNumbers.Add(RandomNumber);
+
+	// Ensure the array does not exceed the specified size
+	if (LatestRandomNumbers.Num() > ArraySize)
 	{
-		LatestRandomNumbers.Add(RandomNumber);
+		LatestRandomNumbers.RemoveAt(0);
 	}
-	return RandomNumber ;
+
+	return RandomNumber;
 }
 
 void ALevelManager::GetSpawnTransform()
