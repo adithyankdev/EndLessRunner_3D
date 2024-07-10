@@ -18,13 +18,13 @@ public:
 
 	void BeginPlay() override;
 
+	void SetComponentTransform() = delete;
+	void SpawnObstacle() = delete;
+
+	
 
    void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 	   const FHitResult& SweepResult) override;
-
-   UFUNCTION()
-   void OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
-	   UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 };

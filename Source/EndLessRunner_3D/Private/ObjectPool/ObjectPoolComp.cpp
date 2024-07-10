@@ -156,8 +156,8 @@ void UObjectPoolComp::SpawnTurnTile()
 //Function  That Use Trun Tile From Pool
 void UObjectPoolComp::UseTurnTileFromPool()
 {
-	int RandomInt = FMath::RandRange(0, 1);
-
+	//int RandomInt = FMath::RandRange(0, 1);
+	int RandomInt = 0;
 
 	AActor* ActorToUse = TurnTileArray[RandomInt];
 		{

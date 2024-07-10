@@ -56,4 +56,5 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	float LevelSpwaningSpeed;
 
+
 };

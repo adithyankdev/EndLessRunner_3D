@@ -31,6 +31,10 @@ public:
 
 	void SetDirectionValue(FVector LocationValue) override;
 
+	virtual void BeginPlay() override;
+
+	virtual void Tick(float DeltaTime) override;
+
 protected:
 
 	UPROPERTY()
@@ -54,7 +58,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* ObstacleArrowcomp_Three;
 
-	UChildActorComponent* ChildComponent;
 
 	UPROPERTY()
 	bool CurrentlyUse;
@@ -65,25 +68,28 @@ protected:
 	UFUNCTION()
 	void SetNotUse();
 
+	UPROPERTY(BlueprintReadOnly, EditAnywhere)
+	TSubclassOf<AActor>ObstacleClasses;
 
-	virtual void BeginPlay() override;
+private:
 
-	virtual void Tick(float DeltaTime) override;
+	UChildActorComponent* ChildComponent;
 
 	//Array Store ArrowComponent To Attach The Obstacles ....
 	TArray<UArrowComponent*>ObstacleTras;
 
-	UPROPERTY(BlueprintReadOnly,EditAnywhere)
-	TSubclassOf<AActor>ObstacleClasses;
 
 	UFUNCTION()
-	 virtual void SetComponentTransform();
+	 void SetComponentTransform();
 
 	UFUNCTION()
 	virtual int GetRandomTransform();
 
 	UFUNCTION()
-	virtual void SpawnObstacle();
+	void SpawnObstacle();
+
+
+public:	
 
 	FTimerHandle NotUseActorTimer;
 
@@ -91,8 +97,6 @@ protected:
 	virtual void StopUsingTheActor();
 
 	FVector CurrentDirection;
-
-public:	
 
 	UFUNCTION()
 	virtual void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

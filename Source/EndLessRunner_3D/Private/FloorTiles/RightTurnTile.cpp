@@ -16,7 +16,7 @@ ARightTurnTile::ARightTurnTile()
 void ARightTurnTile::BeginPlay()
 {
 	Super::BeginPlay();
-	BoxCollision->OnComponentEndOverlap.AddDynamic(this, &ARightTurnTile::OnEndOverlap);
+	//->OnComponentEndOverlap.AddDynamic(this, &ARightTurnTile::OnEndOverlap);
 }
 
 void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -39,11 +39,3 @@ void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 	
 }
 
-void ARightTurnTile::OnEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-	if (OtherActor->IsA(ARunningPlayer::StaticClass()))
-	{
-		
-	}
-	
-}

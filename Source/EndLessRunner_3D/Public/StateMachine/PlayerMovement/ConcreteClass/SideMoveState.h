@@ -22,12 +22,18 @@ public:
 
 	virtual void ExitState(ARunningPlayer* Player) override;
 
+	UPROPERTY()
+	TScriptInterface<IGetLvlManagerMembers>LvlInterface;
+
 	UPROPERTY();
 	int CurrentLane;
 	UPROPERTY()
 	int TotalNumberOfLane;
 	UPROPERTY()
 	float LaneWidth;
+
+	UPROPERTY()
+	FRotator DesiredRotation;
 
 	
 

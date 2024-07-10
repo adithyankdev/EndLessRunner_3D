@@ -17,7 +17,6 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 	if (LatestRandomNumbers.Num() >= ArraySize)
 	{
 		while (LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == LatestRandomNumbers[LatestRandomNumbers.Num() - 2] &&
-			/*LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == LatestRandomNumbers[LatestRandomNumbers.Num() - 3] &&*/
 			LatestRandomNumbers[LatestRandomNumbers.Num() - 1] == RandomNumber)
 		{
 			RandomNumber = FMath::RandRange(0, ArraySize - 1);

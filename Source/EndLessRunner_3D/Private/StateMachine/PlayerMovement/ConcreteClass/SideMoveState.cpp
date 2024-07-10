@@ -27,20 +27,38 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
 	
 	if (Player->CurrentMoveValue > 0 and CurrentLane < TotalNumberOfLane)
 	{
-		float TargetPosition = Player->GetActorLocation().Y - LaneWidth;
-		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
-		Player->SetActorLocation(NewLocation);
-		CurrentLane++;
+		if (LvlInterface->GetCanPlayerTurn())
+	   	{
+			FRotator RotationOffset(0.0f, -90.0f, 0.0f);
+			Player->Controller->SetControlRotation(RotationOffset + DesiredRotation);
+			DesiredRotation += RotationOffset;
+			
+	  	}
+		else
+		{
+			float TargetPosition = Player->GetActorLocation().Y - LaneWidth;
+			FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
+			Player->SetActorLocation(NewLocation);
+			CurrentLane++;
+		}		
 		
 	}
 	else if (Player->CurrentMoveValue < 0 and CurrentLane > 1)
 	{
-
-		float TargetPosition = Player->GetActorLocation().Y + LaneWidth;
-		FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
-		Player->SetActorLocation(NewLocation);
-	    
-       CurrentLane--;
+		if (LvlInterface->GetCanPlayerTurn())
+		{
+			FRotator RotationOffset(0.0f, 90.0f,0.0f);
+			Player->Controller->SetControlRotation(RotationOffset + DesiredRotation);
+			DesiredRotation += RotationOffset;
+		}
+		else
+		{
+			float TargetPosition = Player->GetActorLocation().Y + LaneWidth;
+			FVector NewLocation = { Player->GetActorLocation().X , TargetPosition ,Player->GetActorLocation().Z };
+			Player->SetActorLocation(NewLocation);
+			CurrentLane--;
+		}
+		
 	}
 	ExitState(Player);
 	
@@ -59,10 +77,12 @@ void SideMoveState::GetLvlManagerInfo(UWorld*World)
 	AActor* LvlActor =  UGameplayStatics::GetActorOfClass(World, ALevelManager::StaticClass());
 	if (LvlActor)
 	{
+		LvlInterface.SetObject(LvlActor);
 		if (LvlActor->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
 		{
 			IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);
-			Interface->LvlManagerLaneValues(TotalNumberOfLane, LaneWidth);
+			LvlInterface.SetInterface(Interface);
+			LvlInterface->LvlManagerLaneValues(TotalNumberOfLane, LaneWidth);
 			CurrentLane = (TotalNumberOfLane / 2) + 1;
 	    }
 	}
