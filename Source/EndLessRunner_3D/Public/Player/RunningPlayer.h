@@ -50,7 +50,10 @@ public:
 	UCameraComponent* CameraComponent;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
-	UArrowComponent* DirectionArrow;
+	UArrowComponent* JumpArrow;
+
+	UPROPERTY(BlueprintReadWrite,EditAnywhere,Category = "Player Base")
+	UArrowComponent* MovementArrow;
 
 	void SideMoveAction(const FInputActionValue& InputValue);
 	void JumpAction(const FInputActionValue& InputValue);

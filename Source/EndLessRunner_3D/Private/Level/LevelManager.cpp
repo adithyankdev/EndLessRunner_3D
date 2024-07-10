@@ -5,13 +5,14 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "ObjectPool/ObjectPoolComp.h"
 
+//Interface Function That Set LaneValues On Recived Parameters...
 void ALevelManager::LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane)
 {
 	TotalLanes = NumberOfLane;
 	WidthOfLane = LaneWidth;
 }
 
-//Interface Function That Check Wheather Random Number Is Repetative For Spawning Obstcles On Floor Tile ; 
+//Interface Function That Check Wheather Random Number Is Repetative For Spawning Obstcles On Floor Tile...
 int ALevelManager::GetRandomInteger(int RandomNumber)
 {
 	if (LatestRandomNumbers.Num() >= ArraySize)
@@ -23,10 +24,10 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 		}
 	}
 
-	// Add the new random number to the array
+	// Add The New Random Number To The Array...
 	LatestRandomNumbers.Add(RandomNumber);
 
-	// Ensure the array does not exceed the specified size
+	// Ensure The Array Does Not Exceed The Specified Size...
 	if (LatestRandomNumbers.Num() > ArraySize)
 	{
 		LatestRandomNumbers.RemoveAt(0);
@@ -35,6 +36,7 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 	return RandomNumber;
 }
 
+//Checking The Count Of NormalTile  , For Spawning The CornerTile...
 void ALevelManager::GetSpawnTransform()
 {
 	if (StraightTileSpawnCount <= 10)
@@ -64,7 +66,7 @@ bool ALevelManager::GetCanPlayerTurn()
 // Sets default values
 ALevelManager::ALevelManager()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+ 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it...
 	PrimaryActorTick.bCanEverTick = false;
 	NumberOfLane = 3;
     LaneWidth = 200.0f;
@@ -74,7 +76,7 @@ ALevelManager::ALevelManager()
 
 }
 
-// Called when the game starts or when spawned
+// Called when the game starts or when spawned...
 void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
@@ -82,7 +84,7 @@ void ALevelManager::BeginPlay()
 
 }
 
-// Called every frame
+// Called every frame...
 void ALevelManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);

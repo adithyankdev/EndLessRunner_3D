@@ -16,9 +16,10 @@ ARightTurnTile::ARightTurnTile()
 void ARightTurnTile::BeginPlay()
 {
 	Super::BeginPlay();
-	//->OnComponentEndOverlap.AddDynamic(this, &ARightTurnTile::OnEndOverlap);
+
 }
 
+//Adding Addition Functionality To BeginOverlap...
 void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);
@@ -30,7 +31,7 @@ void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 		{
 			if (LvlActor->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
 			{
-				IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);
+				IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);         //Informing The Interface That The Player Is Overlaped...
 				Interface->SetCanPlayerTurn(true);
 
 			}

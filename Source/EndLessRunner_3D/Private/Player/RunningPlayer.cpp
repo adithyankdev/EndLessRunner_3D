@@ -19,8 +19,11 @@ ARunningPlayer::ARunningPlayer()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
 
-	DirectionArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DirectionArrow"));
-	DirectionArrow->SetupAttachment(RootComponent);
+	JumpArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("DirectionArrow"));
+	JumpArrow->SetupAttachment(RootComponent);
+
+	MovementArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("MoveDirectionArrow"));
+	MovementArrow->SetupAttachment(RootComponent);
 
 	PlayerSideMove = new SideMoveState();
 	PlayerJump = new JumpState();
@@ -41,9 +44,6 @@ void ARunningPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	//float Speed = (GetActorForwardVector().X * 100.0f)*DeltaTime;
-	//AddActorLocalOffset(FVector(Speed, 0.0f, 0.0f));
-
 }
 
 void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
@@ -52,13 +52,15 @@ void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
 	StateTransition(PlayerSideMove);
 }
 
+//Jump Function That Call The Jump State...
 void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
 {
-	StateTransition(PlayerJump);
-	
+	StateTransition(PlayerJump);	
 }
 
 // Helper Function .... 
+
+//Function That Made Transition From One State To Another..
 void ARunningPlayer::StateTransition(PlayerMoveAbstract* NextState)
 {
 	if (NextState != CurrentState)

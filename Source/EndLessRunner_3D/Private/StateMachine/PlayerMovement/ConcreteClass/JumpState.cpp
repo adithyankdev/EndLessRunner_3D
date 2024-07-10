@@ -19,8 +19,7 @@ void JumpState::EnterState(ARunningPlayer* Player, UWorld* World)
 {
 	if (bIsJumping == false)
 	{
-		FString Debug = TEXT("Jump Triggered");
-		UKismetSystemLibrary::PrintString(World, Debug, true, true, FLinearColor::Black, 5);
+		
 		if (OnGround(Player, World))
 		{
 			bIsJumping = true;
@@ -46,13 +45,11 @@ void JumpState::ExitState(ARunningPlayer* Player)
 bool JumpState::OnGround(ARunningPlayer* Player,UWorld* World)
 {
 	FHitResult Hit;
-	FVector Start = Player->DirectionArrow->GetComponentLocation();
+	FVector Start = Player->JumpArrow->GetComponentLocation();
 	FVector End = Start - FVector(0.0f, 0.0f, 50.0f);
 	ECollisionChannel TraceChannel = ECC_Visibility;
 	FCollisionQueryParams Params;
 	Params.AddIgnoredActor(Player);
-
-	bool OnGround = World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel, Params);
-	DrawDebugLine(World, Start, End, FColor::Red, true, 1, 0, 1);
-	return OnGround;
+	bool IsHit = World->LineTraceSingleByChannel(Hit, Start, End, TraceChannel);
+	return IsHit;
 }

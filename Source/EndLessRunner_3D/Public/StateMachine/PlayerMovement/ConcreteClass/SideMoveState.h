@@ -13,30 +13,50 @@
 class ENDLESSRUNNER_3D_API SideMoveState : public PlayerMoveAbstract
 {
 public:
+
 	SideMoveState();
-	virtual ~SideMoveState();
+	
+protected:
 
-	bool FirstCheck;
+	/*For Retreving The LvlManger Data Only Once*/
+	bool FirstCheck;       
 
-	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
-
+	/*State Function Of Perfoming Action*/
+	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;         
 	virtual void ExitState(ARunningPlayer* Player) override;
 
-	UPROPERTY()
-	TScriptInterface<IGetLvlManagerMembers>LvlInterface;
+	/*For Storing The Referance Of LvlMangerInterface*/
+	UPROPERTY() 
+	TScriptInterface<IGetLvlManagerMembers>LvlInterface;        
 
+	/*Variables That Store The LaneInfo From The LvlManager*/
 	UPROPERTY();
 	int CurrentLane;
 	UPROPERTY()
-	int TotalNumberOfLane;
+	int TotalNumberOfLane;                     
 	UPROPERTY()
 	float LaneWidth;
 
+	/*For Storing The Rotation Of The Player , Which Is Use When On Perfoming Another Rotation*/
 	UPROPERTY()
-	FRotator DesiredRotation;
+	FRotator DesiredRotation; 
 
-	
+	/*Variable That Store The Different Values According To The Player Rotation , For Its Lane Movement*/
+	UPROPERTY()
+	int TurnIndex;
 
+	/*Function That Call The Movement Function Based On The Index*/
+	void DeterminePlayerMovement(int Index,ARunningPlayer* Player);
+
+	/*Function That Set The Index Of Player Based On The Rotation */
+	void SetPlayerMoveIndex(ARunningPlayer* Player);
+
+	/*Function That Move Player According To Direction Input*/
+	void MovePlayer(ARunningPlayer* Player,FVector Direction);
+
+	/*Function For Retriving The LvlMangerInfo*/
 	void GetLvlManagerInfo(UWorld* World);
+
+
 
 };
