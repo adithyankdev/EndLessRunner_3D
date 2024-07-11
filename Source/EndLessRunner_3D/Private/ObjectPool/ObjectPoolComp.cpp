@@ -156,8 +156,8 @@ void UObjectPoolComp::SpawnTurnTile()
 //Function  That Use Trun Tile From Pool
 void UObjectPoolComp::UseTurnTileFromPool()
 {
-	//int RandomInt = FMath::RandRange(0, 1);
-	int RandomInt = 0;
+	int RandomInt = FMath::RandRange(0, 1);
+	//int RandomInt = 0;
 
 	AActor* ActorToUse = TurnTileArray[RandomInt];
 		{
@@ -171,6 +171,25 @@ void UObjectPoolComp::UseTurnTileFromPool()
 				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
 			}
 			LatestRearFloor = ActorToUse;
+			LatestTurnFloor = ActorToUse;
 			Turnhappend = true;
 	}
+}
+
+void UObjectPoolComp::SetActorDirection(FVector Direction)
+{
+	
+	for (AActor* PActor : PoolActorArray)
+	{
+		if (IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(PActor))
+		{
+			Interface->SetDirectionValue(Direction);
+		}
+	}
+	if (IGetActorPoolMembers* LatestActorInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
+	{
+		LatestActorInterface->SetDirectionValue(Direction);
+	}
+	
+	
 }

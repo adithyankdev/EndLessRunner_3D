@@ -39,7 +39,7 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 //Checking The Count Of NormalTile  , For Spawning The CornerTile...
 void ALevelManager::GetSpawnTransform()
 {
-	if (StraightTileSpawnCount <= 10)
+	if (StraightTileSpawnCount <= 15)
 	{
 		ObjectPoolComponent->UseFromPool(); 
 		StraightTileSpawnCount++;
@@ -61,6 +61,11 @@ void ALevelManager::SetCanPlayerTurn(bool Value)
 bool ALevelManager::GetCanPlayerTurn()
 {
 	return PlayerTurn;
+}
+
+void ALevelManager::SetActorNewDirection(FVector Direction)
+{
+	ObjectPoolComponent->SetActorDirection(Direction);
 }
 
 // Sets default values

@@ -19,6 +19,11 @@ void ARightTurnTile::BeginPlay()
 
 }
 
+void ARightTurnTile::SetDirectionValue(FVector LocationValue)
+{
+	CurrentDirection = Arrowcomponent->GetForwardVector() * -1;
+}
+
 //Adding Addition Functionality To BeginOverlap...
 void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -33,6 +38,7 @@ void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 			{
 				IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);         //Informing The Interface That The Player Is Overlaped...
 				Interface->SetCanPlayerTurn(true);
+				
 
 			}
 		}

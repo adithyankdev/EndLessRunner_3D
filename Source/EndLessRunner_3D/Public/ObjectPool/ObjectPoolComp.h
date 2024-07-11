@@ -30,6 +30,9 @@ public:
 	AActor* LatestRearFloor;
 
 	UPROPERTY()
+	AActor* LatestTurnFloor;
+
+	UPROPERTY()
 	int QuickSpwanCount;
 
 	UObjectPoolComp();
@@ -79,5 +82,7 @@ public:
 	UFUNCTION()
 	void UseTurnTileFromPool();
 	
+
+	void SetActorDirection(FVector Direction);
 
 };

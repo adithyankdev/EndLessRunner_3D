@@ -95,6 +95,7 @@ void APoolActor::SetInUse(bool InUse)
 	SetActorTickEnabled(InUse);
 	SetActorEnableCollision(InUse);
 	SetActorHiddenInGame(!InUse);
+	
 
 }
 //Function That Always Make The Actor Not Use  ...
@@ -143,9 +144,6 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 {
 	if (OtherActor && OtherActor->IsA(ARunningPlayer::StaticClass()))
 	{
-	
-			FString D = TEXT("Interface Called");
-			UKismetSystemLibrary::PrintString(GetWorld(), D);
 			LvlManagerInterface->GetSpawnTransform();
 		if (GetWorld()->GetTimerManager().IsTimerActive(NotUseActorTimer))
 		{
