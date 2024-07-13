@@ -27,9 +27,13 @@ public:
 
 	virtual void SetActorInUse()override;
 
-	virtual FTransform ArrowTransform() override;
+	virtual FTransform SpawnArrowTransform() override;
 
 	void SetDirectionValue(FVector LocationValue) override;
+
+	UArrowComponent* GetDirectionalArrow() override;
+
+	FVector GetCurrentDirection() override;
 
 	virtual void BeginPlay() override;
 
@@ -57,6 +61,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* ObstacleArrowcomp_Three;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* DirectionalArrow;
 
 
 	UPROPERTY()

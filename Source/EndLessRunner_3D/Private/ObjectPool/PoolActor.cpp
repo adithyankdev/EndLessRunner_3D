@@ -26,7 +26,7 @@ void APoolActor::SetActorInUse()
 }
 
 //Getting The ArrowComponent  For Spawning The Next Tile ...
-FTransform APoolActor::ArrowTransform()
+FTransform APoolActor::SpawnArrowTransform()
 {
 	return Arrowcomponent->GetComponentTransform();
 }
@@ -34,6 +34,16 @@ FTransform APoolActor::ArrowTransform()
 void APoolActor::SetDirectionValue(FVector LocationValue)
 {
 	CurrentDirection = LocationValue; 
+}
+
+UArrowComponent* APoolActor::GetDirectionalArrow()
+{
+	return DirectionalArrow;
+}
+
+FVector APoolActor::GetCurrentDirection()
+{
+	return CurrentDirection;
 }
 
 // Sets default values
@@ -58,9 +68,13 @@ APoolActor::APoolActor()
 	ObstacleArrowcomp_Three = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointThree"));
 	ObstacleArrowcomp_Three->SetupAttachment(RootComponent);
 
+	DirectionalArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Direction"));
+	DirectionalArrow->SetupAttachment(RootComponent);
+
 
 	 ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
 	LvlManagerInterface = nullptr ;
+	CurrentDirection = FVector::ZeroVector;
 }
 
 
@@ -68,11 +82,10 @@ void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
 	SetInUse(false);
-	CurrentDirection = GetActorForwardVector()*-1;  //Setting Initial Movement Direction ...
+	CurrentDirection = FVector(-1,0,0);  //Setting Initial Movement Direction ...
 	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
 	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
 	{
-
 		LvlManagerInterface.SetObject(LevelManager);                                         //Caching The Interface For Resusing it ...
 		LvlManagerInterface.SetInterface(Cast<IGetLvlManagerMembers>(LevelManager));
 	}
@@ -85,6 +98,7 @@ void APoolActor::BeginPlay()
 void APoolActor::Tick(float DeltaTime)
 {   
 	FVector Speed = ((CurrentDirection)*500.0f )*DeltaTime;
+	
 	AddActorLocalOffset(Speed);
 }
 
@@ -116,8 +130,6 @@ void APoolActor::SetComponentTransform()
 int APoolActor::GetRandomTransform()
 {
 	int RandomInt = FMath::RandRange(0, ObstacleTras.Num() - 1);
-
-	
 	RandomInt = LvlManagerInterface->GetRandomInteger(RandomInt);
 	
 	return RandomInt;
@@ -149,7 +161,7 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		{
 		   GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
 		}
-		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 6.0f, false);				
+		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 2.0f, false);				
 			
 		}
 	

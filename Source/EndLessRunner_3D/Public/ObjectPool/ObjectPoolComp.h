@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "ObjectPool/PoolActor.h"
+#include "Interface/GetPlayerInfoInterface.h"
 #include "ObjectPoolComp.generated.h"
 
 
@@ -78,11 +79,20 @@ public:
 
 	//Variable For Changing Pool Actor Movement When the Turn Taken ...
 	 bool Turnhappend;
+	 int TurnIndex;
 
 	UFUNCTION()
 	void UseTurnTileFromPool();
-	
 
 	void SetActorDirection(FVector Direction);
+
+	IGetPlayerInfoInterface* PlayerInterface;
+	IGetLvlManagerMembers* LvlInterface;
+	void SetPlayerInterface();
+
+	FTimerHandle timer;
+	void TimerFunction();
+
+	int Randomturnvaluemanual;
 
 };

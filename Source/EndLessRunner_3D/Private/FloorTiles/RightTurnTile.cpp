@@ -21,8 +21,13 @@ void ARightTurnTile::BeginPlay()
 
 void ARightTurnTile::SetDirectionValue(FVector LocationValue)
 {
-	CurrentDirection = Arrowcomponent->GetForwardVector() * -1;
+	Super::SetDirectionValue(LocationValue);
+
+	
+	FString D = TEXT("Right Turn Tile Direction Changed");
+	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Blue,1);
 }
+
 
 //Adding Addition Functionality To BeginOverlap...
 void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)

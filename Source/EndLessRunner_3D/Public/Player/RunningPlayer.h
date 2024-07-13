@@ -8,6 +8,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "InputActionValue.h"
+#include "Interface/GetPlayerInfoInterface.h"
 #include "Components/ArrowComponent.h"
 #include "RunningPlayer.generated.h"
 
@@ -17,7 +18,7 @@ class JumpState;
 
 
 UCLASS()
-class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter
+class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter , public IGetPlayerInfoInterface
 {
 	GENERATED_BODY()
 
@@ -28,6 +29,8 @@ public:
 	JumpState* PlayerJump;
 
 	ARunningPlayer();
+    
+    FVector CurrentDirection() override;
 
 protected:
 

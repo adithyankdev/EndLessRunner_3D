@@ -6,6 +6,9 @@
 #include "UObject/Interface.h"
 #include "GetActorPoolMembers.generated.h"
 
+
+class UArrowComponent;
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UGetActorPoolMembers : public UInterface
@@ -25,6 +28,8 @@ public:
 
 	virtual bool CurrentActorUseState() = 0;
 	virtual void SetActorInUse() = 0;
-	virtual FTransform ArrowTransform()=0;
+	virtual FTransform SpawnArrowTransform()=0;
 	virtual void SetDirectionValue(FVector LocationValue) =  0;
+	virtual UArrowComponent* GetDirectionalArrow() = 0;
+	virtual FVector GetCurrentDirection() = 0;
 };

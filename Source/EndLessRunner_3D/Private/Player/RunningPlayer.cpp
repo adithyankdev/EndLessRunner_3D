@@ -32,6 +32,14 @@ ARunningPlayer::ARunningPlayer()
 
 }
 
+FVector ARunningPlayer::CurrentDirection()
+{
+	FVector Direction =  MovementArrow->GetComponentRotation().Vector();
+	FString D = Direction.ToString();
+	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Yellow);
+	return Direction;
+}
+
 // Called when the game starts or when spawned
 void ARunningPlayer::BeginPlay()
 {

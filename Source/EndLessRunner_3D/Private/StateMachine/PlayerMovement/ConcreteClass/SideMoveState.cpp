@@ -39,7 +39,7 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
         Player->Controller->SetControlRotation(RotationOffset + DesiredRotation);
         DesiredRotation += RotationOffset;
         LvlInterface->SetCanPlayerTurn(false);               //Falsing The Value For Avoid More Than Two Rotation  At The Same Time...
-        LvlInterface->SetActorNewDirection(Player->MovementArrow->GetForwardVector() * -1);
+        LvlInterface->SetActorNewDirection(FVector(-1,0,0));
       
     }
     else
@@ -55,8 +55,6 @@ void SideMoveState::ExitState(ARunningPlayer* Player)
 {   
     Player->CurrentState = nullptr;
 }
-
-
 
 /** Helper Function **/
 
@@ -126,4 +124,5 @@ void SideMoveState::GetLvlManagerInfo(UWorld* World)
             CurrentLane = (TotalNumberOfLane / 2) + 1;
         }
     }
+
 }
