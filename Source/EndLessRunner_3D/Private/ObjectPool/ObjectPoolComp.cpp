@@ -192,7 +192,7 @@ void UObjectPoolComp::UseTurnTileFromPool()
 			}
 			if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 			{
-				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();
+				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();  
 			}
 			LatestRearFloor = ActorToUse;
 			LatestTurnFloor = ActorToUse;
@@ -203,16 +203,28 @@ void UObjectPoolComp::UseTurnTileFromPool()
 
 void UObjectPoolComp::SetActorDirection(FVector Direction)
 {
-	for (AActor* TrunActor : TurnTileArray)
-	{
-		if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(TrunActor))
+	//for (AActor* TrunActor : TurnTileArray)
+	//{
+	
+		if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
 		{
-			TurnInterface->SetDirectionValue(FVector(0,-1,0));
-			GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::TimerFunction,2);
-			FString D = TEXT("SetActorDirection Triggered , ObjectPoolComponent--SetActorDireection(forloop)");
-			UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Yellow,1);
+			if (LatestTurnFloor == TurnTileArray[0])
+			{
+				TurnInterface->SetDirectionValue(FVector(0, -1, 0));
+				GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::TimerFunction, 2);
+				
+			}
+			else
+			{
+				TurnInterface->SetDirectionValue(FVector(0, 1, 0));
+				GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::TimerFunction, 2);
+			
+			}
+			
+		//	FString D = TEXT("SetActorDirection Triggered , ObjectPoolComponent--SetActorDireection(forloop)");
+		//	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Yellow,1);
 		}
-	}
+	//}
 
 	for (AActor* PActor : PoolActorArray)
 	{
@@ -224,38 +236,30 @@ void UObjectPoolComp::SetActorDirection(FVector Direction)
 	
 }
 
+//Caching The Interface....
 void UObjectPoolComp::SetPlayerInterface()
 {
 	AActor* Player = UGameplayStatics::GetActorOfClass(GetWorld(), ARunningPlayer::StaticClass());
 	PlayerInterface = Cast<IGetPlayerInfoInterface>(Player);
-	if (PlayerInterface)
-	{
-		
-	}
+	
 	//AActor* LvlActor = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
 	LvlInterface = Cast <IGetLvlManagerMembers>(GetOwner());
-	if (LvlInterface)
-	{
 		
-	}
-	
 }
 
+//Setting The Movement Value To Default (-x) of The Turn Tile ...
 void UObjectPoolComp::TimerFunction()
 {
-	if (IGetActorPoolMembers* Interface = Cast <IGetActorPoolMembers>(PoolActorArray[0]))
-	{
-		FVector Direction = Interface->GetCurrentDirection();
+	//if (IGetActorPoolMembers* Interface = Cast <IGetActorPoolMembers>(PoolActorArray[0]))
+	//{
+	//	FVector Direction = Interface->GetCurrentDirection();
 
-		for (AActor* TrunActor : TurnTileArray)
-		{
-			if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(TrunActor))
+			if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
 			{
-				TurnInterface->SetDirectionValue(Direction);
-				GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::TimerFunction, 2, false);
+				TurnInterface->SetDirectionValue(FVector(-1,0,0));
 			}
-		}
-	}
+		
+	//}
 }
 
 

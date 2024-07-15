@@ -19,14 +19,12 @@ void ARightTurnTile::BeginPlay()
 
 }
 
-void ARightTurnTile::SetDirectionValue(FVector LocationValue)
-{
-	Super::SetDirectionValue(LocationValue);
-
-	
-	FString D = TEXT("Right Turn Tile Direction Changed");
-	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Blue,1);
-}
+//void ARightTurnTile::SetDirectionValue(FVector LocationValue)
+//{
+//	Super::SetDirectionValue(LocationValue);
+//	FString D = TEXT("Right Turn Tile Direction Changed");
+//	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Blue,1);
+//}
 
 
 //Adding Addition Functionality To BeginOverlap...
