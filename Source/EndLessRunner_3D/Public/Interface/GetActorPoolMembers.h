@@ -26,10 +26,13 @@ class ENDLESSRUNNER_3D_API IGetActorPoolMembers
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
+	/*For Retrive The PoolActor Current UseState(InUse Or NotInUse)*/
 	virtual bool CurrentActorUseState() = 0;
+	/*For Set The PoolActor UsesState To True*/
 	virtual void SetActorInUse() = 0;
+	/*For Retrive The Transform Of ArrowComponent(To Set Transform of  Next Tile)*/
 	virtual FTransform SpawnArrowTransform()=0;
+	/*Setting Direction Value Of Each PoolActor */
 	virtual void SetDirectionValue(FVector LocationValue) =  0;
-	virtual UArrowComponent* GetDirectionalArrow() = 0;
-	virtual FVector GetCurrentDirection() = 0;
+	
 };

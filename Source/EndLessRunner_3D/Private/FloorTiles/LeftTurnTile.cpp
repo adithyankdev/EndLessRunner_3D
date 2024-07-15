@@ -8,12 +8,6 @@
 #include "Kismet/GameplayStatics.h"
 
 
-void ALeftTurnTile::SetDirectionValue(FVector LocationValue)
-{
-	Super::SetDirectionValue(LocationValue);
-	//CurrentDirection = Arrowcomponent->GetForwardVector() * -1;
-}
-
 void ALeftTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);

@@ -18,8 +18,6 @@ public:
 
 	void BeginPlay() override;
 
-	 //void SetDirectionValue(FVector LocationValue) override;
-
 	//Deleting These Function , Casue They Don't Be Useful On Corner Tiles
 	void SetComponentTransform() = delete;
 	void SpawnObstacle() = delete;

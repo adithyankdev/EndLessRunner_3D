@@ -36,16 +36,6 @@ void APoolActor::SetDirectionValue(FVector LocationValue)
 	CurrentDirection = LocationValue; 
 }
 
-UArrowComponent* APoolActor::GetDirectionalArrow()
-{
-	return DirectionalArrow;
-}
-
-FVector APoolActor::GetCurrentDirection()
-{
-	return CurrentDirection;
-}
-
 // Sets default values
 APoolActor::APoolActor()
 {
@@ -118,7 +108,7 @@ void APoolActor::SetNotUse()
 	SetInUse(false);
 }
 
-//Function That Add Current To Array For (Spawnning Child)
+//Adding All Spawnable Points  Transform To Array For (Spawnning Child)
 void APoolActor::SetComponentTransform()
 {
 	ObstacleTras.Add(ObstacleArrowcomp_One);
@@ -130,7 +120,7 @@ void APoolActor::SetComponentTransform()
 int APoolActor::GetRandomTransform()
 {
 	int RandomInt = FMath::RandRange(0, ObstacleTras.Num() - 1);
-	RandomInt = LvlManagerInterface->GetRandomInteger(RandomInt);
+	RandomInt = LvlManagerInterface->GetRandomInteger(RandomInt);        //LvlManger Check Wheather This Random Number Is Repetative For 2 Times..
 	
 	return RandomInt;
 
@@ -141,6 +131,7 @@ void APoolActor::SpawnObstacle()
 {
 	int Index = GetRandomTransform();
 
+	//Setting The ChildComponent And Its Transform...
 	if (ChildComponent )
 	{
 		ChildComponent->SetChildActorClass(ObstacleClasses);

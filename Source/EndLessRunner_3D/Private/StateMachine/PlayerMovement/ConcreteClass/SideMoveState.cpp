@@ -95,13 +95,13 @@ void SideMoveState::DeterminePlayerMovement(int Index, ARunningPlayer* Player)
 //Function That MovePlayer(LaneWise) According To Direction Of Player Facing ....
 void SideMoveState::MovePlayer(ARunningPlayer* Player, FVector Direction)
 {
-    if (Player->CurrentMoveValue > 0 && CurrentLane < TotalNumberOfLane)
+    if (Player->CurrentMoveValue > 0 && CurrentLane < TotalNumberOfLane)  //LeftButton...
     {
         FVector TargetPosition = Player->GetActorLocation() - (Direction * LaneWidth);
         Player->SetActorLocation(TargetPosition);
         CurrentLane++;
     }
-    else if (Player->CurrentMoveValue < 0 && CurrentLane > 1)
+    else if (Player->CurrentMoveValue < 0 && CurrentLane > 1)       //Right Button...
     {
         FVector TargetPosition = Player->GetActorLocation() + (Direction * LaneWidth);
         Player->SetActorLocation(TargetPosition);

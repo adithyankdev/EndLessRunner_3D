@@ -12,6 +12,7 @@
 #include "Components/ArrowComponent.h"
 #include "RunningPlayer.generated.h"
 
+/*State Machines*/
 class PlayerMoveAbstract;
 class SideMoveState;
 class JumpState;
@@ -24,23 +25,22 @@ class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter , public IGetPlaye
 
 public:
 
+	/*Object Initialisation Of State */
 	PlayerMoveAbstract* CurrentState;
 	SideMoveState* PlayerSideMove;
 	JumpState* PlayerJump;
 
 	ARunningPlayer();
-    
-    FVector CurrentDirection() override;
+   
 
 protected:
-
-	
 
 	virtual void BeginPlay() override;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
 
+	/*To Store Current Movement InputValue To DeterMine Which Key Pressed*/
 	float CurrentMoveValue;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Player Base")
