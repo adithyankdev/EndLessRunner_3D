@@ -4,7 +4,21 @@
 #include "Player/RunningPlayer.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/SideMoveState.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/JumpState.h"
+#include "GameFramework\CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+
+void ARunningPlayer::SetPlaneConstraints()
+{
+	ConstraintToogle = !ConstraintToogle;
+	if (ConstraintToogle)
+	{
+		GetCharacterMovement()->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
+	}
+	else
+	{
+		GetCharacterMovement()->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::Y);
+	}
+}
 
 ARunningPlayer::ARunningPlayer()
 {
@@ -28,8 +42,7 @@ ARunningPlayer::ARunningPlayer()
 	PlayerSideMove = new SideMoveState();
 	PlayerJump = new JumpState();
 	CurrentState = nullptr;    // PlayerCurrently Doing Nothing  ...... Moving Forward (In Tick)
-
-
+	SetPlaneConstraints();
 }
 
 // Called when the game starts or when spawned

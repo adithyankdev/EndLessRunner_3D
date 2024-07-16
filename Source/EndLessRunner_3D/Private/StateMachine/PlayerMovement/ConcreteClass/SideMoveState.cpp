@@ -21,7 +21,7 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
 {
     if (!FirstCheck)
     {
-        GetLvlManagerInfo(World);                 //Getting The Lane Information And The LvlManager Interface ...
+       CacheInterfaces(World,Player);                 //Getting The Lane Information And The LvlManager Interface ...
         FirstCheck = true;
     }
 
@@ -40,6 +40,7 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
         DesiredRotation += RotationOffset;
         LvlInterface->SetCanPlayerTurn(false);               //Falsing The Value For Avoid More Than Two Rotation  At The Same Time...
         LvlInterface->SetActorNewDirection(FVector(-1,0,0));
+        PlayerInterface->SetPlaneConstraints();
       
     }
     else
@@ -110,7 +111,7 @@ void SideMoveState::MovePlayer(ARunningPlayer* Player, FVector Direction)
 }
 
 //Function That Retrive The LaneInfo From LvlManager ...
-void SideMoveState::GetLvlManagerInfo(UWorld* World)
+void SideMoveState::CacheInterfaces(UWorld* World, ARunningPlayer* Player)
 {
     AActor* LvlActor = UGameplayStatics::GetActorOfClass(World, ALevelManager::StaticClass());
     if (LvlActor)
@@ -124,5 +125,7 @@ void SideMoveState::GetLvlManagerInfo(UWorld* World)
             CurrentLane = (TotalNumberOfLane / 2) + 1;
         }
     }
+    PlayerInterface.SetObject(Player);
+    PlayerInterface.SetInterface(Cast<IGetPlayerInfoInterface>(Player));
 
 }

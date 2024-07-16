@@ -27,7 +27,10 @@ protected:
 
 	/*For Storing The Referance Of LvlMangerInterface*/
 	UPROPERTY() 
-	TScriptInterface<IGetLvlManagerMembers>LvlInterface;        
+	TScriptInterface<IGetLvlManagerMembers>LvlInterface;   
+
+	UPROPERTY()
+	TScriptInterface<IGetPlayerInfoInterface>PlayerInterface;
 
 	/*Variables That Store The LaneInfo From The LvlManager*/
 	UPROPERTY();
@@ -55,7 +58,11 @@ protected:
 	void MovePlayer(ARunningPlayer* Player,FVector Direction);
 
 	/*Function For Retriving The LvlMangerInfo*/
-	void GetLvlManagerInfo(UWorld* World);
+	void CacheInterfaces(UWorld* World, ARunningPlayer* Player);
+
+	
+
+	
 
 
 

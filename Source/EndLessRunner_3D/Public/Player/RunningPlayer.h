@@ -30,12 +30,17 @@ public:
 	SideMoveState* PlayerSideMove;
 	JumpState* PlayerJump;
 
+	void SetPlaneConstraints() override;
+
 	ARunningPlayer();
    
 
 protected:
 
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	bool ConstraintToogle;
 
 public:	
 	virtual void Tick(float DeltaTime) override;
