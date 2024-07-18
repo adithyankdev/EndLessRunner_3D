@@ -24,6 +24,7 @@ public:
 	virtual void SetCanPlayerTurn(bool Value) override;
 	virtual bool GetCanPlayerTurn() override;
 	void SetActorNewDirection(FVector Direction) override;
+	void SetQuickUseOnTurn() override; 
 
 	ALevelManager();
 	 

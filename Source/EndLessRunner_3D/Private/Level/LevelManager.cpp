@@ -73,6 +73,12 @@ void ALevelManager::SetActorNewDirection(FVector Direction)
 	ObjectPoolComponent->SetActorDirection(Direction);
 }
 
+void ALevelManager::SetQuickUseOnTurn()
+{
+	ObjectPoolComponent->QuickUse = false;
+	ObjectPoolComponent->TotalSpawnCount = 0; 
+}
+
 // Sets default values
 ALevelManager::ALevelManager()
 {

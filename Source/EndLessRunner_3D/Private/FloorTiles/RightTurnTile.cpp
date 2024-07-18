@@ -33,7 +33,7 @@ void ARightTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AA
 			{
 				IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);         //Informing The Interface That The Player Is Overlaped...
 				Interface->SetCanPlayerTurn(true);
-				
+				Interface->SetQuickUseOnTurn();
 
 			}
 		}

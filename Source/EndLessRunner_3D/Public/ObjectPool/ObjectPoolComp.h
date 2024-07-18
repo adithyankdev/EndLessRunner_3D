@@ -112,5 +112,11 @@ public:
 
 	void SetTurnDefaultDirection();
 
+	void SpawnAfterTurn();
+	
+	UPROPERTY()
+	bool QuickUse;
+	UPROPERTY()
+	int TotalSpawnCount;
 
 };

@@ -21,8 +21,7 @@ void ALeftTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AAc
 			{
 				IGetLvlManagerMembers* Interface = Cast<IGetLvlManagerMembers>(LvlActor);         //Informing The Interface That The Player Is Overlaped...
 				Interface->SetCanPlayerTurn(true);
-
-
+				Interface->SetQuickUseOnTurn();
 			}
 		}
 	}

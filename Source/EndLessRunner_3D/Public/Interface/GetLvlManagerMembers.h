@@ -29,4 +29,5 @@ public:
 	virtual void SetCanPlayerTurn(bool Value) = 0; 
 	virtual bool GetCanPlayerTurn() = 0;
 	virtual void SetActorNewDirection(FVector Direction) = 0;
+	virtual void SetQuickUseOnTurn() = 0; 
 };
