@@ -87,7 +87,7 @@ void APoolActor::BeginPlay()
 //Tick Function
 void APoolActor::Tick(float DeltaTime)
 {   
-	FVector Speed = ((CurrentDirection)*500.0f )*DeltaTime;
+	FVector Speed = ((CurrentDirection)*1500.0f )*DeltaTime;
 	
 	AddActorLocalOffset(Speed);
 }

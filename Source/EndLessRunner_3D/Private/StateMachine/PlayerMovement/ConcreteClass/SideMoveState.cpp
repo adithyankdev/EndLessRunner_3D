@@ -28,18 +28,25 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
     if (LvlInterface->GetCanPlayerTurn())
     {
         FRotator RotationOffset;
+        int PlayerTurnIndex = 0;
         if (Player->CurrentMoveValue > 0)
         {
             RotationOffset = { 0.0f, -90.0f, 0.0 };               //Setting The Player Location If It Collide With Corner Tile...
+            PlayerTurnIndex = 1;
         }                                                         
         else if (Player->CurrentMoveValue < 0)
         {
             RotationOffset = { 0.0f, 90.0f, 0.0f };
+            PlayerTurnIndex = 0;
         }
         Player->Controller->SetControlRotation(RotationOffset + DesiredRotation);
         DesiredRotation += RotationOffset;
-        LvlInterface->SetCanPlayerTurn(false);               //Falsing The Value For Avoid More Than Two Rotation  At The Same Time...
-        LvlInterface->SetActorNewDirection(FVector(-1,0,0));
+        //Falsing The Value For Avoid More Than Two Rotation  At The Same Time...
+        LvlInterface->SetCanPlayerTurn(false);
+        LvlInterface->SetActorNewDirection(PlayerTurnIndex);
+       // if(LvlInterface->GetTurnTileIndex()!=PlayerTurnIndex) LvlInterface->SetActorNewDirection(FVector(-1, 0, 0));
+       // else LvlInterface->SetActorNewDirection(FVector(0, 0, 0));
+       
         PlayerInterface->SetPlaneConstraints();
       
     }

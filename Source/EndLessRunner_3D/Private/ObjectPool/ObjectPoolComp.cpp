@@ -189,19 +189,25 @@ void UObjectPoolComp::UseTurnTileFromPool()
 			QuickUse = true;
 	}
 }//Setting Direction Of Tiles After Turning
-void UObjectPoolComp::SetActorDirection(FVector Direction)
+void UObjectPoolComp::SetActorDirection(int PlayerTurnIndex)
 {
+	bool CorrectTurn = true;
 	if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
 	{
-		if (LatestTurnFloor == TurnTileArray[0])
+		if (LatestTurnFloor == TurnTileArray[0] && PlayerTurnIndex==0)
 		{
 			//Constant Direction...
 			TurnInterface->SetDirectionValue(FVector(0, -1, 0));
 		}
-		else
+		else if (LatestTurnFloor == TurnTileArray[1] && PlayerTurnIndex == 1)
 		{
 			//Constant Direction...
 			TurnInterface->SetDirectionValue(FVector(0, 1, 0));	
+		}
+		else
+		{
+			TurnInterface->SetDirectionValue(FVector(0, 0, -1));
+			CorrectTurn = false;
 		}
 		GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::SetTurnDefaultDirection, 2);
 		
@@ -210,7 +216,15 @@ void UObjectPoolComp::SetActorDirection(FVector Direction)
 	{
 		if (IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(PActor))
 		{
-			Interface->SetDirectionValue(Direction);
+			if (CorrectTurn)
+			{
+				Interface->SetDirectionValue(FVector(-1, 0, 0));
+			}
+			else
+			{
+				Interface->SetDirectionValue(FVector(-1,0,0));
+			}
+			
 		}
 	}
 	

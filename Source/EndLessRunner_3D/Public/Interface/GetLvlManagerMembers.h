@@ -28,6 +28,7 @@ public:
 	virtual void GetSpawnTransform() = 0;
 	virtual void SetCanPlayerTurn(bool Value) = 0; 
 	virtual bool GetCanPlayerTurn() = 0;
-	virtual void SetActorNewDirection(FVector Direction) = 0;
+	virtual void SetActorNewDirection(int PlayerTurnIndex) = 0;
 	virtual void SetQuickUseOnTurn() = 0; 
+	//virtual int GetTurnTileIndex() = 0;
 };

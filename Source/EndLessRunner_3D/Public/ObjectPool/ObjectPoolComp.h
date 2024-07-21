@@ -98,7 +98,7 @@ public:
 	void UseTurnTileFromPool();
 
 	/*Function That Set PoolActors Locaiton Whenever Turn Happens , For Maintaing The illuision*/
-	void SetActorDirection(FVector Direction);
+	void SetActorDirection(int PlayerTurnIndex);
 
 	/*Storing Interfaces For Caching*/
 	UPROPERTY()

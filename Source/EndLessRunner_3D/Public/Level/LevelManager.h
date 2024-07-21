@@ -23,8 +23,9 @@ public:
 	virtual void GetSpawnTransform() override; 
 	virtual void SetCanPlayerTurn(bool Value) override;
 	virtual bool GetCanPlayerTurn() override;
-	void SetActorNewDirection(FVector Direction) override;
+	void SetActorNewDirection(int PlayerTurnIndex) override;
 	void SetQuickUseOnTurn() override; 
+	//int GetTurnTileIndex() override;
 
 	ALevelManager();
 	 

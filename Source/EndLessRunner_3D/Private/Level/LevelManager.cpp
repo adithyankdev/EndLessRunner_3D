@@ -60,6 +60,10 @@ void ALevelManager::SetCanPlayerTurn(bool Value)
 		ObjectPoolComponent->Turnhappend = false;
 		//ObjectPoolComponent->SetActorDirection(FVector(-1, 0, 0));
 	}
+	else
+	{
+		StraightTileSpawnCount = 0;
+	}
 }
 
 //Interface Get Function On PlayerMove ...
@@ -68,9 +72,9 @@ bool ALevelManager::GetCanPlayerTurn()
 	return PlayerTurn;
 }
 
-void ALevelManager::SetActorNewDirection(FVector Direction)
+void ALevelManager::SetActorNewDirection(int PlayerTurnIndex)
 {
-	ObjectPoolComponent->SetActorDirection(Direction);
+	ObjectPoolComponent->SetActorDirection(PlayerTurnIndex);
 }
 
 void ALevelManager::SetQuickUseOnTurn()
