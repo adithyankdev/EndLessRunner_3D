@@ -52,8 +52,8 @@ APoolActor::APoolActor()
 	ObstacleArrowcomp_One = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointOne"));
 	ObstacleArrowcomp_One->SetupAttachment(RootComponent);
 
-	ObstacleArrowcom_Two = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointTwo"));
-	ObstacleArrowcom_Two->SetupAttachment(RootComponent);
+	ObstacleArrowcomp_Two = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointTwo"));
+	ObstacleArrowcomp_Two->SetupAttachment(RootComponent);
 
 	ObstacleArrowcomp_Three = CreateDefaultSubobject<UArrowComponent>(TEXT("ObstaclePointThree"));
 	ObstacleArrowcomp_Three->SetupAttachment(RootComponent);
@@ -65,6 +65,11 @@ APoolActor::APoolActor()
 	 ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
 	LvlManagerInterface = nullptr ;
 	CurrentDirection = FVector::ZeroVector;
+}
+
+APoolActor::~APoolActor()
+{
+
 }
 
 
@@ -99,8 +104,6 @@ void APoolActor::SetInUse(bool InUse)
 	SetActorTickEnabled(InUse);
 	SetActorEnableCollision(InUse);
 	SetActorHiddenInGame(!InUse);
-	
-
 }
 //Function That Always Make The Actor Not Use  ...
 void APoolActor::SetNotUse()
@@ -112,7 +115,7 @@ void APoolActor::SetNotUse()
 void APoolActor::SetComponentTransform()
 {
 	ObstacleTras.Add(ObstacleArrowcomp_One);
-	ObstacleTras.Add(ObstacleArrowcom_Two);
+	ObstacleTras.Add(ObstacleArrowcomp_Two);
 	ObstacleTras.Add(ObstacleArrowcomp_Three);
 }
 

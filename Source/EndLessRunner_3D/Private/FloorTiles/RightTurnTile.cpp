@@ -7,16 +7,34 @@
 #include "Level/LevelManager.h"
 #include "Player/RunningPlayer.h"
 
-ARightTurnTile::ARightTurnTile()
-{
-	
 
+
+TMap<int, FVector> ARightTurnTile::GetTileLineLocations()
+{
+	return LaneLocations;
 }
 
 void ARightTurnTile::BeginPlay()
 {
 	Super::BeginPlay();
 
+}
+
+void ARightTurnTile::SetComponentTransform()
+{
+	LaneLocations.Add(3, ObstacleArrowcomp_One->GetComponentLocation());
+	LaneLocations.Add(2, ObstacleArrowcomp_Two->GetComponentLocation());
+	LaneLocations.Add(1, ObstacleArrowcomp_Three->GetComponentLocation());
+}
+
+void ARightTurnTile::SpawnObstacle()
+{
+
+}
+
+int ARightTurnTile::GetRandomTransform()
+{
+	return 0;
 }
 
 //Adding Addition Functionality To BeginOverlap...

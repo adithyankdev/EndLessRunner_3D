@@ -4,6 +4,9 @@
 #include "Level/LevelManager.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "ObjectPool/ObjectPoolComp.h"
+#include "Player/RunningPlayer.h"
+#include "Kismet/GameplayStatics.h"
+
 
 //Interface Function That Set LaneValues On Recived Parameters...
 void ALevelManager::LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane)
@@ -54,6 +57,9 @@ void ALevelManager::GetSpawnTransform()
 //Interface Function That Set Wheather The Player Have Turn Or Not ...
 void ALevelManager::SetCanPlayerTurn(bool Value)
 {
+	FString D = Value ? TEXT("True") : TEXT("False");
+	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Yellow,6);
+
 	PlayerTurn = Value;
 	if (Value == true)
 	{
@@ -83,6 +89,16 @@ void ALevelManager::SetQuickUseOnTurn()
 	ObjectPoolComponent->TotalSpawnCount = 0; 
 }
 
+AActor* ALevelManager::GetLatestTurnTile()
+{
+	return ObjectPoolComponent->LatestTurnFloor;
+}
+
+void ALevelManager::SetPlayerLocationOnTurn(FVector NewLocation)
+{
+	PlayerInterface->SetLocation(NewLocation);
+}
+
 // Sets default values
 ALevelManager::ALevelManager()
 {
@@ -100,7 +116,7 @@ ALevelManager::ALevelManager()
 void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	CacheInterface();
 
 }
 
@@ -109,5 +125,18 @@ void ALevelManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void ALevelManager::CacheInterface()
+{
+	AActor* Player = UGameplayStatics::GetActorOfClass(GetWorld(),ARunningPlayer::StaticClass());
+	if (Player)
+	{
+		PlayerInterface.SetObject(Player);
+		if (IGetPlayerInfoInterface* Interface = Cast <IGetPlayerInfoInterface>(Player))
+		{
+			PlayerInterface.SetInterface(Interface);
+		}
+	}
 }
 

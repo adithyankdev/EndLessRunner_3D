@@ -5,6 +5,8 @@
 #include "FunctionLibrary/PublicFunctionLibrary.h"
 #include "Player/RunningPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "FunctionLibrary/ReorganisePlayer.h"
+
 
 //Constructor
 SideMoveState::SideMoveState()
@@ -15,6 +17,14 @@ SideMoveState::SideMoveState()
 	LaneWidth = 0.0f;
 	TurnIndex = 0;
 
+    ReChangePlayer = new ReorganisePlayer();
+
+}
+SideMoveState::~SideMoveState()
+{
+    ReChangePlayer = nullptr;
+    LvlInterface = nullptr;
+    PlayerInterface = nullptr;
 }
 //Function That Trigger First
 void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
@@ -33,27 +43,25 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
         {
             RotationOffset = { 0.0f, -90.0f, 0.0 };               //Setting The Player Location If It Collide With Corner Tile...
             PlayerTurnIndex = 1;
+            LvlInterface->SetCanPlayerTurn(false);
         }                                                         
         else if (Player->CurrentMoveValue < 0)
         {
             RotationOffset = { 0.0f, 90.0f, 0.0f };
             PlayerTurnIndex = 0;
+            LvlInterface->SetCanPlayerTurn(false);
         }
         Player->Controller->SetControlRotation(RotationOffset + DesiredRotation);
         DesiredRotation += RotationOffset;
-        //Falsing The Value For Avoid More Than Two Rotation  At The Same Time...
-        LvlInterface->SetCanPlayerTurn(false);
-        LvlInterface->SetActorNewDirection(PlayerTurnIndex);
-       // if(LvlInterface->GetTurnTileIndex()!=PlayerTurnIndex) LvlInterface->SetActorNewDirection(FVector(-1, 0, 0));
-       // else LvlInterface->SetActorNewDirection(FVector(0, 0, 0));
-       
         PlayerInterface->SetPlaneConstraints();
-      
+        LvlInterface->SetActorNewDirection(PlayerTurnIndex);
+        ReChangePlayer->Begin(LvlInterface, Player->GetActorLocation(), Player->GetActorForwardVector(), this);
+ 
     }
     else
     {
         SetPlayerMoveIndex(Player);                              //Setting The Player Index Based On Current Direction Facing....
-        DeterminePlayerMovement(TurnIndex, Player);         
+        DeterminePlayerMovement(TurnIndex, Player,World);
     }
 
     ExitState(Player);
@@ -82,38 +90,43 @@ void SideMoveState::SetPlayerMoveIndex(ARunningPlayer* Player)
 }
 
 //Calling The Movement Function According To The PlayerTurnIndexl....
-void SideMoveState::DeterminePlayerMovement(int Index, ARunningPlayer* Player)
+void SideMoveState::DeterminePlayerMovement(int Index, ARunningPlayer* Player, UWorld* World)
 {
     switch (Index)
     {
     case 0:
-        MovePlayer(Player, FVector(0, 1, 0)); // Positive Y direction (Default)...
+        MovePlayer(Player, FVector(0, 1, 0), World); // Positive Y direction (Default)...
         break;
     case 1:
-        MovePlayer(Player, FVector(0, -1, 0)); // Negative Y direction...
+        MovePlayer(Player, FVector(0, -1, 0), World); // Negative Y direction...
         break;                                                                           //Player Current Facing Direction Is Passed...
     case 2:
-        MovePlayer(Player, FVector(-1, 0, 0)); // Negative X direction...
+        MovePlayer(Player, FVector(-1, 0, 0), World); // Negative X direction...
         break;
     case 3:
-        MovePlayer(Player, FVector(1, 0, 0)); // Postive X direction...
+        MovePlayer(Player, FVector(1, 0, 0), World); // Postive X direction...
         break;
     }
 }
 //Function That MovePlayer(LaneWise) According To Direction Of Player Facing ....
-void SideMoveState::MovePlayer(ARunningPlayer* Player, FVector Direction)
+void SideMoveState::MovePlayer(ARunningPlayer* Player, FVector Direction,  UWorld* World)
 {
     if (Player->CurrentMoveValue > 0 && CurrentLane < TotalNumberOfLane)  //LeftButton...
     {
         FVector TargetPosition = Player->GetActorLocation() - (Direction * LaneWidth);
         Player->SetActorLocation(TargetPosition);
         CurrentLane++;
+        FString D = FString::Printf(TEXT("%d"),CurrentLane);
+        UKismetSystemLibrary::PrintString(World, D);
+
     }
     else if (Player->CurrentMoveValue < 0 && CurrentLane > 1)       //Right Button...
     {
         FVector TargetPosition = Player->GetActorLocation() + (Direction * LaneWidth);
         Player->SetActorLocation(TargetPosition);
         CurrentLane--;
+        FString D = FString::Printf(TEXT("%d"), CurrentLane);
+        UKismetSystemLibrary::PrintString(World, D);
     }
 }
 
@@ -134,5 +147,12 @@ void SideMoveState::CacheInterfaces(UWorld* World, ARunningPlayer* Player)
     }
     PlayerInterface.SetObject(Player);
     PlayerInterface.SetInterface(Cast<IGetPlayerInfoInterface>(Player));
+
+}
+
+void SideMoveState::ChangeCurrentLane(int NewLane)
+{
+    CurrentLane = NewLane;
+    UE_LOG(LogTemp, Warning, TEXT("%d"), CurrentLane);
 
 }

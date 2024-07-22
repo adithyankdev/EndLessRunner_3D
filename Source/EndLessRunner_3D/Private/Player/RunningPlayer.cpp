@@ -20,6 +20,16 @@ void ARunningPlayer::SetPlaneConstraints()
 	}
 }
 
+void ARunningPlayer::SetLocation(FVector NewLocation)
+{
+	SetActorLocation(NewLocation);
+	FString De = NewLocation.ToString();
+	UKismetSystemLibrary::PrintString(GetWorld(), De, true, true, FLinearColor::Green,10);
+	FString D = TEXT("Player New Location Changed");
+	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Red);
+
+}
+
 ARunningPlayer::ARunningPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;

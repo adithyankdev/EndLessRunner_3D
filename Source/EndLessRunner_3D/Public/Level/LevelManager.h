@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ObjectPool/ObjectPoolComp.h"
 #include "Interface/GetLvlManagerMembers.h"
+#include "Interface/GetPlayerInfoInterface.h"
 #include "LevelManager.generated.h"
 
 class UObjectPoolComp;
@@ -18,13 +19,16 @@ class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManager
 public:
 	  
 	/*Interface Function For Retriving And Setting The LvlManager  Class*/
-	virtual void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
-	virtual int  GetRandomInteger(int RandomNumber) override;
-	virtual void GetSpawnTransform() override; 
-	virtual void SetCanPlayerTurn(bool Value) override;
-	virtual bool GetCanPlayerTurn() override;
-	void SetActorNewDirection(int PlayerTurnIndex) override;
-	void SetQuickUseOnTurn() override; 
+	 void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
+	 int  GetRandomInteger(int RandomNumber) override;
+	 void GetSpawnTransform() override; 
+	 void SetCanPlayerTurn(bool Value) override;
+	 bool GetCanPlayerTurn() override;
+	 void SetActorNewDirection(int PlayerTurnIndex) override;
+	 void SetQuickUseOnTurn() override; 
+	 AActor* GetLatestTurnTile() override;
+	 void SetPlayerLocationOnTurn(FVector NewLocation) override;
+
 	//int GetTurnTileIndex() override;
 
 	ALevelManager();
@@ -41,15 +45,17 @@ protected:
 	/*Variable That Set TheRandomInteger Array Size*/
 	const int ArraySize = 2;
 
-	/*Varible That Give Permission For PlayerTurn , Storing From The ActorOverlapComponent*/
-	UPROPERTY()
-	bool PlayerTurn;
+	
 
 	/*Begin Play Function*/
 	virtual void BeginPlay() override;
 
 public:	
 	
+	/*Varible That Give Permission For PlayerTurn , Storing From The ActorOverlapComponent*/
+	UPROPERTY(BlueprintReadWrite,EditDefaultsOnly)
+	bool PlayerTurn;
+
 	/*Tick Function*/
 	virtual void Tick(float DeltaTime) override;
 
@@ -65,5 +71,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	float LevelSpwaningSpeed;
 
+	UPROPERTY()
+	TScriptInterface<IGetPlayerInfoInterface>PlayerInterface;
+	void CacheInterface();
 
 };

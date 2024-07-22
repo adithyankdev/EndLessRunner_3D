@@ -4,11 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
-#include "GetPlayerInfoInterface.generated.h"
+#include "TurnTileInterface.generated.h"
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
-class UGetPlayerInfoInterface : public UInterface
+class UTurnTileInterface : public UInterface
 {
 	GENERATED_BODY()
 };
@@ -16,12 +16,13 @@ class UGetPlayerInfoInterface : public UInterface
 /**
  * 
  */
-class ENDLESSRUNNER_3D_API IGetPlayerInfoInterface
+class ENDLESSRUNNER_3D_API ITurnTileInterface
 {
 	GENERATED_BODY()
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void SetPlaneConstraints() = 0;
-	virtual void SetLocation(FVector NewLocation) = 0;
+
+	virtual TMap<int, FVector> GetTileLineLocations() = 0; 
+
 };

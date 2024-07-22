@@ -7,7 +7,28 @@
 #include "Level/LevelManager.h"
 #include "Kismet/GameplayStatics.h"
 
+TMap<int, FVector> ALeftTurnTile::GetTileLineLocations()
+{
+	return LaneLocations;
+}
 
+void ALeftTurnTile::SetComponentTransform()
+{
+	LaneLocations.Add(1, ObstacleArrowcomp_One->GetComponentLocation());
+	LaneLocations.Add(2, ObstacleArrowcomp_Two->GetComponentLocation());
+	LaneLocations.Add(3, ObstacleArrowcomp_Three->GetComponentLocation());
+}
+
+void ALeftTurnTile::SpawnObstacle()
+{
+
+}
+
+int ALeftTurnTile::GetRandomTransform()
+{
+	return 0;
+}
+ 
 void ALeftTurnTile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	Super::OnBeginOverlap(OverlappedComponent, OtherActor, OtherComp, OtherBodyIndex, bFromSweep, SweepResult);

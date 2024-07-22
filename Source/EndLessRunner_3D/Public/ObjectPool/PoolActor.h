@@ -20,6 +20,7 @@ class ENDLESSRUNNER_3D_API APoolActor : public AActor , public IGetActorPoolMemb
 	
 public:	
 	APoolActor();
+	virtual ~APoolActor();
 
 	//Interface Function
 
@@ -56,7 +57,7 @@ protected:
 	UArrowComponent* ObstacleArrowcomp_One;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
-	UArrowComponent* ObstacleArrowcom_Two;
+	UArrowComponent* ObstacleArrowcomp_Two;
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* ObstacleArrowcomp_Three;
@@ -87,13 +88,13 @@ private:
 
 	/*Storing The Obstacle Transform In An Array*/
 	UFUNCTION()
-	 void SetComponentTransform();
+	virtual void SetComponentTransform();
 	/*Getting The Random Transform For Avoiding Repeatness*/
 	UFUNCTION()
 	virtual int GetRandomTransform();
 	/*Creating The ChldComponent(Obstacle)*/
 	UFUNCTION()
-	void SpawnObstacle();
+	virtual void SpawnObstacle();
 
 
 public:	

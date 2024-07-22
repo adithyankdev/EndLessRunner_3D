@@ -31,6 +31,7 @@ public:
 	JumpState* PlayerJump;
 
 	void SetPlaneConstraints() override;
+	void SetLocation(FVector NewLocation) override;
 
 	ARunningPlayer();
    

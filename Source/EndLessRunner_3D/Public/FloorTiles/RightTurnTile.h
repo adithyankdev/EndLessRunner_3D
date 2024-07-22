@@ -5,22 +5,27 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "ObjectPool/PoolActor.h"
+#include "Interface/TurnTileInterface.h"
 #include "RightTurnTile.generated.h"
 
 UCLASS()
-class ENDLESSRUNNER_3D_API ARightTurnTile : public APoolActor
+class ENDLESSRUNNER_3D_API ARightTurnTile : public APoolActor , public ITurnTileInterface
 {
 	GENERATED_BODY()
 	
 public:
 
-	ARightTurnTile();
+	TMap<int, FVector>GetTileLineLocations() override;
+
+	UPROPERTY()
+	TMap<int, FVector>LaneLocations;
 
 	void BeginPlay() override;
 
 	//Deleting These Function , Casue They Don't Be Useful On Corner Tiles
-	void SetComponentTransform() = delete;
-	void SpawnObstacle() = delete;
+	void SetComponentTransform() override;
+	void SpawnObstacle() override ;
+	int GetRandomTransform() override;
 
  /*Overriding The BeginOverlap For Adding Additional Functionality*/
    void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

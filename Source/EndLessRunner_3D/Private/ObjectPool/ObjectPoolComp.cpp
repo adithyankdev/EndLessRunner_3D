@@ -79,19 +79,6 @@ AActor* UObjectPoolComp::UseFromPool()
 				IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(ActorToUse);
 				Interface->SetActorInUse();
 				LatestRearFloor = ActorToUse;
-
-				//Only happen when the turnhappen 
-				//if (Turnhappend)
-				//{
-				//	if (TurnIndex == 0)
-				//	{
-				//		Interface->SetDirectionValue(FVector(0, 1, 0));
-				//	}
-				//	else
-				//	{
-				//		Interface->SetDirectionValue(FVector(0, -1, 0));
-				//	}
-				//}
 				return ActorToUse;
 			}
 		}
@@ -168,10 +155,11 @@ void UObjectPoolComp::SpawnTurnTile()
 //Function  That Use Trun Tile From Pool
 void UObjectPoolComp::UseTurnTileFromPool()
 {
-	int RandomInt = FMath::RandRange(0, 1);
-	TurnIndex = RandomInt;
-
-	AActor* ActorToUse = TurnTileArray[RandomInt];
+	/*.......................!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!...............................*/
+	//int RandomInt = FMath::RandRange(0, 1);
+	//TurnIndex = RandomInt;
+	TurnIndex = 0;
+	AActor* ActorToUse = TurnTileArray[TurnIndex];
 		{
 			if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
 			{

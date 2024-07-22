@@ -6,6 +6,7 @@
 #include "Level/LevelManager.h"
 #include "StateMachine/PlayerMovement/PlayerMoveAbstract.h"
 
+class ReorganisePlayer;
 
 /**
  * 
@@ -15,8 +16,11 @@ class ENDLESSRUNNER_3D_API SideMoveState : public PlayerMoveAbstract
 public:
 
 	SideMoveState();
+	~SideMoveState();
 	
 protected:
+
+	ReorganisePlayer* ReChangePlayer;
 
 	/*For Retreving The LvlManger Data Only Once*/
 	bool FirstCheck;       
@@ -49,21 +53,21 @@ protected:
 	int TurnIndex;
 
 	/*Function That Call The Movement Function Based On The Index*/
-	void DeterminePlayerMovement(int Index,ARunningPlayer* Player);
+	void DeterminePlayerMovement(int Index,ARunningPlayer* Player,UWorld* World);
 
 	/*Function That Set The Index Of Player Based On The Rotation */
 	void SetPlayerMoveIndex(ARunningPlayer* Player);
 
 	/*Function That Move Player According To Direction Input*/
-	void MovePlayer(ARunningPlayer* Player,FVector Direction);
+	void MovePlayer(ARunningPlayer* Player,FVector Direction, UWorld* World);
 
 	/*Function For Retriving The LvlMangerInfo*/
 	void CacheInterfaces(UWorld* World, ARunningPlayer* Player);
 
-	
+public:
+
+	void ChangeCurrentLane(int NewLane);
 
 	
-
-
 
 };
