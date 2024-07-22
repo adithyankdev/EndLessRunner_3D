@@ -97,6 +97,8 @@ AActor* ALevelManager::GetLatestTurnTile()
 void ALevelManager::SetPlayerLocationOnTurn(FVector NewLocation)
 {
 	PlayerInterface->SetLocation(NewLocation);
+	FString D = TEXT("PlayerNewLocation");
+	UKismetSystemLibrary::PrintString(GetWorld(), D);
 }
 
 // Sets default values

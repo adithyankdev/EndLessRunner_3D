@@ -22,9 +22,9 @@ void ARightTurnTile::BeginPlay()
 
 void ARightTurnTile::SetComponentTransform()
 {
-	LaneLocations.Add(3, ObstacleArrowcomp_One->GetComponentLocation());
+	LaneLocations.Add(1, ObstacleArrowcomp_One->GetComponentLocation());
 	LaneLocations.Add(2, ObstacleArrowcomp_Two->GetComponentLocation());
-	LaneLocations.Add(1, ObstacleArrowcomp_Three->GetComponentLocation());
+	LaneLocations.Add(3, ObstacleArrowcomp_Three->GetComponentLocation());
 }
 
 void ARightTurnTile::SpawnObstacle()

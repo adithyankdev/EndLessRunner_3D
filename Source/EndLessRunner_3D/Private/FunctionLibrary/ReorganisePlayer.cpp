@@ -37,110 +37,122 @@ void ReorganisePlayer::GetTurnLaneLocatins(TScriptInterface<IGetLvlManagerMember
 void ReorganisePlayer::RearrangePlayerLocation(TScriptInterface<IGetLvlManagerMembers> LvlInterface,FVector PlayerLocation, FVector PlayerForwardVector, SideMoveState* StateMachine)
 {
 	
-	if (PlayerForwardVector.X > PlayerForwardVector.Y && PlayerForwardVector.X > 0)
+	if (FMath::Abs(PlayerForwardVector.X) > FMath::Abs(PlayerForwardVector.Y))
 	{
-		float YLocation = PlayerLocation.Y;
+		//if (PlayerForwardVector.X > 0)
+		//{
+			float YLocation = PlayerLocation.Y;
 
-		if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
-		{
-			float ClosestDifference = TNumericLimits<float>::Max();
-			int ClosestLane = -1;
-
-			for (const auto& Lane : LaneLocations)
+			if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
 			{
-				float Difference = FMath::Abs(YLocation - Lane.Value.Y);
-				if (Difference < ClosestDifference)
+				float ClosestDifference = TNumericLimits<float>::Max();
+				int ClosestLane = -1;
+
+				for (const auto& Lane : LaneLocations)
 				{
-					ClosestDifference = Difference;
-					ClosestLane = Lane.Key;
+					float Difference = FMath::Abs(YLocation - Lane.Value.Y);
+					if (Difference < ClosestDifference)
+					{
+						ClosestDifference = Difference;
+						ClosestLane = Lane.Key;
+					}
+				}
+
+				if (ClosestLane != -1)
+				{
+					StateMachine->ChangeCurrentLane(ClosestLane);
+					PlayerLocation.Y = LaneLocations[ClosestLane].Y;
+					LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
 				}
 			}
+		//}
+		//else
+		//{
+		//	float XLocation = PlayerLocation.Y;
 
-			if (ClosestLane != -1)
-			{
-				StateMachine->ChangeCurrentLane(ClosestLane);
-				PlayerLocation.Y = LaneLocations[ClosestLane].Y;
-				LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
-			}
-		}
-	}
-	else if(PlayerForwardVector.X < PlayerForwardVector.Y && PlayerForwardVector.Y > 0)
-	{
-		float XLocation = PlayerLocation.X;
+		//	if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
+		//	{
+		//		float ClosestDifference = TNumericLimits<float>::Max();
+		//		int ClosestLane = -1;
 
-		if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
-		{
-			float ClosestDifference = TNumericLimits<float>::Max();
-			int ClosestLane = -1;
+		//		for (const auto& Lane : LaneLocations)
+		//		{
+		//			float Difference = FMath::Abs(XLocation - Lane.Value.Y);
+		//			if (Difference < ClosestDifference)
+		//			{
+		//				ClosestDifference = Difference;
+		//				ClosestLane = Lane.Key;
+		//			}
+		//		}
 
-			for (const auto& Lane : LaneLocations)
-			{
-				float Difference = FMath::Abs(XLocation - Lane.Value.X);
-				if (Difference < ClosestDifference)
-				{
-					ClosestDifference = Difference;
-					ClosestLane = Lane.Key;
-				}
-			}
-
-			if (ClosestLane != -1)
-			{
-				StateMachine->ChangeCurrentLane(ClosestLane);
-				PlayerLocation.X = LaneLocations[ClosestLane].X;
-				LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
-			}
-		}
-	}
-	else if (PlayerForwardVector.X < PlayerForwardVector.Y && PlayerForwardVector.X < 0)
-	{
-		float XLocation = PlayerLocation.Y;
-
-		if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
-		{
-			float ClosestDifference = TNumericLimits<float>::Max();
-			int ClosestLane = -1;
-
-			for (const auto& Lane : LaneLocations)
-			{
-				float Difference = FMath::Abs(XLocation - Lane.Value.Y);
-				if (Difference < ClosestDifference)
-				{
-					ClosestDifference = Difference;
-					ClosestLane = Lane.Key;
-				}
-			}
-
-			if (ClosestLane != -1)
-			{
-				StateMachine->ChangeCurrentLane(ClosestLane);
-				PlayerLocation.Y = LaneLocations[ClosestLane].Y;
-				LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
-			}
-		}
+		//		if (ClosestLane != -1)
+		//		{
+		//			StateMachine->ChangeCurrentLane(ClosestLane);
+		//			PlayerLocation.Y = LaneLocations[ClosestLane].Y;
+		//			LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
+		//		}
+		//	}
+		//}
 	}
 	else
 	{
-		float XLocation = PlayerLocation.X;
-		if (auto Itr = LaneLocations.CreateIterator())
-		{
-			float Difference = FMath::Abs(XLocation - Itr->Value.X);
-			int  CurrentLane = Itr->Key;
-			++Itr;
-			for (; Itr; ++Itr)
+		//if (PlayerForwardVector.Y > 0)
+		//{
+			float XLocation = PlayerLocation.X;
+
+			if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
 			{
-				float Value = FMath::Abs(XLocation - Itr->Value.X);
-				if (Value < Difference)
+				float ClosestDifference = TNumericLimits<float>::Max();
+				int ClosestLane = -1;
+
+				for (const auto& Lane : LaneLocations)
 				{
-					CurrentLane = Itr->Key;
-					Difference = Value;
+					float Difference = FMath::Abs(XLocation - Lane.Value.X);
+					if (Difference < ClosestDifference)
+					{
+						ClosestDifference = Difference;
+						ClosestLane = Lane.Key;
+					}
+				}
+
+				if (ClosestLane != -1)
+				{
+					StateMachine->ChangeCurrentLane(ClosestLane);
+					PlayerLocation.X = LaneLocations[ClosestLane].X;
+					LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
 				}
 			}
-			StateMachine->ChangeCurrentLane(CurrentLane);
-			PlayerLocation.X = LaneLocations[CurrentLane].X;
-			LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
-		}
+		//}
+		//else
+		//{
+		//	float XLocation = PlayerLocation.X;
+
+		//	if (LaneLocations.Num() > 0)  // Check if LaneLocations is not empty
+		//	{
+		//		float ClosestDifference = TNumericLimits<float>::Max();
+		//		int ClosestLane = -1;
+
+		//		for (const auto& Lane : LaneLocations)
+		//		{
+		//			float Difference = FMath::Abs(XLocation - Lane.Value.X);
+		//			if (Difference < ClosestDifference)
+		//			{
+		//				ClosestDifference = Difference;
+		//				ClosestLane = Lane.Key;
+		//			}
+		//		}
+
+		//		if (ClosestLane != -1)
+		//		{
+		//			StateMachine->ChangeCurrentLane(ClosestLane);
+		//			PlayerLocation.X = LaneLocations[ClosestLane].X;
+		//			LvlInterface->SetPlayerLocationOnTurn(PlayerLocation);
+		//		}
+		//	}
 	}
 }
+
+
 
 
 
