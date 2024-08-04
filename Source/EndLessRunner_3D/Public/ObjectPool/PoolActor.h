@@ -63,6 +63,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* DirectionalArrow;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* RightSideArrow;
+
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
+	UArrowComponent* LeftSideArrow;
+
 	/*Retriving The Actor UseState*/
 	UPROPERTY()
 	bool CurrentlyUse;
@@ -76,24 +82,32 @@ protected:
 	UPROPERTY(BlueprintReadOnly, EditAnywhere)
 	TSubclassOf<AActor>ObstacleClasses;
 
+	UPROPERTY(BlueprintReadOnly , EditAnywhere)
+	TSubclassOf<AActor>SideFloorClass;
+
 private:
 
 	/*Setting The Obstacle*/
 	UChildActorComponent* ChildComponent;
+
+	UChildActorComponent* RightSideFloorComp;
+	UChildActorComponent* LeftSideFloorComp;
 
 	//Array Store ArrowComponent To Attach The Obstacles ....
 	TArray<UArrowComponent*>ObstacleTras;
 
 	/*Storing The Obstacle Transform In An Array*/
 	UFUNCTION()
-	virtual void SetComponentTransform();
+	 void SetComponentTransform();
 	/*Getting The Random Transform For Avoiding Repeatness*/
 	UFUNCTION()
-	virtual int GetRandomTransform();
+	 int GetRandomTransform();
 	/*Creating The ChldComponent(Obstacle)*/
 	UFUNCTION()
-	virtual void SpawnObstacle();
+	 void SpawnObstacle();
 
+	UFUNCTION()
+	void SetupSideFloorChild();
 
 public:	
 

@@ -57,8 +57,16 @@ APoolActor::APoolActor()
 	DirectionalArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Direction"));
 	DirectionalArrow->SetupAttachment(RootComponent);
 
+	RightSideArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("RightArrow"));
+	RightSideArrow->SetupAttachment(RootComponent);
+	LeftSideArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("LeftArrow"));
+    LeftSideArrow->SetupAttachment(RootComponent);
 
-	 ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
+    ChildComponent = CreateDefaultSubobject<UChildActorComponent>(TEXT("ObstacleActor"));
+
+	RightSideFloorComp = CreateDefaultSubobject<UChildActorComponent>(TEXT("RightSideFloor"));
+	LeftSideFloorComp = CreateDefaultSubobject<UChildActorComponent>(TEXT("LeftSideFloor"));
+
 	LvlManagerInterface = nullptr ;
 	CurrentDirection = FVector::ZeroVector;
 }
@@ -137,6 +145,22 @@ void APoolActor::SpawnObstacle()
 		ChildComponent->RegisterComponent();
 		ChildComponent->AttachToComponent(ObstacleTras[Index], FAttachmentTransformRules::KeepRelativeTransform);
 		
+	}
+}
+
+void APoolActor::SetupSideFloorChild()
+{
+	if (LeftSideFloorComp)
+	{
+		LeftSideFloorComp->SetChildActorClass(SideFloorClass);
+		LeftSideFloorComp->RegisterComponent();
+		LeftSideFloorComp->AttachToComponent(LeftSideArrow, FAttachmentTransformRules::KeepRelativeTransform);
+	}
+	if (RightSideFloorComp)
+	{
+		RightSideFloorComp->SetChildActorClass(SideFloorClass);
+		RightSideFloorComp->RegisterComponent();
+		RightSideFloorComp->AttachToComponent(RightSideArrow, FAttachmentTransformRules::KeepRelativeTransform);
 	}
 }
 
