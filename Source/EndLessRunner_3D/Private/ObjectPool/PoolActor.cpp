@@ -30,11 +30,7 @@ FTransform APoolActor::SpawnArrowTransform()
 {
 	return Arrowcomponent->GetComponentTransform();
 }
- 
-void APoolActor::SetDirectionValue(FVector LocationValue)
-{
-	CurrentDirection = LocationValue; 
-}
+
 
 // Sets default values
 APoolActor::APoolActor()

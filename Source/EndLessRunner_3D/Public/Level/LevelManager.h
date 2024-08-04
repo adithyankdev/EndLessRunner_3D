@@ -22,14 +22,6 @@ public:
 	 void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
 	 int  GetRandomInteger(int RandomNumber) override;
 	 void GetSpawnTransform() override; 
-	 void SetCanPlayerTurn(bool Value) override;
-	 bool GetCanPlayerTurn() override;
-	 void SetActorNewDirection(int PlayerTurnIndex) override;
-	 void SetQuickUseOnTurn() override; 
-	 AActor* GetLatestTurnTile() override;
-	 void SetPlayerLocationOnTurn(FVector NewLocation) override;
-
-	//int GetTurnTileIndex() override;
 
 	ALevelManager();
 	 

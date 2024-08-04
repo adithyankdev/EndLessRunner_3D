@@ -64,27 +64,23 @@ void UObjectPoolComp::InitializePool()
 
 AActor* UObjectPoolComp::UseFromPool()
 {
-	if (QuickUse)SpawnAfterTurn();
-	else
+
+	if (AActor* ActorToUse = GetNotInUseActor())
 	{
-		if (AActor* ActorToUse = GetNotInUseActor())
+		if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
 		{
-			if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
-			{
-				FTransform GetTransform = ActorInterface->SpawnArrowTransform();
-				ActorToUse->SetActorTransform(GetTransform);
-			}
-			if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
-			{
-				IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(ActorToUse);
-				Interface->SetActorInUse();
-				LatestRearFloor = ActorToUse;
-				return ActorToUse;
-			}
+			FTransform GetTransform = ActorInterface->SpawnArrowTransform();
+			ActorToUse->SetActorTransform(GetTransform);
+		}
+		if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
+		{
+			IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(ActorToUse);
+			Interface->SetActorInUse();
+			LatestRearFloor = ActorToUse;
+			return ActorToUse;
 		}
 	}
 
-	
 	return nullptr;
 }
 
@@ -98,7 +94,7 @@ AActor* UObjectPoolComp::GetNotInUseActor()
 	for (AActor* Act :PoolActorArray)
 	{	
 	
-		if (!Act->IsA(TurnTileClass[0]->StaticClass()) && Act->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
+		if ( Act->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
 		{
 			if (!Cast<IGetActorPoolMembers>(Act)->CurrentActorUseState())
 			{
@@ -137,84 +133,6 @@ void UObjectPoolComp::BatchingSpawn(int index)
 		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,FTransform::Identity, SpawnParams);
 		PoolActorArray.AddUnique(SpawnActor);
 	}
-	SpawnTurnTile();
-}
-
-//Function That Spawn Tile Actor Into The World And Adding It Into The Array ...
-void UObjectPoolComp::SpawnTurnTile()
-{
-	FActorSpawnParameters SpawnParams;
-	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	for (int itr = 0; itr <=1; itr++)
-	{
-		AActor* SpawnTileActor = GetWorld()->SpawnActor<AActor>(TurnTileClass[itr], FTransform::Identity, SpawnParams);
-		TurnTileArray.AddUnique(SpawnTileActor);		
-	}
-}
-
-//Function  That Use Trun Tile From Pool
-void UObjectPoolComp::UseTurnTileFromPool()
-{
-	/*.......................!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!...............................*/
-	//int RandomInt = FMath::RandRange(0, 1);
-	//TurnIndex = RandomInt;
-	TurnIndex = 0;
-	AActor* ActorToUse = TurnTileArray[TurnIndex];
-		{
-			if (IGetActorPoolMembers* ActorInterface = Cast<IGetActorPoolMembers>(LatestRearFloor))
-			{
-				FTransform GetTransform = ActorInterface->SpawnArrowTransform();
-				ActorToUse->SetActorTransform(GetTransform);
-				ActorInterface->SetDirectionValue(FVector(-1, 0, 0));
-			}
-			if (ActorToUse->GetClass()->ImplementsInterface(UGetActorPoolMembers::StaticClass()))
-			{
-				Cast<IGetActorPoolMembers>(ActorToUse)->SetActorInUse();  
-			}
-			LatestRearFloor = ActorToUse;
-			LatestTurnFloor = ActorToUse;
-			Turnhappend = true;
-			QuickUse = true;
-	}
-}//Setting Direction Of Tiles After Turning
-void UObjectPoolComp::SetActorDirection(int PlayerTurnIndex)
-{
-	bool CorrectTurn = true;
-	if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
-	{
-		if (LatestTurnFloor == TurnTileArray[0] && PlayerTurnIndex==0)
-		{
-			//Constant Direction...
-			TurnInterface->SetDirectionValue(FVector(0, -1, 0));
-		}
-		else if (LatestTurnFloor == TurnTileArray[1] && PlayerTurnIndex == 1)
-		{
-			//Constant Direction...
-			TurnInterface->SetDirectionValue(FVector(0, 1, 0));	
-		}
-		else
-		{
-			TurnInterface->SetDirectionValue(FVector(0, 0, -1));
-			CorrectTurn = false;
-		}
-		GetWorld()->GetTimerManager().SetTimer(timer, this, &UObjectPoolComp::SetTurnDefaultDirection, 2);
-		
-	}
-	for (AActor* PActor : PoolActorArray)
-	{
-		if (IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(PActor))
-		{
-			if (CorrectTurn)
-			{
-				Interface->SetDirectionValue(FVector(-1, 0, 0));
-			}
-			else
-			{
-				Interface->SetDirectionValue(FVector(-1,0,0));
-			}
-			
-		}
-	}
 	
 }
 
@@ -226,42 +144,5 @@ void UObjectPoolComp::SetInterfaces()
 	LvlInterface.SetInterface(Cast <IGetLvlManagerMembers>(GetOwner()));	
 }
 
-//Setting The Movement Value To Default (-x) of The Turn Tile ....
-void UObjectPoolComp::SetTurnDefaultDirection()
-{
-	if (IGetActorPoolMembers* TurnInterface = Cast <IGetActorPoolMembers>(LatestTurnFloor))
-	{
-				TurnInterface->SetDirectionValue(FVector(-1,0,0));
-	}
-}
-
-void UObjectPoolComp::SpawnAfterTurn()
-{
-	//TotalSpawnCount = 0;
-	for (AActor* PActor : PoolActorArray)
-	{
-		if(TotalSpawnCount==5)return;
-		IGetActorPoolMembers* Interface = Cast<IGetActorPoolMembers>(PActor);
-		if (!Interface->CurrentActorUseState())
-		{
-			IGetActorPoolMembers* ActorInter = Cast <IGetActorPoolMembers>(LatestRearFloor);
-			FTransform SpawnTran = ActorInter->SpawnArrowTransform();
-         
-			PActor->SetActorTransform(SpawnTran);
-			Interface->SetActorInUse();
-			LatestRearFloor = PActor;
-			TotalSpawnCount++;
-			if (TurnIndex == 0)
-			{
-				Interface->SetDirectionValue(FVector(0, 1, 0));
-			}
-				else
-			{
-				Interface->SetDirectionValue(FVector(0, -1, 0));
-			}
-		}
-	}
-
-}
 
 

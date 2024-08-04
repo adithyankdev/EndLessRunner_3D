@@ -32,7 +32,6 @@ public:
 	virtual void SetActorInUse() = 0;
 	/*For Retrive The Transform Of ArrowComponent(To Set Transform of  Next Tile)*/
 	virtual FTransform SpawnArrowTransform()=0;
-	/*Setting Direction Value Of Each PoolActor */
-	virtual void SetDirectionValue(FVector LocationValue) =  0;
+	
 	
 };

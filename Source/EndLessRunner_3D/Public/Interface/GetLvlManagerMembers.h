@@ -26,11 +26,4 @@ public:
 	virtual void LvlManagerLaneValues(int& TotalLanes , float& WidthOfLane)=0;
 	virtual int GetRandomInteger(int RandomNumber) = 0;
 	virtual void GetSpawnTransform() = 0;
-	virtual void SetCanPlayerTurn(bool Value) = 0; 
-	virtual bool GetCanPlayerTurn() = 0;
-	virtual void SetActorNewDirection(int PlayerTurnIndex) = 0;
-	virtual void SetQuickUseOnTurn() = 0; 
-	virtual AActor* GetLatestTurnTile() = 0; 
-	virtual void SetPlayerLocationOnTurn(FVector NewLocation) = 0;
-	//virtual int GetTurnTileIndex() = 0;
 };

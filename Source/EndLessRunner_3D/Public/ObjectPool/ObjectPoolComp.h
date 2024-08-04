@@ -33,10 +33,6 @@ public:
 	UPROPERTY()
 	AActor* LatestRearFloor;
 
-	/*Referance On The Latest Used Turn Tile*/
-	UPROPERTY()
-	AActor* LatestTurnFloor;
-
 	/*Total Count Of Qucik Spawn On First Game Begin*/
 	UPROPERTY()
 	int QuickSpwanCount;
@@ -72,33 +68,7 @@ protected:
 	 UFUNCTION()
 	 void BatchingSpawn(int inde);
 
-	 //Turn Tile Spawning Methods And Variables
-
-	 /*Storing The Class Of TurnTile*/
-	 UPROPERTY(BlueprintReadWrite , EditDefaultsOnly , Category = "ObjectPool Base")
-	 TArray<TSubclassOf<AActor>>TurnTileClass;
-
-	 /*Storing Actor Ref Of TurnTile*/
-	 UPROPERTY()
-	 TArray<AActor*>TurnTileArray;
-
-	 /*Initializing The Spawn Tile*/
-	 UFUNCTION()
-	 void SpawnTurnTile();
-
 public:
-
-	/*Variable For Checking Turn Trigger To Rotate The Player*/
-	 bool Turnhappend;
-	 /*Variable For Checking Which TurnTile Is Used(Right/Left),  For Setting Actor Rotational Value*/
-	 int TurnIndex;
-
-	 /*Function That Use The TrunTile Using RandomInteger*/
-	UFUNCTION()
-	void UseTurnTileFromPool();
-
-	/*Function That Set PoolActors Locaiton Whenever Turn Happens , For Maintaing The illuision*/
-	void SetActorDirection(int PlayerTurnIndex);
 
 	/*Storing Interfaces For Caching*/
 	UPROPERTY()
@@ -109,10 +79,6 @@ public:
 
 	/*Timer For Switching The TurnTile Direction Back To Normal*/
 	FTimerHandle timer;
-
-	void SetTurnDefaultDirection();
-
-	void SpawnAfterTurn();
 	
 	UPROPERTY()
 	bool QuickUse;

@@ -24,8 +24,8 @@ public:
 	bool bIsJumping;
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;
-
-	virtual void ExitState(ARunningPlayer* Player) override;
+    
+	void ResetJumping();
 
 	/*Line Trace For Checking Player Is On Ground*/
 	bool OnGround(ARunningPlayer* Player, UWorld* World);

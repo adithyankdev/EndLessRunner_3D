@@ -22,6 +22,5 @@ class ENDLESSRUNNER_3D_API IGetPlayerInfoInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
-	virtual void SetPlaneConstraints() = 0;
-	virtual void SetLocation(FVector NewLocation) = 0;
+	
 };

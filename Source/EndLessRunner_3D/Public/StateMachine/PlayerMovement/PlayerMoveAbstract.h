@@ -7,6 +7,12 @@
 
 class ARunningPlayer;
 
+enum class EnumState
+{
+	GroundMove,
+	Jump,
+};
+
 /**
  * 
  */
@@ -17,5 +23,5 @@ public:
 	virtual ~PlayerMoveAbstract();
 
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) = 0;
-	virtual void ExitState(ARunningPlayer* Player) = 0 ;
+	
 };

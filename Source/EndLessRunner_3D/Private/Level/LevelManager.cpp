@@ -42,63 +42,7 @@ int ALevelManager::GetRandomInteger(int RandomNumber)
 //Checking The Count Of NormalTile  , For Spawning The CornerTile...
 void ALevelManager::GetSpawnTransform()
 {
-	if (StraightTileSpawnCount <= 10)
-	{
-		ObjectPoolComponent->UseFromPool(); 
-		StraightTileSpawnCount++;
-	}
-	else
-	{
-		ObjectPoolComponent->UseTurnTileFromPool();
-		StraightTileSpawnCount = 0;
-	} 
-}
-
-//Interface Function That Set Wheather The Player Have Turn Or Not ...
-void ALevelManager::SetCanPlayerTurn(bool Value)
-{
-	FString D = Value ? TEXT("True") : TEXT("False");
-	UKismetSystemLibrary::PrintString(GetWorld(), D,true,true,FLinearColor::Yellow,6);
-
-	PlayerTurn = Value;
-	if (Value == true)
-	{
-		ObjectPoolComponent->Turnhappend = false;
-		//ObjectPoolComponent->SetActorDirection(FVector(-1, 0, 0));
-	}
-	else
-	{
-		StraightTileSpawnCount = 0;
-	}
-}
-
-//Interface Get Function On PlayerMove ...
-bool ALevelManager::GetCanPlayerTurn()
-{
-	return PlayerTurn;
-}
-
-void ALevelManager::SetActorNewDirection(int PlayerTurnIndex)
-{
-	ObjectPoolComponent->SetActorDirection(PlayerTurnIndex);
-}
-
-void ALevelManager::SetQuickUseOnTurn()
-{
-	ObjectPoolComponent->QuickUse = false;
-	ObjectPoolComponent->TotalSpawnCount = 0; 
-}
-
-AActor* ALevelManager::GetLatestTurnTile()
-{
-	return ObjectPoolComponent->LatestTurnFloor;
-}
-
-void ALevelManager::SetPlayerLocationOnTurn(FVector NewLocation)
-{
-	PlayerInterface->SetLocation(NewLocation);
-	FString D = TEXT("PlayerNewLocation");
-	UKismetSystemLibrary::PrintString(GetWorld(), D);
+   ObjectPoolComponent->UseFromPool(); 
 }
 
 // Sets default values

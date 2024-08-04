@@ -10,12 +10,11 @@
 #include "InputActionValue.h"
 #include "Interface/GetPlayerInfoInterface.h"
 #include "Components/ArrowComponent.h"
+#include "StateMachine/PlayerMovement/PlayerMoveAbstract.h"
 #include "RunningPlayer.generated.h"
 
-/*State Machines*/
-class PlayerMoveAbstract;
-class SideMoveState;
-class JumpState;
+
+
 
 
 UCLASS()
@@ -27,14 +26,11 @@ public:
 
 	/*Object Initialisation Of State */
 	PlayerMoveAbstract* CurrentState;
-	SideMoveState* PlayerSideMove;
-	JumpState* PlayerJump;
 
-	void SetPlaneConstraints() override;
-	void SetLocation(FVector NewLocation) override;
+	TMap<EnumState, PlayerMoveAbstract*>StateLibrary;
 
 	ARunningPlayer();
-   
+	~ARunningPlayer();
 
 protected:
 
@@ -67,6 +63,6 @@ public:
 	void SideMoveAction(const FInputActionValue& InputValue);
 	void JumpAction(const FInputActionValue& InputValue);
 
-	void StateTransition(PlayerMoveAbstract * NextState);
+
 
 };

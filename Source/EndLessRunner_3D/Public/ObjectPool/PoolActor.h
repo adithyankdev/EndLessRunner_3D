@@ -30,8 +30,6 @@ public:
 	virtual void SetActorInUse()override;
 	/*Retrving The SpawnArrowComponent Transform For Next Setting NxtTileTransform*/
 	virtual FTransform SpawnArrowTransform() override;
-	/*Setting Driection Value According To Player Turn*/
-	void SetDirectionValue(FVector LocationValue) override;
 
 	virtual void BeginPlay() override;
 
