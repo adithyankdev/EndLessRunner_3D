@@ -90,6 +90,7 @@ void APoolActor::BeginPlay()
 	}
 	SetComponentTransform();                                                                //Setting Up Obstacle Transfrom...
 	SpawnObstacle();                                                                        //Spawning Child ActorComponent...
+	SetupSideFloorChild();
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
 }
 

@@ -28,19 +28,23 @@ void ASideFloor::OnConstruction(const FTransform& Transform)
 	// Clear Any Existing Instances
 	InstancedStaticMesh->ClearInstances();
 
+	InstancedStaticMesh->SetWorldLocation(BoxCollision->GetRelativeLocation());
+
 	//Getting The Bounds Of The BoxCollision 
 	FVector BoxExtent = BoxCollision->GetScaledBoxExtent();
 	FVector Origin = BoxCollision->GetComponentLocation();
 
 	//Loop For Adding Instances
-	for (int32 i = 0; i < 25; ++i)
+	for (int32 i = 0; i < 40; ++i)
 	{
 		FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(Origin, BoxExtent);
 
-		float RandomScale = FMath::FRandRange(2.0f, 5.0f);
+		float RandomScaleXY = FMath::FRandRange(2.0f, 5.0f);
+		//float RandomScaleY = FMath::FRandRange(2.0f,5.0f)
+		float RandomScaleZ = FMath::FRandRange(4.0f, 11.0f);
 
 		//Setting Up The Transform For Instance
-		FTransform InstanceTransform(FRotator::ZeroRotator, RandomLocation, FVector(RandomScale));
+		FTransform InstanceTransform(FRotator::ZeroRotator, RandomLocation, FVector(RandomScaleXY,RandomScaleXY,RandomScaleZ));
 
 		// Adding Instance To InstancedStaticMesh
 		InstancedStaticMesh->AddInstance(InstanceTransform);

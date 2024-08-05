@@ -90,7 +90,9 @@ private:
 	/*Setting The Obstacle*/
 	UChildActorComponent* ChildComponent;
 
+	//UPROPERTY(EditDefaultsOnly)
 	UChildActorComponent* RightSideFloorComp;
+	//UPROPERTY(EditDefaultsOnly)
 	UChildActorComponent* LeftSideFloorComp;
 
 	//Array Store ArrowComponent To Attach The Obstacles ....
