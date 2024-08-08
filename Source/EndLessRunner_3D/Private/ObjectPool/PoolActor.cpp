@@ -145,7 +145,6 @@ void APoolActor::SpawnObstacle()
 		ChildComponent->SetChildActorClass(ObstacleClasses);
 		ChildComponent->RegisterComponent();
 		ChildComponent->AttachToComponent(ObstacleTras[Index], FAttachmentTransformRules::KeepRelativeTransform);
-		
 	}
 }
 

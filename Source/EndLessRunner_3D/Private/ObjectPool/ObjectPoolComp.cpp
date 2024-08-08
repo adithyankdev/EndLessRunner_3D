@@ -15,12 +15,14 @@ UObjectPoolComp::UObjectPoolComp()
 	QuickSpwanCount = 10;
 	PoolSize = 20;
 	TotalSpawnCount = 0;
+	
 }
 
 
 void UObjectPoolComp::BeginPlay()
 {
 	Super::BeginPlay();
+	SpawnTransform.SetLocation(FVector(2500.0f,0.0f,0.0f));
 	InitializePool();
 
 }
