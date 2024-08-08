@@ -12,9 +12,9 @@
 UObjectPoolComp::UObjectPoolComp()
 {
 	PrimaryComponentTick.bCanEverTick = false;
-	QuickSpwanCount = 10;
+	QuickSpwanCount = 15;
 	PoolSize = 20;
-	TotalSpawnCount = 0;
+	TotalSpawnCount = 0;	
 	
 }
 
@@ -24,7 +24,7 @@ void UObjectPoolComp::BeginPlay()
 	Super::BeginPlay();
 	SpawnTransform.SetLocation(FVector(2500.0f,0.0f,0.0f));
 	InitializePool();
-
+	
 }
 
 //Function For Spawnning All the Actors To the World and Arrange Some Object For The Game Start (Long Road) ... 
@@ -57,9 +57,9 @@ void UObjectPoolComp::InitializePool()
 			}
 
 		}
-
+		if (!CanCache)SetInterfaces(SpawnActor);
 	}
-	SetInterfaces();
+	
 }
 
 //Function That Set The Actor To Use And Set Its World Transform ...
@@ -139,11 +139,25 @@ void UObjectPoolComp::BatchingSpawn(int index)
 }
 
 //Caching The Interface....
-void UObjectPoolComp::SetInterfaces()
+void UObjectPoolComp::SetInterfaces(AActor* PoolActor)
 {
 	//AActor* LvlActor = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
 	LvlInterface.SetObject(GetOwner());
 	LvlInterface.SetInterface(Cast <IGetLvlManagerMembers>(GetOwner()));	
+
+	PoolActorInterface.SetObject(PoolActor);
+	if (IGetActorPoolMembers* Interface = Cast <IGetActorPoolMembers>(PoolActor))
+	{
+		PoolActorInterface.SetInterface(Interface);
+	}
+
+	CanCache = true;
+}
+
+void UObjectPoolComp::ChangeSpeed()
+{
+	PoolActorInterface->IncreaseSpeed();
+	
 }
 
 

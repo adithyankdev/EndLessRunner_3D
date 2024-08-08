@@ -48,6 +48,15 @@ protected:
 	
 	virtual void BeginPlay() override;
 
+	/*For Caching The Actor Interface*/
+	TScriptInterface<IGetActorPoolMembers>PoolActorInterface;
+
+	//*Value Responsibe For Calling The CacheInterface Only At Once*/
+	bool CanCache;
+
+	///*Function That Assgin Value In TScriptInterface*/
+	//void CacheInterface
+
 	/*Timer For Calling The Batch Function For Spawwning Tiles*/
 	FTimerHandle SpawnBatchingTimer;
 
@@ -75,7 +84,7 @@ public:
 	TScriptInterface<IGetLvlManagerMembers>LvlInterface;
 
     /*Function For Storing Interface Referance*/
-	void SetInterfaces();
+	void SetInterfaces(AActor* PoolActor);
 
 	/*Timer For Switching The TurnTile Direction Back To Normal*/
 	FTimerHandle timer;
@@ -84,5 +93,7 @@ public:
 	bool QuickUse;
 	UPROPERTY()
 	int TotalSpawnCount;
+
+	void ChangeSpeed();
 
 };

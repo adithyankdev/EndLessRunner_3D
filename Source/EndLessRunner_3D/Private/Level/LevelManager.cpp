@@ -64,6 +64,8 @@ void ALevelManager::BeginPlay()
 	Super::BeginPlay();
 	CacheInterface();
 
+	GetWorld()->GetTimerManager().SetTimer(SpeedIncrementTimer, this, &ALevelManager::IncreseSpeed, 10, true);
+
 }
 
 // Called every frame...
@@ -84,5 +86,10 @@ void ALevelManager::CacheInterface()
 			PlayerInterface.SetInterface(Interface);
 		}
 	}
+}
+
+void ALevelManager::IncreseSpeed()
+{
+	ObjectPoolComponent->ChangeSpeed();
 }
 

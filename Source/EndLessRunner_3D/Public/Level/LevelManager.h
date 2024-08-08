@@ -11,6 +11,7 @@
 
 class UObjectPoolComp;
 
+
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManagerMembers
 {
@@ -66,5 +67,9 @@ public:
 	UPROPERTY()
 	TScriptInterface<IGetPlayerInfoInterface>PlayerInterface;
 	void CacheInterface();
+
+	FTimerHandle SpeedIncrementTimer;
+
+	void IncreseSpeed();
 
 };

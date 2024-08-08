@@ -9,7 +9,8 @@
 #include "Player/RunningPlayer.h"
 
 
-
+float APoolActor::Speed = 800.0f;
+float APoolActor::ActorNotUseTime = 2.0f;
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
 bool APoolActor::CurrentActorUseState()
@@ -29,6 +30,12 @@ void APoolActor::SetActorInUse()
 FTransform APoolActor::SpawnArrowTransform()
 {
 	return Arrowcomponent->GetComponentTransform();
+}
+
+void APoolActor::IncreaseSpeed()
+{
+	Speed += 100.0f;
+	if (ActorNotUseTime > 0.5)ActorNotUseTime -= 0.1;
 }
 
 
@@ -69,6 +76,9 @@ APoolActor::APoolActor()
 
 	LvlManagerInterface = nullptr ;
 	CurrentDirection = FVector::ZeroVector;
+
+
+
 }
 
 APoolActor::~APoolActor()
@@ -97,9 +107,7 @@ void APoolActor::BeginPlay()
 //Tick Function
 void APoolActor::Tick(float DeltaTime)
 {   
-	FVector Speed = ((CurrentDirection)*1500.0f )*DeltaTime;
-	
-	AddActorLocalOffset(Speed);
+	AddActorLocalOffset(((CurrentDirection)*Speed)* DeltaTime);
 }
 
 //Function That Set Property When The Actor Is On Use ..
@@ -175,7 +183,7 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		{
 		   GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
 		}
-		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, 2.0f, false);				
+		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor,ActorNotUseTime, false);				
 			
 		}
 	

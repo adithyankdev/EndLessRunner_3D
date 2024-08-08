@@ -31,6 +31,15 @@ public:
 	/*Retrving The SpawnArrowComponent Transform For Next Setting NxtTileTransform*/
 	virtual FTransform SpawnArrowTransform() override;
 
+	/*Varibale Responsible For The Floor Move Speed*/
+	 static float Speed;
+	 /*Varibale Responsible For SetActorNotToUse In Time*/
+	 static float ActorNotUseTime;
+
+	void IncreaseSpeed() override;
+
+
+
 	virtual void BeginPlay() override;
 
 	virtual void Tick(float DeltaTime) override;
