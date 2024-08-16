@@ -18,12 +18,17 @@ ARunnableBlock::ARunnableBlock()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
 	BoxCollision->SetupAttachment(StaticMeshComp);
 
+	MinScaleValue = 10.0f;
+
 }
 
 void ARunnableBlock::OnConstruction(const FTransform& Transform)
 {
-	float XValue = FMath::FRandRange(1.0f, 10.0f);
-	StaticMeshComp->SetWorldScale3D(FVector(XValue,1.5f,2.0f));
+	float MaxScaleValue = 10.0f;
+	float YValue = 1.5f;
+	float ZValue = 2.0f;
+	float XValue = FMath::FRandRange(MinScaleValue,MaxScaleValue);
+	StaticMeshComp->SetWorldScale3D(FVector(XValue,YValue,ZValue));
 }
 
 // Called when the game starts or when spawned

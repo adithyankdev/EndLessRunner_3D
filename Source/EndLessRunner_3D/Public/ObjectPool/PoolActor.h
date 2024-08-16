@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interface/GetActorPoolMembers.h"
+#include "Components/InstancedStaticMeshComponent.h"
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Interface/GetLvlManagerMembers.h"
@@ -12,8 +13,8 @@
 #include "PoolActor.generated.h"
 
 class UObjectPoolComp;
-
 UCLASS()
+
 class ENDLESSRUNNER_3D_API APoolActor : public AActor , public IGetActorPoolMembers
 {
 	GENERATED_BODY()
@@ -21,6 +22,8 @@ class ENDLESSRUNNER_3D_API APoolActor : public AActor , public IGetActorPoolMemb
 public:	
 	APoolActor();
 	virtual ~APoolActor();
+
+	void OnConstruction(const FTransform& Transform)override;
 
 	//Interface Function
 
@@ -36,9 +39,8 @@ public:
 	 /*Varibale Responsible For SetActorNotToUse In Time*/
 	 static float ActorNotUseTime;
 
+
 	void IncreaseSpeed() override;
-
-
 
 	virtual void BeginPlay() override;
 
@@ -77,6 +79,12 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* LeftSideArrow;
+
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* InstancedMeshVolume;
+
+	UPROPERTY(EditDefaultsOnly)
+	UInstancedStaticMeshComponent* InstancedStaticMesh;
 
 	/*Retriving The Actor UseState*/
 	UPROPERTY()

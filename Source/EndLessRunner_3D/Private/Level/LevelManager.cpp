@@ -2,9 +2,9 @@
 
 
 #include "Level/LevelManager.h"
-#include "Kismet/KismetSystemLibrary.h"
 #include "ObjectPool/ObjectPoolComp.h"
 #include "Player/RunningPlayer.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -91,5 +91,6 @@ void ALevelManager::CacheInterface()
 void ALevelManager::IncreseSpeed()
 {
 	ObjectPoolComponent->ChangeSpeed();
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Hellow"));
 }
 

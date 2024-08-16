@@ -33,6 +33,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	UStaticMeshComponent* StaticMeshComp;
 
+	//Value For Setting The Minimun Scale Size For The Cube
+	UPROPERTY()
+	float MinScaleValue;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

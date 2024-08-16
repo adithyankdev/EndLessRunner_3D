@@ -11,7 +11,6 @@
 
 class UObjectPoolComp;
 
-
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManagerMembers
 {
@@ -38,10 +37,10 @@ protected:
 	/*Variable That Set TheRandomInteger Array Size*/
 	const int ArraySize = 2;
 
-	
-
 	/*Begin Play Function*/
 	virtual void BeginPlay() override;
+
+
 
 public:	
 	

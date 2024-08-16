@@ -7,9 +7,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/EngineTypes.h"
 #include "Player/RunningPlayer.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
-float APoolActor::Speed = 800.0f;
+float APoolActor::Speed = 0.0f;
 float APoolActor::ActorNotUseTime = 2.0f;
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
@@ -23,7 +24,7 @@ bool APoolActor::CurrentActorUseState()
 void APoolActor::SetActorInUse()
 {
 	SetInUse(true);
-
+	this->RerunConstructionScripts();
 }
 
 //Getting The ArrowComponent  For Spawning The Next Tile ...
@@ -64,6 +65,12 @@ APoolActor::APoolActor()
 	DirectionalArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Direction"));
 	DirectionalArrow->SetupAttachment(RootComponent);
 
+	InstancedMeshVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	InstancedMeshVolume->SetupAttachment(RootComponent);
+	
+	InstancedStaticMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstanceMeshComponent"));
+	InstancedStaticMesh->SetupAttachment(InstancedMeshVolume);
+
 	RightSideArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("RightArrow"));
 	RightSideArrow->SetupAttachment(RootComponent);
 	LeftSideArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("LeftArrow"));
@@ -77,10 +84,35 @@ APoolActor::APoolActor()
 	LvlManagerInterface = nullptr ;
 	CurrentDirection = FVector::ZeroVector;
 
-
-
 }
+void APoolActor::OnConstruction(const FTransform& Transform)
+{
+	Super::OnConstruction(Transform);
 
+	InstancedStaticMesh->ClearInstances();
+
+	InstancedStaticMesh->SetWorldLocation(InstancedMeshVolume->GetRelativeLocation());
+
+	//Getting The Bounds Of The BoxCollision 
+	FVector BoxExtent = InstancedMeshVolume->GetScaledBoxExtent();
+	FVector Origin = InstancedMeshVolume->GetComponentLocation();
+
+	//Loop For Adding Instances
+	for (int32 i = 0; i < 100; ++i)
+	{
+		FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(Origin, BoxExtent);
+
+		//float RandomScaleXY = FMath::FRandRange(2.0f, 5.0f);
+		float RandomScaleY = FMath::FRandRange(1.0f, 2.0f);
+		float RandomScaleZ = FMath::FRandRange(1.0f, 2.0f);
+
+		//Setting Up The Transform For Instance
+		FTransform InstanceTransform(FRotator::ZeroRotator, RandomLocation, FVector(RandomScaleY, RandomScaleY, RandomScaleZ));
+
+		// Adding Instance To InstancedStaticMesh
+		InstancedStaticMesh->AddInstance(InstanceTransform);
+	}
+}
 APoolActor::~APoolActor()
 {
 
@@ -90,6 +122,7 @@ APoolActor::~APoolActor()
 void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
+	Speed = 800.0f;
 	SetInUse(false);
 	CurrentDirection = FVector(-1,0,0);  //Setting Initial Movement Direction ...
 	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
@@ -102,6 +135,8 @@ void APoolActor::BeginPlay()
 	SpawnObstacle();                                                                        //Spawning Child ActorComponent...
 	SetupSideFloorChild();
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
+
+  
 }
 
 //Tick Function
@@ -185,7 +220,7 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		}
 		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor,ActorNotUseTime, false);				
 			
-		}
+	}
 	
 }
 
@@ -193,6 +228,7 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 void APoolActor::StopUsingTheActor()
 {
 	SetNotUse();
+	RerunConstructionScripts();
 }
 
 
