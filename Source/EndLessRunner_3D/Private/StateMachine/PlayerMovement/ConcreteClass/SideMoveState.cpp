@@ -32,18 +32,19 @@ void SideMoveState::EnterState(ARunningPlayer* Player, UWorld* World)
     if (Player->CurrentMoveValue > 0 && CurrentLane < TotalNumberOfLane)  //LeftButton...
     {
         PlayerLocation = Player->GetActorLocation();
-        TargetPosition = FVector(0,PlayerLocation.Y -  LaneWidth,PlayerLocation.Z);
-        Player->SetActorLocation(TargetPosition);
+        TargetYPosition = PlayerLocation.Y - LaneWidth;
+       // Player->SetActorLocation(TargetPosition);
         CurrentLane++;
     }
     else if (Player->CurrentMoveValue < 0 && CurrentLane > 1)       //Right Button...
     {
         PlayerLocation = Player->GetActorLocation();
-        TargetPosition = FVector(0,PlayerLocation.Y + LaneWidth,PlayerLocation.Z);
-        Player->SetActorLocation(TargetPosition);
+        TargetYPosition = PlayerLocation.Y + LaneWidth;
+
+       // Player->SetActorLocation(TargetPosition);
         CurrentLane--;
     }  
-   ;
+    PlayerInterface->TriggerMovementTimeline(TargetYPosition);
 }
 
 

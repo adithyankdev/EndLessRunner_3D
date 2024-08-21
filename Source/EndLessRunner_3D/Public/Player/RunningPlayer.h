@@ -14,7 +14,7 @@
 #include "RunningPlayer.generated.h"
 
 
-
+class USceneComponent;
 
 
 UCLASS()
@@ -23,6 +23,11 @@ class ENDLESSRUNNER_3D_API ARunningPlayer : public ACharacter , public IGetPlaye
 	GENERATED_BODY()
 
 public:
+
+	//Interface Function For Setting Action Through TimeLine
+	void TriggerMovementTimeline(float TargetYPosition) override;
+	UFUNCTION(BlueprintImplementableEvent)
+	void SetActorNewLocation(float TargetYLocation);
 
 	/*Object Initialisation Of State */
 	PlayerMoveAbstract* CurrentState;
@@ -46,6 +51,9 @@ public:
 	float CurrentMoveValue;
 
 	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Player Base")
+	USceneComponent* NonMovableScene;
+
+	UPROPERTY(BlueprintReadWrite, EditDefaultsOnly, Category = "Player Base")
 	UBoxComponent* BoxComp;
 
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Player Base")
@@ -62,6 +70,9 @@ public:
 
 	void SideMoveAction(const FInputActionValue& InputValue);
 	void JumpAction(const FInputActionValue& InputValue);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void TriggerJumpTimeline();
 
 
 

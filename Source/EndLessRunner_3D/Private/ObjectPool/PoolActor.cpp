@@ -50,6 +50,9 @@ APoolActor::APoolActor()
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("SpawnTileBox"));
 	BoxCollision->SetupAttachment(RootComponent);
 
+	GameOverCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("EndGame"));
+	GameOverCollision->SetupAttachment(RootComponent);
+
 	Arrowcomponent = CreateDefaultSubobject<UArrowComponent>(TEXT("TileSpawnPoint"));
 	Arrowcomponent->SetupAttachment(RootComponent);
 

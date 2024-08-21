@@ -8,6 +8,11 @@
 #include "Kismet/KismetSystemLibrary.h"
 
 
+void ARunningPlayer::TriggerMovementTimeline(float TargetYPosition)
+{
+	SetActorNewLocation(TargetYPosition);
+}
+
 ARunningPlayer::ARunningPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;
@@ -15,8 +20,11 @@ ARunningPlayer::ARunningPlayer()
 	//BoxComp = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision Box"));
 	//RootComponent = BoxComp;
 
+	NonMovableScene = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComp"));
+	NonMovableScene->SetupAttachment(RootComponent);
+
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
-	SpringArm->SetupAttachment(RootComponent);
+	SpringArm->SetupAttachment(NonMovableScene);
 
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraComponent->SetupAttachment(SpringArm, USpringArmComponent::SocketName);
@@ -63,6 +71,7 @@ void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
 //Jump Function That Call The Jump State...
 void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
 {
+	TriggerJumpTimeline();
 	StateLibrary[EnumState::Jump]->EnterState(this,GetWorld());
 }
 

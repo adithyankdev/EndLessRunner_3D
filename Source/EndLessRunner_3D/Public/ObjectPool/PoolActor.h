@@ -59,6 +59,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly , EditDefaultsOnly)
 	UBoxComponent* BoxCollision;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UBoxComponent* GameOverCollision;
+
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);             
 	UArrowComponent* Arrowcomponent;
 

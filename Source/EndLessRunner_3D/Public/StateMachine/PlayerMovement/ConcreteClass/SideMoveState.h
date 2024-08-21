@@ -20,7 +20,7 @@ public:
 protected:
 
 	/*For Retreving The LvlManger Data Only Once*/
-	bool FirstCheck;       
+	bool FirstCheck;
 
 	/*State Function Of Perfoming Action*/
 	virtual void EnterState(ARunningPlayer* Player, UWorld* World) override;         
@@ -50,5 +50,5 @@ protected:
 
 	//Declaring The Variables For Movement To Avoid Re-Declaration On Each Movement
 	FVector PlayerLocation;
-	FVector TargetPosition;
+	float TargetYPosition;
 };

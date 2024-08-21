@@ -22,5 +22,7 @@ class ENDLESSRUNNER_3D_API IGetPlayerInfoInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+
+	virtual void TriggerMovementTimeline(float TargetYPosition) = 0;
 	
 };
