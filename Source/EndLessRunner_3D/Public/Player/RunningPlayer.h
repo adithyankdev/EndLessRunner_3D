@@ -71,9 +71,7 @@ public:
 	void SideMoveAction(const FInputActionValue& InputValue);
 	void JumpAction(const FInputActionValue& InputValue);
 
-	UFUNCTION(BlueprintImplementableEvent)
-	void TriggerJumpTimeline();
-
-
+	UPROPERTY(BlueprintReadwrite)
+	bool DisableMovementInput;
 
 };

@@ -64,14 +64,19 @@ void ARunningPlayer::Tick(float DeltaTime)
 
 void ARunningPlayer::SideMoveAction(const FInputActionValue& InputValue)
 {
-	CurrentMoveValue = InputValue.Get<float>();
-	StateLibrary[EnumState::GroundMove]->EnterState(this,GetWorld());
+	if (!DisableMovementInput)
+	{
+		DisableMovementInput = true;
+		CurrentMoveValue = InputValue.Get<float>();
+		StateLibrary[EnumState::GroundMove]->EnterState(this, GetWorld());
+	}
+	
 }
 
 //Jump Function That Call The Jump State...
 void ARunningPlayer::JumpAction(const FInputActionValue& InputValue)
 {
-	TriggerJumpTimeline();
+	
 	StateLibrary[EnumState::Jump]->EnterState(this,GetWorld());
 }
 

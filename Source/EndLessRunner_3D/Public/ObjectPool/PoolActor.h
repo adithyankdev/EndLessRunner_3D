@@ -23,8 +23,6 @@ public:
 	APoolActor();
 	virtual ~APoolActor();
 
-	void OnConstruction(const FTransform& Transform)override;
-
 	//Interface Function
 
 	/*For Getting The Actor UseState*/
@@ -82,12 +80,6 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
 	UArrowComponent* LeftSideArrow;
-
-	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* InstancedMeshVolume;
-
-	UPROPERTY(EditDefaultsOnly)
-	UInstancedStaticMeshComponent* InstancedStaticMesh;
 
 	/*Retriving The Actor UseState*/
 	UPROPERTY()

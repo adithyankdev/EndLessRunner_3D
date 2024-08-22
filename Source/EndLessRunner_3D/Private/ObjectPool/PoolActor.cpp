@@ -68,11 +68,6 @@ APoolActor::APoolActor()
 	DirectionalArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("Direction"));
 	DirectionalArrow->SetupAttachment(RootComponent);
 
-	InstancedMeshVolume = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
-	InstancedMeshVolume->SetupAttachment(RootComponent);
-	
-	InstancedStaticMesh = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("InstanceMeshComponent"));
-	InstancedStaticMesh->SetupAttachment(InstancedMeshVolume);
 
 	RightSideArrow = CreateDefaultSubobject<UArrowComponent>(TEXT("RightArrow"));
 	RightSideArrow->SetupAttachment(RootComponent);
@@ -88,34 +83,7 @@ APoolActor::APoolActor()
 	CurrentDirection = FVector::ZeroVector;
 
 }
-void APoolActor::OnConstruction(const FTransform& Transform)
-{
-	Super::OnConstruction(Transform);
 
-	InstancedStaticMesh->ClearInstances();
-
-	InstancedStaticMesh->SetWorldLocation(InstancedMeshVolume->GetRelativeLocation());
-
-	//Getting The Bounds Of The BoxCollision 
-	FVector BoxExtent = InstancedMeshVolume->GetScaledBoxExtent();
-	FVector Origin = InstancedMeshVolume->GetComponentLocation();
-
-	//Loop For Adding Instances
-	for (int32 i = 0; i < 100; ++i)
-	{
-		FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(Origin, BoxExtent);
-
-		//float RandomScaleXY = FMath::FRandRange(2.0f, 5.0f);
-		float RandomScaleY = FMath::FRandRange(1.0f, 2.0f);
-		float RandomScaleZ = FMath::FRandRange(1.0f, 2.0f);
-
-		//Setting Up The Transform For Instance
-		FTransform InstanceTransform(FRotator::ZeroRotator, RandomLocation, FVector(RandomScaleY, RandomScaleY, RandomScaleZ));
-
-		// Adding Instance To InstancedStaticMesh
-		InstancedStaticMesh->AddInstance(InstanceTransform);
-	}
-}
 APoolActor::~APoolActor()
 {
 
@@ -191,6 +159,7 @@ void APoolActor::SpawnObstacle()
 		ChildComponent->SetChildActorClass(ObstacleClasses);
 		ChildComponent->RegisterComponent();
 		ChildComponent->AttachToComponent(ObstacleTras[Index], FAttachmentTransformRules::KeepRelativeTransform);
+
 	}
 }
 
