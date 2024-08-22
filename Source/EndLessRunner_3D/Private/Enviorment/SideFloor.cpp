@@ -35,7 +35,7 @@ void ASideFloor::OnConstruction(const FTransform& Transform)
 	FVector Origin = BoxCollision->GetComponentLocation();
 
 	//Loop For Adding Instances
-	for (int32 i = 0; i < 40; ++i)
+	for (int32 i = 0; i < 25; ++i)
 	{
 		FVector RandomLocation = UKismetMathLibrary::RandomPointInBoundingBox(Origin, BoxExtent);
 
