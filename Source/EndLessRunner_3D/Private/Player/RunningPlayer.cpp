@@ -2,6 +2,7 @@
 
 
 #include "Player/RunningPlayer.h"
+#include "Interface/GameInstanceInterface.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/SideMoveState.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/JumpState.h"
 #include "GameFramework\CharacterMovementComponent.h"
@@ -53,6 +54,14 @@ void ARunningPlayer::BeginPlay()
 	Super::BeginPlay();
 	
 	GetCharacterMovement()->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
+}
+
+void ARunningPlayer::SetupTheCharacterMesh()
+{
+	if (GetGameInstance() && GetGameInstance()->Implements<UGameInstanceInterface>())
+	{
+		GetMesh()->SetSkeletalMesh(Cast<IGameInstanceInterface>(GetGameInstance())->GetCharacterMesh());
+	}
 }
 
 // Called every frame

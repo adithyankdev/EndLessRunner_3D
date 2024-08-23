@@ -44,6 +44,10 @@ protected:
 	UPROPERTY()
 	bool ConstraintToogle;
 
+private:
+
+	void SetupTheCharacterMesh();
+
 public:	
 	virtual void Tick(float DeltaTime) override;
 
