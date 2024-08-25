@@ -5,6 +5,7 @@
 #include "Interface/GameInstanceInterface.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/SideMoveState.h"
 #include "StateMachine/PlayerMovement/ConcreteClass/JumpState.h"
+#include "Other/FinaliseMeshOnCharacter/FinaliseCharacter.h"
 #include "GameFramework\CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -40,7 +41,8 @@ ARunningPlayer::ARunningPlayer()
 	StateLibrary.Add(EnumState::GroundMove, temp);
 	temp = new JumpState();
 	StateLibrary.Add(EnumState::Jump, temp);
-	
+
+	CharacterMeshAbstract = new FinaliseCharacter();
 }
 
 ARunningPlayer::~ARunningPlayer()
@@ -53,15 +55,23 @@ void ARunningPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	SetupTheCharacterMesh();
+
 	GetCharacterMovement()->SetPlaneConstraintAxisSetting(EPlaneConstraintAxisSetting::X);
+
 }
 
 void ARunningPlayer::SetupTheCharacterMesh()
 {
 	if (GetGameInstance() && GetGameInstance()->Implements<UGameInstanceInterface>())
 	{
-		GetMesh()->SetSkeletalMesh(Cast<IGameInstanceInterface>(GetGameInstance())->GetCharacterMesh());
+		IGameInstanceInterface* Interface = Cast<IGameInstanceInterface>(GetGameInstance());
+		USkeletalMesh* CharacterMesh = Interface->GetCharacterMesh();
+		int AnimationIndex = Interface->GetAnimationIndex();
+
+		CharacterMeshAbstract->SetUpCharacterMesh(this, CharacterMesh, AnimationIndex);
 	}
+	
 }
 
 // Called every frame

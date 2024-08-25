@@ -24,12 +24,21 @@ protected:
 	UPROPERTY()
 	USkeletalMesh* GameCharacterMesh;
 
+	UPROPERTY()
+	int AnimationIndex;
+
 public:
 
-	void SetCharacterMesh(USkeletalMesh* NewMesh) override;
+	UFUNCTION()
+	void SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex) override;
 
+	
 	USkeletalMesh* GetCharacterMesh() override;
 
+	//Interface Function
+	int GetAnimationIndex() override;
 
+	UPROPERTY()
+	FName RunningLevelName;
 
 };

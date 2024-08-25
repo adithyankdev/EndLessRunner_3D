@@ -15,6 +15,7 @@
 
 
 class USceneComponent;
+class SetMeshAbstract;
 
 
 UCLASS()
@@ -33,6 +34,8 @@ public:
 	PlayerMoveAbstract* CurrentState;
 
 	TMap<EnumState, PlayerMoveAbstract*>StateLibrary;
+
+	SetMeshAbstract* CharacterMeshAbstract;
 
 	ARunningPlayer();
 	~ARunningPlayer();

@@ -25,6 +25,7 @@ class ENDLESSRUNNER_3D_API IGameInstanceInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 
-	virtual void SetCharacterMesh(USkeletalMesh* NewMesh) = 0;
+	virtual void SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex) = 0;
 	virtual USkeletalMesh* GetCharacterMesh() = 0; 
+	virtual int GetAnimationIndex() = 0; 
 };

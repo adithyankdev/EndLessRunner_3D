@@ -16,7 +16,7 @@ ACharacterSelectionActor::ACharacterSelectionActor()
 	PrimaryActorTick.bCanEverTick = false;
 
 	BaseMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("SkeletalActor"));
-	CurrentIndex = 1; 
+	CurrentIndex = 0; 
 
 }
 
@@ -24,6 +24,8 @@ ACharacterSelectionActor::ACharacterSelectionActor()
 void ACharacterSelectionActor::BeginPlay()
 {
 	Super::BeginPlay();
+
+	BaseMesh->SetSkeletalMesh(GameCharactersMesh[0]);
 
 	if (SelectionWidgetClass)
 	{
@@ -36,11 +38,7 @@ void ACharacterSelectionActor::BeginPlay()
 			SelectionWidget->AddToViewport();
 			UE_LOG(LogTemp,Warning,TEXT("SelectionWdiget Is Good To Go ---"))
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Widget Not Created -- Selection Widget Is NuLL"));
-		}
-		//SelectionWidget->AddToViewport();
+		
 	}
 
 }
@@ -79,12 +77,9 @@ void ACharacterSelectionActor::ChangeBaseMesh()
 
 void ACharacterSelectionActor::FinaliseCharacterMesh()
 {
-	//if (GetGameInstance())
-	//{
-		if ( GetGameInstance() &&  GetGameInstance()->Implements<UGameInstanceInterface>())
-		{
-			Cast<IGameInstanceInterface>(GetGameInstance())->SetCharacterMesh(GameCharactersMesh[CurrentIndex]);
-		}
-	//}
+	if ( GetGameInstance() &&  GetGameInstance()->Implements<UGameInstanceInterface>())
+	{
+		Cast<IGameInstanceInterface>(GetGameInstance())->SetCharacterMesh(GameCharactersMesh[CurrentIndex],CurrentIndex);
+	}
 }
 
