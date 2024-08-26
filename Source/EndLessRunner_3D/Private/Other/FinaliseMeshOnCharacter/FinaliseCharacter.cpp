@@ -5,23 +5,16 @@
 #include "GameFramework/Character.h"
 
 #include "Animations/DeerAnimInstance.h"
+#include "Animations/PigAnimInstance.h"
+#include "Animations/FoxAnimInstance.h"
+
 
 FinaliseCharacter::FinaliseCharacter()
 {
-	DeerBPAnimInstance = StaticLoadClass(UDeerAnimInstance::StaticClass(), nullptr, TEXT("/Game/Player/Deer/ABP_DeerAnimInstance.ABP_DeerAnimInstance"));
+	DeerBPAnimInstance = StaticLoadClass(UDeerAnimInstance::StaticClass(), nullptr, TEXT("/Game/Player/Deer/ABP_DeerAnimInstance.ABP_DeerAnimInstance_C"));
+	PigBPAnimInstance = StaticLoadClass(UPigAnimInstance::StaticClass(), nullptr, TEXT("/Game/Player/Pig/ABP_PigAnimInstance.ABP_PigAnimInstance_C"));
+	FoxBPAnimInstance = StaticLoadClass(UFoxAnimInstance::StaticClass(), nullptr, TEXT("/Game/Player/Fox/ABP_FoxAnimInstance.ABP_FoxAnimInstance_C"));
 	
-	if (DeerBPAnimInstance)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Hello World"));
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error , TEXT("Hello World"));
-	}
-
-	/*PigMeshAnimation = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Player/Pig/ABP_PigAnimInstance.ABP_PigAnimInstance"));
-	FoxMeshAnimation = LoadObject<UAnimSequence>(nullptr, TEXT("/Game/Player/Fox/ABP_FoxAnimInstance.ABP_FoxAnimInstance"));*/
-
 }
 
 FinaliseCharacter::~FinaliseCharacter()
@@ -38,11 +31,11 @@ void FinaliseCharacter::SetUpCharacterMesh(ACharacter* PlayerCharacter,USkeletal
 	case 0: PlayerCharacter->GetMesh()->SetAnimInstanceClass(DeerBPAnimInstance);
 		    PlayerCharacter->GetMesh()->SetRelativeScale3D(FVector(0.7, 0.7, 0.7));
 		break;
-	//case 1:PlayerCharacter->GetMesh()->PlayAnimation(PigMeshAnimation, true);
-	//	PlayerCharacter->GetMesh()->SetRelativeScale3D(FVector(0.8, 0.8, 0.8));
-	//	break;
-	//case 2:PlayerCharacter->GetMesh()->PlayAnimation(FoxMeshAnimation, true);
-	//	PlayerCharacter->GetMesh()->SetRelativeScale3D(FVector(1.7, 1.7, 1.7));
+	case 1:PlayerCharacter->GetMesh()->SetAnimInstanceClass(PigBPAnimInstance);
+		PlayerCharacter->GetMesh()->SetRelativeScale3D(FVector(0.8, 0.8, 0.8));
+		break;
+	case 2:PlayerCharacter->GetMesh()->SetAnimInstanceClass(FoxBPAnimInstance);
+		PlayerCharacter->GetMesh()->SetRelativeScale3D(FVector(1.7, 1.7, 1.7));
 	}
 
 	UE_LOG(LogTemp, Warning,TEXT("Animation Index For The Mesh  : : :  %d"), AnimationIndex);

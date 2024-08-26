@@ -23,7 +23,7 @@ void JumpState::EnterState(ARunningPlayer* Player, UWorld* World)
 		if (OnGround(Player, World))
 		{
 			bIsJumping = true;
-			FVector LaunchVelocity = FVector(0, 0, 500);
+			FVector LaunchVelocity = FVector(0, 0, 350);
 			Player->LaunchCharacter(LaunchVelocity, false, false);
 			World->GetTimerManager().SetTimer(StopJumpTime, [this]() { this->ResetJumping(); }, 1.0f, true);
 			

@@ -20,7 +20,7 @@ public:
 private:
 
 	UClass* DeerBPAnimInstance;
-	UAnimInstance* PigBPAnimInstance;
-	UAnimInstance* FoxBPAnimInstance;
+	UClass* PigBPAnimInstance;
+	UClass* FoxBPAnimInstance;
 
 };
