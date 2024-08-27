@@ -4,9 +4,32 @@
 #include "GameInstance/RunnerGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "SaveGame/RunnerSaveGame.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+URunnerGameInstance::URunnerGameInstance()
+{
+	SlotName = FString("EndlessRunnerSaveSlot_1");
+	RunningLevelName = FName("Level");
+}
+
 void URunnerGameInstance::Init()
 {
-	RunningLevelName = FName("Level");
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Event Init -- GameInstance "), true, true, FLinearColor::Blue);
+	if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+	{
+		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("SaveGameObject Loaded"), true, true, FLinearColor::Green);
+	}
+	else
+	{
+		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::CreateSaveGameObject(URunnerSaveGame::StaticClass()));
+
+		UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName, 0);
+
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("SaveGameObject Created "), true, true, FLinearColor::Red);
+	}
+	
 }
 
 void URunnerGameInstance::SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex)

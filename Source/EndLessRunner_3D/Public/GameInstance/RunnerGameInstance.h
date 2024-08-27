@@ -8,6 +8,7 @@
 #include "RunnerGameInstance.generated.h"
 
 class USkeletalMesh;
+class URunnerSaveGame;
 
 /**
  * 
@@ -16,10 +17,21 @@ UCLASS()
 class ENDLESSRUNNER_3D_API URunnerGameInstance : public UGameInstance , public IGameInstanceInterface
 {
 	GENERATED_BODY()
+
+public:
+
+	URunnerGameInstance();
 	
 protected:
 
 	void Init() override;
+
+	//Interface Function
+	int GetAnimationIndex() override;
+	USkeletalMesh* GetCharacterMesh() override;
+	void SetCharacterMesh(USkeletalMesh* NewMesh, int CurrentAnimationIndex) override;
+
+private :
 
 	UPROPERTY()
 	USkeletalMesh* GameCharacterMesh;
@@ -27,18 +39,13 @@ protected:
 	UPROPERTY()
 	int AnimationIndex;
 
-public:
-
-	UFUNCTION()
-	void SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex) override;
-
-	
-	USkeletalMesh* GetCharacterMesh() override;
-
-	//Interface Function
-	int GetAnimationIndex() override;
-
 	UPROPERTY()
 	FName RunningLevelName;
+
+	UPROPERTY()
+	FString SlotName;
+
+	UPROPERTY()
+	URunnerSaveGame* SaveGameObject;
 
 };
