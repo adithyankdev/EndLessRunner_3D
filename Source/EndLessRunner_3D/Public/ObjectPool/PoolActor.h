@@ -12,6 +12,8 @@
 #include "Components/SceneComponent.h"
 #include "PoolActor.generated.h"
 
+DECLARE_DELEGATE(FOnGameEnd);
+
 class UObjectPoolComp;
 UCLASS()
 
@@ -37,6 +39,9 @@ public:
 	 /*Varibale Responsible For SetActorNotToUse In Time*/
 	 static float ActorNotUseTime;
 
+
+	 /*Delegate Instance*/
+	 FOnGameEnd GameEnded;
 
 	void IncreaseSpeed() override;
 
@@ -144,5 +149,8 @@ public:
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep,
 		const FHitResult& SweepResult);
 
+	/*For Infroming That Game End*/
+	UFUNCTION()
+	void OnEndGameOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 };
 

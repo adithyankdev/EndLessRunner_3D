@@ -68,6 +68,7 @@ void ARunningPlayer::SetupTheCharacterMesh()
 		IGameInstanceInterface* Interface = Cast<IGameInstanceInterface>(GetGameInstance());
 		USkeletalMesh* CharacterMesh = Interface->GetCharacterMesh();
 		int AnimationIndex = Interface->GetAnimationIndex();
+		Interface->ClearUnnecessaryData();
 
 		CharacterMeshAbstract->SetUpCharacterMesh(this, CharacterMesh, AnimationIndex);
 	}

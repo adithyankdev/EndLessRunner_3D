@@ -10,6 +10,7 @@
 #include "LevelManager.generated.h"
 
 class UObjectPoolComp;
+class APoolActor;
 
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManagerMembers
@@ -40,7 +41,8 @@ protected:
 	/*Begin Play Function*/
 	virtual void BeginPlay() override;
 
-
+	UPROPERTY(EditDefaultsOnly)
+	APoolActor* PooledActor;
 
 public:	
 	

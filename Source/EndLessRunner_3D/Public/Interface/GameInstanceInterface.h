@@ -28,4 +28,7 @@ public:
 	virtual void SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex) = 0;
 	virtual USkeletalMesh* GetCharacterMesh() = 0; 
 	virtual int GetAnimationIndex() = 0; 
+	virtual void SetHighestScore(int32 Value) = 0;
+	virtual int32 GetHightestScoreValue() = 0; 
+	virtual void ClearUnnecessaryData() = 0;
 };

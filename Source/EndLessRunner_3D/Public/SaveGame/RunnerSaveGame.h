@@ -14,8 +14,9 @@ class ENDLESSRUNNER_3D_API URunnerSaveGame : public USaveGame
 {
 	GENERATED_BODY()
 	
-private :
+public:
 
+	UPROPERTY()
 	int32 HighestScore;
 
 };

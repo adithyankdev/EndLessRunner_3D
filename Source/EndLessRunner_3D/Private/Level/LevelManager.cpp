@@ -91,6 +91,6 @@ void ALevelManager::CacheInterface()
 void ALevelManager::IncreseSpeed()
 {
 	ObjectPoolComponent->ChangeSpeed();
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Hellow"));
+	
 }
 

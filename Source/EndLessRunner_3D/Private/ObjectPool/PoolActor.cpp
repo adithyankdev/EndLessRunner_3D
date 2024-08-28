@@ -11,7 +11,7 @@
 
 
 float APoolActor::Speed = 0.0f;
-float APoolActor::ActorNotUseTime = 2.0f;
+float APoolActor::ActorNotUseTime = 3.0f;
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
 bool APoolActor::CurrentActorUseState()
@@ -105,9 +105,9 @@ void APoolActor::BeginPlay()
 	SetComponentTransform();                                                                //Setting Up Obstacle Transfrom...
 	SpawnObstacle();                                                                        //Spawning Child ActorComponent...
 	SetupSideFloorChild();
-	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
 
-  
+	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
+	GameOverCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnEndGameOverlap);
 }
 
 //Tick Function
@@ -192,6 +192,16 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		}
 		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor,ActorNotUseTime, false);				
 			
+	}
+	
+}
+
+void APoolActor::OnEndGameOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if (OtherActor->IsA(ARunningPlayer::StaticClass()))
+	{
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Game Over"), true, true, FLinearColor::Red);
+		GameEnded.ExecuteIfBound();
 	}
 	
 }

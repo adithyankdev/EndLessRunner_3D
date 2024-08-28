@@ -15,31 +15,43 @@ URunnerGameInstance::URunnerGameInstance()
 
 void URunnerGameInstance::Init()
 {
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Event Init -- GameInstance "), true, true, FLinearColor::Blue);
+	//Checking Wheather SaveGame Exist 
 	if (UGameplayStatics::DoesSaveGameExist(SlotName, 0))
 	{
+		//If Exist , Then Loading The Data
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("SaveGameObject Loaded"), true, true, FLinearColor::Green);
 	}
 	else
 	{
+		//If Doesn't Exist , The Creating A Slot And Saving It 
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::CreateSaveGameObject(URunnerSaveGame::StaticClass()));
-
 		UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName, 0);
-
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("SaveGameObject Created "), true, true, FLinearColor::Red);
 	}
-	
 }
 
 void URunnerGameInstance::SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex)
 {
+	//Storing Values For Passing It On Next Lvl
 	GameCharacterMesh = NewMesh; 
 	AnimationIndex = CurrentAnimationIndex;
 
+	//Openening Next Lvl After Player Selecting The Mesh
 	UGameplayStatics::OpenLevel(GetWorld(), RunningLevelName);
+}
 
-	UE_LOG(LogTemp, Warning, TEXT("Game Instnace Function Triggered"));
+void URunnerGameInstance::SetHighestScore(int32 Value)
+{
+	HightScore = Value;
+}
+
+int32 URunnerGameInstance::GetHightestScoreValue()
+{
+	return SaveGameObject->HighestScore;
+}
+
+void URunnerGameInstance::ClearUnnecessaryData()
+{
+	GameCharacterMesh = nullptr;
 }
 
 USkeletalMesh* URunnerGameInstance::GetCharacterMesh()

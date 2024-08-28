@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Interface/GameInstanceInterface.h"
 #include "InGameWidget.generated.h"
 
 class UTextBlock;
@@ -18,9 +19,30 @@ class ENDLESSRUNNER_3D_API UInGameWidget : public UUserWidget
 
 protected:
 
+	void NativeConstruct() override;
+
+	/*Score Value*/
+	UPROPERTY()
 	int32 ScoreValue;
 
+	/*Text Block For Representing The ScoreValue*/
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* HightestScoreValue;
+	UTextBlock* HighestScoreValue;
+
+	/*Caching GameInstnace Interface*/
+	UPROPERTY()
+	TScriptInterface<IGameInstanceInterface>GM_Interface;
+	
+	/*Function For Binding The TextBlock And Int Variable*/
+	void BindText();
+	
+	/*Function Calling UpdateFunction Using Timer*/
+	void StartScoreUpdating();
+
+	/*Timer For Calling Update Function*/
+	FTimerHandle ScoreUpdateTimer;
+
+	/*For Updating The Score Over Time*/
+	void UpdateScore();
 	
 };

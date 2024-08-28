@@ -42,5 +42,6 @@ public:
 	//Delegates
 	FOnButtonClicked ChangeCharcter;
 	FOnButtonClicked CharacterSelected;
+
 	
 };

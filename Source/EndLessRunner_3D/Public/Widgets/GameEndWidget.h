@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenu.generated.h"
+#include "GameEndWidget.generated.h"
 
-class UTextBlock;
+class UButton;
 
 /**
  * 
  */
 UCLASS()
-class ENDLESSRUNNER_3D_API UMainMenu : public UUserWidget
+class ENDLESSRUNNER_3D_API UGameEndWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -21,8 +21,12 @@ protected:
 	void NativeConstruct() override;
 
 	UPROPERTY(meta = (BindWidget))
-	UTextBlock* CurrentHighestScore;
+	UButton* RestartGameButton;
 
-	void BindText();
-	
+	UPROPERTY(meta = (BindWidget))
+	UButton* QuitLevelButton;
+
+	void RestartButtonFunction();
+	void QuitButtonFunction();
+
 };
