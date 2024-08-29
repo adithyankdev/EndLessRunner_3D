@@ -23,6 +23,7 @@ public:
 	 void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
 	 int  GetRandomInteger(int RandomNumber) override;
 	 void GetSpawnTransform() override; 
+	 void CallDeadWidget() override;
 
 	ALevelManager();
 	 
@@ -40,9 +41,6 @@ protected:
 
 	/*Begin Play Function*/
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly)
-	APoolActor* PooledActor;
 
 public:	
 	
@@ -65,12 +63,15 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	float LevelSpwaningSpeed;
 
-	UPROPERTY()
-	TScriptInterface<IGetPlayerInfoInterface>PlayerInterface;
-	void CacheInterface();
 
+	/*Timer For Calling Speed Function*/
 	FTimerHandle SpeedIncrementTimer;
 
+	/*For Increasing The Speed Of Pooled Actor Over Time*/
 	void IncreseSpeed();
+
+	UPROPERTY(EditDefaultsOnly , Category = "LevelValues")
+	TSubclassOf<class UGameEndWidget> EndGameWidgetClass;
+
 
 };

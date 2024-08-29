@@ -7,6 +7,11 @@
 #include "InputAction.h"
 
 
+UPlayerInputComponent::UPlayerInputComponent()
+{
+
+}
+
 void UPlayerInputComponent::SetupInputBindings()
 {
     PlayerMappingContext = NewObject<UInputMappingContext>(this);

@@ -27,6 +27,8 @@ public:
 
 	//Interface Function For Setting Action Through TimeLine
 	void TriggerMovementTimeline(float TargetYPosition) override;
+	USceneComponent* GetNonMovableComponent() override;
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void SetActorNewLocation(float TargetYLocation);
 

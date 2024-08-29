@@ -28,4 +28,6 @@ public:
 	ARunningPlayer* GetOwnerPlayer();
 
 	virtual void BeginPlay() override;
+
+	void SetupInputComponent() override;
 };

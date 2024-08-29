@@ -94,6 +94,8 @@ public:
 	UPROPERTY()
 	int TotalSpawnCount;
 
-	void ChangeSpeed();
+	void ChangeActorSpeed();
+
+	void StopActorMoving();
 
 };

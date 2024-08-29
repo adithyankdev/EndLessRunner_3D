@@ -7,6 +7,9 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
+#include "Blueprint/UserWidget.h"
+#include "Widgets/GameEndWidget.h"
+
 
 //Interface Function That Set LaneValues On Recived Parameters...
 void ALevelManager::LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane)
@@ -44,6 +47,12 @@ void ALevelManager::GetSpawnTransform()
 {
    ObjectPoolComponent->UseFromPool(); 
 }
+//Creating Game Over Widget And Adding To Viewport
+void ALevelManager::CallDeadWidget()
+{
+	UGameEndWidget* Widget = CreateWidget<UGameEndWidget>(GetWorld(), EndGameWidgetClass);
+	Widget->AddToViewport();
+}
 
 // Sets default values
 ALevelManager::ALevelManager()
@@ -62,11 +71,12 @@ ALevelManager::ALevelManager()
 void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
-	CacheInterface();
 
 	GetWorld()->GetTimerManager().SetTimer(SpeedIncrementTimer, this, &ALevelManager::IncreseSpeed, 10, true);
 
 }
+
+
 
 // Called every frame...
 void ALevelManager::Tick(float DeltaTime)
@@ -75,22 +85,12 @@ void ALevelManager::Tick(float DeltaTime)
 
 }
 
-void ALevelManager::CacheInterface()
-{
-	AActor* Player = UGameplayStatics::GetActorOfClass(GetWorld(),ARunningPlayer::StaticClass());
-	if (Player)
-	{
-		PlayerInterface.SetObject(Player);
-		if (IGetPlayerInfoInterface* Interface = Cast <IGetPlayerInfoInterface>(Player))
-		{
-			PlayerInterface.SetInterface(Interface);
-		}
-	}
-}
+
 
 void ALevelManager::IncreseSpeed()
 {
-	ObjectPoolComponent->ChangeSpeed();
+	ObjectPoolComponent->ChangeActorSpeed();
 	
 }
+
 

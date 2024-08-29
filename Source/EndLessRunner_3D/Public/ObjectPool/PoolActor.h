@@ -12,7 +12,7 @@
 #include "Components/SceneComponent.h"
 #include "PoolActor.generated.h"
 
-DECLARE_DELEGATE(FOnGameEnd);
+DECLARE_MULTICAST_DELEGATE(FOnGameEnd);
 
 class UObjectPoolComp;
 UCLASS()
@@ -33,12 +33,15 @@ public:
 	virtual void SetActorInUse()override;
 	/*Retrving The SpawnArrowComponent Transform For Next Setting NxtTileTransform*/
 	virtual FTransform SpawnArrowTransform() override;
+	/*Stoping Actor Movement*/
+	void StopMoving() override;
 
 	/*Varibale Responsible For The Floor Move Speed*/
 	 static float Speed;
 	 /*Varibale Responsible For SetActorNotToUse In Time*/
 	 static float ActorNotUseTime;
-
+	 /*Variable Responsible For Actor Tick*/
+	 static bool CanActorTick;
 
 	 /*Delegate Instance*/
 	 FOnGameEnd GameEnded;
@@ -127,6 +130,10 @@ private:
 
 	UFUNCTION()
 	void SetupSideFloorChild();
+
+
+	FTimerHandle ReduceSpeedTimer;
+	void ReduceSpeed();
 
 public:	
 

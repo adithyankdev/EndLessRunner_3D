@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "GetPlayerInfoInterface.generated.h"
 
+class UCameraComponent;
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UGetPlayerInfoInterface : public UInterface
@@ -24,5 +26,7 @@ class ENDLESSRUNNER_3D_API IGetPlayerInfoInterface
 public:
 
 	virtual void TriggerMovementTimeline(float TargetYPosition) = 0;
+
+	virtual USceneComponent* GetNonMovableComponent() = 0;
 	
 };

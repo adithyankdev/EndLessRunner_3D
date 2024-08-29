@@ -15,7 +15,11 @@ class ENDLESSRUNNER_3D_API UPlayerInputComponent : public UEnhancedInputComponen
 	GENERATED_BODY()
 	
 public:
+
+	UPlayerInputComponent();
+
 	virtual void SetupInputBindings();
+
 
 	UPROPERTY()
 	class UInputMappingContext* PlayerMappingContext;

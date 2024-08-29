@@ -12,6 +12,7 @@
 
 float APoolActor::Speed = 0.0f;
 float APoolActor::ActorNotUseTime = 3.0f;
+bool APoolActor::CanActorTick = true;
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
 bool APoolActor::CurrentActorUseState()
@@ -24,7 +25,7 @@ bool APoolActor::CurrentActorUseState()
 void APoolActor::SetActorInUse()
 {
 	SetInUse(true);
-	this->RerunConstructionScripts();
+	
 }
 
 //Getting The ArrowComponent  For Spawning The Next Tile ...
@@ -32,6 +33,24 @@ FTransform APoolActor::SpawnArrowTransform()
 {
 	return Arrowcomponent->GetComponentTransform();
 }
+
+void APoolActor::StopMoving()
+{
+	GetWorld()->GetTimerManager().SetTimer(ReduceSpeedTimer, this, &APoolActor::ReduceSpeed, 0.5,true);
+	
+}
+
+void APoolActor::ReduceSpeed()
+{
+	if (Speed > 50)
+	{
+		Speed = 0;
+		CanActorTick = false;
+		GetWorld()->GetTimerManager().ClearTimer(ReduceSpeedTimer);
+	}
+	Speed -= 50;
+}
+
 
 void APoolActor::IncreaseSpeed()
 {
@@ -94,6 +113,7 @@ void APoolActor::BeginPlay()
 {
 	Super::BeginPlay();
 	Speed = 800.0f;
+	CanActorTick = true;
 	SetInUse(false);
 	CurrentDirection = FVector(-1,0,0);  //Setting Initial Movement Direction ...
 	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
@@ -107,6 +127,7 @@ void APoolActor::BeginPlay()
 	SetupSideFloorChild();
 
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
+
 	GameOverCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnEndGameOverlap);
 }
 
@@ -114,6 +135,7 @@ void APoolActor::BeginPlay()
 void APoolActor::Tick(float DeltaTime)
 {   
 	AddActorLocalOffset(((CurrentDirection)*Speed)* DeltaTime);
+	if (CanActorTick == false)SetActorTickEnabled(CanActorTick);
 }
 
 //Function That Set Property When The Actor Is On Use ..
@@ -179,7 +201,6 @@ void APoolActor::SetupSideFloorChild()
 	}
 }
 
-
 //BeginOverlap Functin For Using The Next Tile On The Front And Not Using the Last Tile ...
 void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -190,18 +211,24 @@ void APoolActor::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor
 		{
 		   GetWorld()->GetTimerManager().ClearTimer(NotUseActorTimer);
 		}
-		GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor,ActorNotUseTime, false);				
-			
+	    GetWorld()->GetTimerManager().SetTimer(NotUseActorTimer, this, &APoolActor::StopUsingTheActor, ActorNotUseTime, false);
 	}
 	
 }
 
 void APoolActor::OnEndGameOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA(ARunningPlayer::StaticClass()))
+	if (OtherActor->IsA(ACharacter::StaticClass()))
 	{
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Game Over"), true, true, FLinearColor::Red);
-		GameEnded.ExecuteIfBound();
+		if (GameEnded.IsBound())
+		{
+			GameEnded.Broadcast();
+			UKismetSystemLibrary::PrintString(GetWorld(), TEXT(" BOUND"), true, true, FLinearColor::Yellow);
+		}
+		else
+		{
+			UKismetSystemLibrary::PrintString(GetWorld(), TEXT("N0t BOUND"), true, true, FLinearColor::Blue);
+		}
 	}
 	
 }
@@ -210,7 +237,6 @@ void APoolActor::OnEndGameOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 void APoolActor::StopUsingTheActor()
 {
 	SetNotUse();
-	RerunConstructionScripts();
 }
 
 

@@ -15,6 +15,11 @@ void ARunningPlayer::TriggerMovementTimeline(float TargetYPosition)
 	SetActorNewLocation(TargetYPosition);
 }
 
+USceneComponent* ARunningPlayer::GetNonMovableComponent()
+{
+	return NonMovableScene;
+}
+
 ARunningPlayer::ARunningPlayer()
 {
 	PrimaryActorTick.bCanEverTick = true;

@@ -12,15 +12,14 @@
 ARnningPlayerController::ARnningPlayerController()
 {
 	PlayerInputComp = CreateDefaultSubobject<UPlayerInputComponent>(TEXT("CustomPlayerInputComponent"));
-	PlayerInputComp->RegisterComponent();
-	PlayerInputComp->SetupInputBindings();
-	PlayerInputComp->Activate();
+	
 	this->InputComponent = PlayerInputComp;
 }
 
 
 void ARnningPlayerController::BeginPlay()
 {	
+	
 	ARunningPlayer* MainPlayer = GetOwnerPlayer();
 	Possess(MainPlayer);
 
@@ -34,6 +33,14 @@ void ARnningPlayerController::BeginPlay()
 	PlayerInputComp->BindAction(PlayerInputComp->MoveInput, ETriggerEvent::Started, MainPlayer, &ARunningPlayer::SideMoveAction);
 	PlayerInputComp->BindAction(PlayerInputComp->JumpInput, ETriggerEvent::Triggered, MainPlayer, &ARunningPlayer::JumpAction);
 
+}
+
+void ARnningPlayerController::SetupInputComponent()
+{
+	PlayerInputComp->SetupInputBindings();
+	PlayerInputComp->RegisterComponent();
+	PlayerInputComp->Activate();
+	
 }
 
 

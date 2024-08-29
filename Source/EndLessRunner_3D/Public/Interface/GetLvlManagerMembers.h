@@ -26,4 +26,6 @@ public:
 	virtual void LvlManagerLaneValues(int& TotalLanes , float& WidthOfLane)=0;
 	virtual int GetRandomInteger(int RandomNumber) = 0;
 	virtual void GetSpawnTransform() = 0;
+	virtual void CallDeadWidget() = 0; 
+	
 };
