@@ -48,10 +48,17 @@ void ALevelManager::GetSpawnTransform()
    ObjectPoolComponent->UseFromPool(); 
 }
 //Creating Game Over Widget And Adding To Viewport
-void ALevelManager::CallDeadWidget()
+void ALevelManager::NotifyPlayerHit()
 {
-	UGameEndWidget* Widget = CreateWidget<UGameEndWidget>(GetWorld(), EndGameWidgetClass);
-	Widget->AddToViewport();
+	if (CallOnce)
+	{
+		GameOver.ExecuteIfBound();
+		ObjectPoolComponent->PoolActorInterface->StopMoving(); // Stoping Pool Actor Movement
+		UGameEndWidget* Widget = CreateWidget<UGameEndWidget>(GetWorld(), EndGameWidgetClass);
+		Widget->AddToViewport();
+
+		CallOnce = false;
+	}
 }
 
 // Sets default values
@@ -65,6 +72,7 @@ ALevelManager::ALevelManager()
 	StraightTileSpawnCount = 0; 
 	ObjectPoolComponent = CreateDefaultSubobject<UObjectPoolComp>(TEXT("ActorComponent"));
 
+	CallOnce = true;
 }
 
 // Called when the game starts or when spawned...

@@ -42,13 +42,13 @@ void APoolActor::StopMoving()
 
 void APoolActor::ReduceSpeed()
 {
-	if (Speed > 50)
+	if (Speed < 200)
 	{
 		Speed = 0;
 		CanActorTick = false;
 		GetWorld()->GetTimerManager().ClearTimer(ReduceSpeedTimer);
 	}
-	Speed -= 50;
+	Speed -= 200;
 }
 
 
@@ -220,17 +220,8 @@ void APoolActor::OnEndGameOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 {
 	if (OtherActor->IsA(ACharacter::StaticClass()))
 	{
-		if (GameEnded.IsBound())
-		{
-			GameEnded.Broadcast();
-			UKismetSystemLibrary::PrintString(GetWorld(), TEXT(" BOUND"), true, true, FLinearColor::Yellow);
-		}
-		else
-		{
-			UKismetSystemLibrary::PrintString(GetWorld(), TEXT("N0t BOUND"), true, true, FLinearColor::Blue);
-		}
+		LvlManagerInterface->NotifyPlayerHit();
 	}
-	
 }
 
 //Function That Set The Actor Not To Use ...

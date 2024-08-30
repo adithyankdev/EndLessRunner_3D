@@ -7,6 +7,9 @@
 #include "GameInstance/RunnerGameInstance.h"
 #include "Interface/GameInstanceInterface.h"
 
+#include "Level/LevelManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "SaveGame/RunnerSaveGame.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 
 
@@ -26,6 +29,12 @@ void UInGameWidget::NativeConstruct()
 		}
 	}
 	StartScoreUpdating();
+
+	if (ALevelManager* LvlManager = Cast<ALevelManager>(UGameplayStatics::GetActorOfClass(GetGameInstance()->GetWorld(),LevelManagerClass)))
+	{
+	    LvlManager->GameOver.BindUObject(this, &UInGameWidget::StopScoreUpdate);
+	}
+	
 }
 
 void UInGameWidget::BindText()
@@ -43,6 +52,16 @@ void UInGameWidget::UpdateScore()
 {
 	ScoreValue++;
 	BindText();
-	//Storing The Current Point To Instnace For Save Data
-	GM_Interface->SetHighestScore(ScoreValue);
+
+}
+
+void UInGameWidget::StopScoreUpdate()
+{
+	GetGameInstance()->GetWorld()->GetTimerManager().ClearTimer(ScoreUpdateTimer);
+	//Calling Instance Interface  For Save Data
+	if (GM_Interface->GetSaveGame()->HighestScore < ScoreValue)
+	{
+		GM_Interface->SaveData(ScoreValue);
+	}
+	
 }

@@ -7,6 +7,7 @@
 #include "GameInstanceInterface.generated.h"
 
 class USkeletalMesh;
+class URunnerSaveGame;
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
@@ -28,7 +29,7 @@ public:
 	virtual void SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAnimationIndex) = 0;
 	virtual USkeletalMesh* GetCharacterMesh() = 0; 
 	virtual int GetAnimationIndex() = 0; 
-	virtual void SetHighestScore(int32 Value) = 0;
-	virtual int32 GetHightestScoreValue() = 0; 
+	virtual void SaveData(int ScoreValue) = 0;
+	virtual URunnerSaveGame* GetSaveGame() = 0;
 	virtual void ClearUnnecessaryData() = 0;
 };

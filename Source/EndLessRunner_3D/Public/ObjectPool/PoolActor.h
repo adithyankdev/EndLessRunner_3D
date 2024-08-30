@@ -12,9 +12,8 @@
 #include "Components/SceneComponent.h"
 #include "PoolActor.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnGameEnd);
-
 class UObjectPoolComp;
+
 UCLASS()
 
 class ENDLESSRUNNER_3D_API APoolActor : public AActor , public IGetActorPoolMembers
@@ -42,9 +41,6 @@ public:
 	 static float ActorNotUseTime;
 	 /*Variable Responsible For Actor Tick*/
 	 static bool CanActorTick;
-
-	 /*Delegate Instance*/
-	 FOnGameEnd GameEnded;
 
 	void IncreaseSpeed() override;
 

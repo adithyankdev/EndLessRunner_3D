@@ -12,6 +12,8 @@
 class UObjectPoolComp;
 class APoolActor;
 
+DECLARE_DELEGATE(FOnEndGame);
+
 UCLASS()
 class ENDLESSRUNNER_3D_API ALevelManager : public AActor , public IGetLvlManagerMembers
 {
@@ -22,8 +24,8 @@ public:
 	/*Interface Function For Retriving And Setting The LvlManager  Class*/
 	 void  LvlManagerLaneValues(int& TotalLanes, float& WidthOfLane) override;
 	 int  GetRandomInteger(int RandomNumber) override;
-	 void GetSpawnTransform() override; 
-	 void CallDeadWidget() override;
+	 void GetSpawnTransform() override;
+	 void NotifyPlayerHit() override;
 
 	ALevelManager();
 	 
@@ -63,6 +65,8 @@ public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "LevelValues")
 	float LevelSpwaningSpeed;
 
+	/*Event Delegate For Trigger On EndGame*/
+	FOnEndGame GameOver;
 
 	/*Timer For Calling Speed Function*/
 	FTimerHandle SpeedIncrementTimer;
@@ -73,5 +77,5 @@ public:
 	UPROPERTY(EditDefaultsOnly , Category = "LevelValues")
 	TSubclassOf<class UGameEndWidget> EndGameWidgetClass;
 
-
+	bool CallOnce;
 };

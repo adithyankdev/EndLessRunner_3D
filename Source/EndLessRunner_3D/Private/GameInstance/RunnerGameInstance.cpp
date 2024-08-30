@@ -20,12 +20,16 @@ void URunnerGameInstance::Init()
 	{
 		//If Exist , Then Loading The Data
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Game Object Loaded"));
 	}
 	else
 	{
 		//If Doesn't Exist , The Creating A Slot And Saving It 
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::CreateSaveGameObject(URunnerSaveGame::StaticClass()));
 		UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName, 0);
+
+		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Game Created"));
 	}
 }
 
@@ -39,14 +43,17 @@ void URunnerGameInstance::SetCharacterMesh(USkeletalMesh* NewMesh,int CurrentAni
 	UGameplayStatics::OpenLevel(GetWorld(), RunningLevelName);
 }
 
-void URunnerGameInstance::SetHighestScore(int32 Value)
+void URunnerGameInstance::SaveData(int32 ScoreValue)
 {
-	HightScore = Value;
+	SaveGameObject->HighestScore = ScoreValue;
+	UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName,0);
+
+	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Data Called"), true, true, FLinearColor::White);
 }
 
-int32 URunnerGameInstance::GetHightestScoreValue()
+URunnerSaveGame* URunnerGameInstance::GetSaveGame()
 {
-	return SaveGameObject->HighestScore;
+	return SaveGameObject;
 }
 
 void URunnerGameInstance::ClearUnnecessaryData()

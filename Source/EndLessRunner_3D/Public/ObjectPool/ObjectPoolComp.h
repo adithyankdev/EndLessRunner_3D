@@ -48,9 +48,6 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-	/*For Caching The Actor Interface*/
-	TScriptInterface<IGetActorPoolMembers>PoolActorInterface;
-
 	//*Value Responsibe For Calling The CacheInterface Only At Once*/
 	bool CanCache;
 
@@ -83,6 +80,9 @@ public:
 	UPROPERTY()
 	TScriptInterface<IGetLvlManagerMembers>LvlInterface;
 
+	/*For Caching The Actor Interface*/
+	TScriptInterface<IGetActorPoolMembers>PoolActorInterface;
+
     /*Function For Storing Interface Referance*/
 	void SetInterfaces(AActor* PoolActor);
 
@@ -95,7 +95,5 @@ public:
 	int TotalSpawnCount;
 
 	void ChangeActorSpeed();
-
-	void StopActorMoving();
 
 };

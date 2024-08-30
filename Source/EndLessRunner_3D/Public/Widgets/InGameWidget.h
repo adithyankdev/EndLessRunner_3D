@@ -8,7 +8,7 @@
 #include "InGameWidget.generated.h"
 
 class UTextBlock;
-
+class ALevelManager;
 /**
  * 
  */
@@ -44,5 +44,11 @@ protected:
 
 	/*For Updating The Score Over Time*/
 	void UpdateScore();
+
+	/*For Stoping The Score When Game End*/
+	void StopScoreUpdate();
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite)
+	TSubclassOf<ALevelManager>LevelManagerClass;
 	
 };

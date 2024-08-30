@@ -4,6 +4,8 @@
 #include "Widgets/MainMenu.h"
 #include "Components/TextBlock.h"
 #include "Interface/GameInstanceInterface.h"
+#include "SaveGame/RunnerSaveGame.h"
+
 
 void UMainMenu::NativeConstruct()
 {
@@ -16,7 +18,8 @@ void UMainMenu::BindText()
 	{
 		if(IGameInstanceInterface* Interface = Cast <IGameInstanceInterface>(GetGameInstance()))
 		{
-			FText TextToBind = FText::FromString(FString::FromInt(Interface->GetHightestScoreValue()));
+		    URunnerSaveGame* SaveGame =  Interface->GetSaveGame();
+			FText TextToBind = FText::FromString(FString::FromInt(SaveGame->HighestScore));
 			CurrentHighestScore->SetText(TextToBind);
 		}
 	}

@@ -56,8 +56,6 @@ void UObjectPoolComp::InitializePool()
 				break;
 			}
 
-			if (APoolActor* PActor = Cast<APoolActor>(SpawnActor))PActor->GameEnded.AddUObject(this,&UObjectPoolComp::StopActorMoving);
-
 		}
 		if (!CanCache)SetInterfaces(SpawnActor);
 	}
@@ -136,11 +134,6 @@ void UObjectPoolComp::BatchingSpawn(int index)
 	{
 		AActor* SpawnActor = GetWorld()->SpawnActor<AActor>(PoolActorClass,FTransform::Identity, SpawnParams);
 		PoolActorArray.AddUnique(SpawnActor);
-
-		if (APoolActor* PActor = Cast<APoolActor>(SpawnActor))
-		{
-			PActor->GameEnded.AddUObject(this,&UObjectPoolComp::StopActorMoving);
-		}
 	}
 	
 }
@@ -163,12 +156,6 @@ void UObjectPoolComp::SetInterfaces(AActor* PoolActor)
 void UObjectPoolComp::ChangeActorSpeed()
 {
 	PoolActorInterface->IncreaseSpeed();
-}
-
-void UObjectPoolComp::StopActorMoving()
-{
-	PoolActorInterface->StopMoving();
-	LvlInterface->CallDeadWidget();
 }
 
 

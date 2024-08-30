@@ -30,8 +30,9 @@ protected:
 	int GetAnimationIndex() override;
 	USkeletalMesh* GetCharacterMesh() override;
 	void SetCharacterMesh(USkeletalMesh* NewMesh, int CurrentAnimationIndex) override;
-	void SetHighestScore(int32 Value) override;
-	int32 GetHightestScoreValue() override;
+	
+	void SaveData(int32 ScoreValue) override;
+	URunnerSaveGame* GetSaveGame() override;
 	void ClearUnnecessaryData() override;
 
 private :
