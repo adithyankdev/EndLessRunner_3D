@@ -31,5 +31,4 @@ public:
 	virtual int GetAnimationIndex() = 0; 
 	virtual void SaveData(int ScoreValue) = 0;
 	virtual URunnerSaveGame* GetSaveGame() = 0;
-	virtual void ClearUnnecessaryData() = 0;
 };

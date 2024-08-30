@@ -56,11 +56,6 @@ URunnerSaveGame* URunnerGameInstance::GetSaveGame()
 	return SaveGameObject;
 }
 
-void URunnerGameInstance::ClearUnnecessaryData()
-{
-	GameCharacterMesh = nullptr;
-}
-
 USkeletalMesh* URunnerGameInstance::GetCharacterMesh()
 {
 	return GameCharacterMesh;

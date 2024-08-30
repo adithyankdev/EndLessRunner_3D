@@ -35,8 +35,12 @@ void AInitialTileActor::BindText()
 	{
 		URunnerSaveGame* SaveGame =  Cast<IGameInstanceInterface>(GetGameInstance())->GetSaveGame();
 
+		if (SaveGame->HighestScore == 0)HighestScoreText->SetVisibility(false);
+
 		FText ScoreText = FText::FromString(FString::FromInt(SaveGame->HighestScore));
 		HighestScoreText->SetText(ScoreText);
+
+		
     }
 }
 

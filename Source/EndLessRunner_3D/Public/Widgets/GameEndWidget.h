@@ -26,7 +26,10 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* QuitLevelButton;
 
+	UFUNCTION()
 	void RestartButtonFunction();
+
+	UFUNCTION()
 	void QuitButtonFunction();
 
 };

@@ -33,7 +33,6 @@ protected:
 	
 	void SaveData(int32 ScoreValue) override;
 	URunnerSaveGame* GetSaveGame() override;
-	void ClearUnnecessaryData() override;
 
 private :
 
