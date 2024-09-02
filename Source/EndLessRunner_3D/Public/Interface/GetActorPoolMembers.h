@@ -36,5 +36,9 @@ public:
 	virtual void IncreaseSpeed() = 0;
 	/*For Stoping The Movement When Game Over*/
 	virtual void StopMoving() = 0; 
+	/*For Retriving The ChildActor Component*/
+	virtual AActor* GetChildActor() = 0 ;
+	/*Changing The Scale Of Child Actor Component*/
+	virtual void ChangeChildComponentScale() = 0;
 	
 };

@@ -9,10 +9,13 @@
 #include "Components/BoxComponent.h"
 #include "Components/ArrowComponent.h"
 #include "Interface/GetLvlManagerMembers.h"
+#include "Interface/RunnableBlockInterface.h"
 #include "Components/SceneComponent.h"
+
 #include "PoolActor.generated.h"
 
 class UObjectPoolComp;
+class ARunnableBlock;
 
 UCLASS()
 
@@ -34,13 +37,21 @@ public:
 	virtual FTransform SpawnArrowTransform() override;
 	/*Stoping Actor Movement*/
 	void StopMoving() override;
+	/*For Passing ChildActor -- Runnable Block*/
+	AActor* GetChildActor() override;
+	/*Scale Size Change Of Obstacle Child*/
+	void ChangeChildComponentScale() override;
+
 
 	/*Varibale Responsible For The Floor Move Speed*/
 	 static float Speed;
 	 /*Varibale Responsible For SetActorNotToUse In Time*/
 	 static float ActorNotUseTime;
+	 /*Variable Responsibel For Limit The Change Scale Of ChilActorComponent*/
+	 static float CurrentScaleValue;
 	 /*Variable Responsible For Actor Tick*/
 	 static bool CanActorTick;
+
 
 	void IncreaseSpeed() override;
 
@@ -50,9 +61,11 @@ public:
 
 protected:
 
-	/*Storing The Ref To LvlMangerInterface For Caching*/
+	/*Storing The Interfaces For Caching*/
 	UPROPERTY()
 	TScriptInterface<IGetLvlManagerMembers>LvlManagerInterface;
+    UPROPERTY()
+	TScriptInterface<IRunnableBlockInterface>ChildActorInterface;
 
 	/*Base Component Of The Actor*/
 	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly);
@@ -103,6 +116,9 @@ protected:
 
 private:
 
+	/*Child Actor Minimum Scaling Value*/
+	float MinScalableSize;
+
 	/*Setting The Obstacle*/
 	UChildActorComponent* ChildComponent;
 
@@ -127,9 +143,12 @@ private:
 	UFUNCTION()
 	void SetupSideFloorChild();
 
-
+	/*Timer For Stoping The Actor Movement */
 	FTimerHandle ReduceSpeedTimer;
+	/*Function That Reduce The Speed Of The Actor Component*/
 	void ReduceSpeed();
+
+
 
 public:	
 

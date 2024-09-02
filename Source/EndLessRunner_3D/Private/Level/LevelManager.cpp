@@ -80,7 +80,7 @@ void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorld()->GetTimerManager().SetTimer(SpeedIncrementTimer, this, &ALevelManager::IncreseSpeed, 10, true);
+	GetWorld()->GetTimerManager().SetTimer(SpeedIncrementTimer, this, &ALevelManager::IncreseSpeed, 5, true);
 
 }
 

@@ -94,6 +94,8 @@ public:
 	UPROPERTY()
 	int TotalSpawnCount;
 
+	float ActorXScaleSize;
+
 	void ChangeActorSpeed();
 
 };

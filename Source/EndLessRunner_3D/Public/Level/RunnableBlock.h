@@ -4,38 +4,29 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Components/SceneComponent.h"
-#include "Components/BoxComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "Interface/RunnableBlockInterface.h"
 #include "RunnableBlock.generated.h"
 
 UCLASS()
-class ENDLESSRUNNER_3D_API ARunnableBlock : public AActor
+class ENDLESSRUNNER_3D_API ARunnableBlock : public AActor , public IRunnableBlockInterface
 {
 	GENERATED_BODY()
 	
 public:	
+
+	void ChangeRootScaleSize() override;
+
 	// Sets default values for this actor's properties
 	ARunnableBlock();
-
-    void OnConstruction(const FTransform& Transform)override;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly)
-	USceneComponent* BaseScene;
+	USceneComponent* DefaultRoot;
 
-	UPROPERTY(EditDefaultsOnly)
-	UBoxComponent* BoxCollision;
-
-	UPROPERTY(EditDefaultsOnly)
-	UStaticMeshComponent* StaticMeshComp;
-
-	//Value For Setting The Minimun Scale Size For The Cube
-	UPROPERTY()
-	float MinScaleValue;
+	float RootXScale;
 
 public:	
 	// Called every frame

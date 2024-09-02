@@ -15,6 +15,7 @@ UObjectPoolComp::UObjectPoolComp()
 	QuickSpwanCount = 15;
 	PoolSize = 20;
 	TotalSpawnCount = 0;	
+	ActorXScaleSize = 1.0f;
 	
 }
 
@@ -156,6 +157,20 @@ void UObjectPoolComp::SetInterfaces(AActor* PoolActor)
 void UObjectPoolComp::ChangeActorSpeed()
 {
 	PoolActorInterface->IncreaseSpeed();
+
+	if (ActorXScaleSize >= 0.5)
+	{
+		for (auto* PooledActor : PoolActorArray)
+		{
+			if (IGetActorPoolMembers* PActorInterface = Cast<IGetActorPoolMembers>(PooledActor))
+			{
+				PActorInterface->ChangeChildComponentScale();
+			}
+			
+		}
+		ActorXScaleSize -= 0.05;
+	}
+	
 }
 
 

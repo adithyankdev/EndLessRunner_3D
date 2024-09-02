@@ -2,39 +2,34 @@
 
 
 #include "Level/RunnableBlock.h"
+#include "Kismet/KismetSystemLibrary.h"
+
+void ARunnableBlock::ChangeRootScaleSize()
+{
+	DefaultRoot->SetRelativeScale3D(FVector(RootXScale, 1, 1));
+	RootXScale -= 0.02f;
+
+	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%f"),RootXScale), true, true, FLinearColor::Green);
+}
 
 // Sets default values
 ARunnableBlock::ARunnableBlock()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = false;
 
-	BaseScene = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
-	SetRootComponent(BaseScene);
+	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
+	SetRootComponent(DefaultRoot);
 
-	StaticMeshComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-	StaticMeshComp->SetupAttachment(RootComponent);
 
-	BoxCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("CollisionComponent"));
-	BoxCollision->SetupAttachment(StaticMeshComp);
-
-	MinScaleValue = 10.0f;
-
-}
-
-void ARunnableBlock::OnConstruction(const FTransform& Transform)
-{
-	float MaxScaleValue = 10.0f;
-	float YValue = 1.5f;
-	float ZValue = 2.0f;
-	float XValue = FMath::FRandRange(MinScaleValue,MaxScaleValue);
-	StaticMeshComp->SetWorldScale3D(FVector(XValue,YValue,ZValue));
 }
 
 // Called when the game starts or when spawned
 void ARunnableBlock::BeginPlay()
 {
 	Super::BeginPlay();
+
+	RootXScale = 1.0f;
 	
 }
 

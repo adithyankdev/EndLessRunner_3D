@@ -7,11 +7,14 @@
 #include "Kismet/GameplayStatics.h"
 #include "Engine/EngineTypes.h"
 #include "Player/RunningPlayer.h"
+#include "Interface/RunnableBlockInterface.h"
+
 #include "Kismet/KismetMathLibrary.h"
 
 
 float APoolActor::Speed = 0.0f;
 float APoolActor::ActorNotUseTime = 3.0f;
+float APoolActor::CurrentScaleValue= 1.0f;
 bool APoolActor::CanActorTick = true;
 
 //Retrive The Current State Of Actor (On Use Or Not) ...
@@ -40,6 +43,21 @@ void APoolActor::StopMoving()
 	
 }
 
+AActor* APoolActor::GetChildActor()
+{
+	return ChildComponent->GetChildActor();
+}
+
+void APoolActor::ChangeChildComponentScale()
+{
+	if (MinScalableSize >= CurrentScaleValue)
+	{
+		ChildActorInterface->ChangeRootScaleSize();
+		CurrentScaleValue -= 0.02f;
+	}
+	
+}
+
 void APoolActor::ReduceSpeed()
 {
 	if (Speed < 200)
@@ -54,8 +72,8 @@ void APoolActor::ReduceSpeed()
 
 void APoolActor::IncreaseSpeed()
 {
-	Speed += 100.0f;
-	if (ActorNotUseTime > 0.5)ActorNotUseTime -= 0.1;
+	Speed += 25.0f;
+	if (ActorNotUseTime > 0.5)ActorNotUseTime -= 0.05;
 }
 
 
@@ -100,7 +118,7 @@ APoolActor::APoolActor()
 
 	LvlManagerInterface = nullptr ;
 	CurrentDirection = FVector::ZeroVector;
-
+	MinScalableSize = 0.5f;
 }
 
 APoolActor::~APoolActor()
@@ -116,12 +134,15 @@ void APoolActor::BeginPlay()
 	CanActorTick = true;
 	SetInUse(false);
 	CurrentDirection = FVector(-1,0,0);  //Setting Initial Movement Direction ...
+
+
 	AActor* LevelManager = UGameplayStatics::GetActorOfClass(GetWorld(), ALevelManager::StaticClass());
 	if (LevelManager && LevelManager->GetClass()->ImplementsInterface(UGetLvlManagerMembers::StaticClass()))
 	{
 		LvlManagerInterface.SetObject(LevelManager);                                         //Caching The Interface For Resusing it ...
 		LvlManagerInterface.SetInterface(Cast<IGetLvlManagerMembers>(LevelManager));
 	}
+
 	SetComponentTransform();                                                                //Setting Up Obstacle Transfrom...
 	SpawnObstacle();                                                                        //Spawning Child ActorComponent...
 	SetupSideFloorChild();
@@ -129,6 +150,12 @@ void APoolActor::BeginPlay()
 	BoxCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnBeginOverlap);
 
 	GameOverCollision->OnComponentBeginOverlap.AddDynamic(this, &APoolActor::OnEndGameOverlap);
+
+	if (IRunnableBlockInterface* Interface = Cast <IRunnableBlockInterface>(ChildComponent->GetChildActor()))
+	{
+		ChildActorInterface.SetObject(ChildComponent->GetChildActor());
+		ChildActorInterface.SetInterface(Interface);
+	}
 }
 
 //Tick Function
