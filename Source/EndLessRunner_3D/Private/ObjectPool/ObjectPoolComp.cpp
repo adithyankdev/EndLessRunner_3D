@@ -23,7 +23,7 @@ UObjectPoolComp::UObjectPoolComp()
 void UObjectPoolComp::BeginPlay()
 {
 	Super::BeginPlay();
-	SpawnTransform.SetLocation(FVector(2500.0f,0.0f,0.0f));
+	SpawnTransform.SetLocation(FVector(2100.0f,0.0f,0.0f));
 	InitializePool();
 	
 }

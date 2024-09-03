@@ -4,10 +4,13 @@
 #include "Level/RunnableBlock.h"
 #include "Kismet/KismetSystemLibrary.h"
 
+
+
+
 void ARunnableBlock::ChangeRootScaleSize()
 {
 	DefaultRoot->SetRelativeScale3D(FVector(RootXScale, 1, 1));
-	RootXScale -= 0.02f;
+	RootXScale -= 0.5f;
 
 	UKismetSystemLibrary::PrintString(GetWorld(), FString::Printf(TEXT("%f"),RootXScale), true, true, FLinearColor::Green);
 }
@@ -20,6 +23,8 @@ ARunnableBlock::ARunnableBlock()
 
 	DefaultRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneComponent"));
 	SetRootComponent(DefaultRoot);
+
+	
 
 
 }

@@ -14,20 +14,19 @@ void UGameEndWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	EndGameMapName = FName("MainMenu");
+
 	RestartGameButton->OnClicked.AddDynamic(this, &UGameEndWidget::RestartButtonFunction);
 	QuitLevelButton->OnClicked.AddDynamic(this, &UGameEndWidget::QuitButtonFunction);
 
-	UKismetSystemLibrary::PrintString(GetGameInstance()->GetWorld(), TEXT("Game Over Widget NativeConstruct"),true,true,FLinearColor::Green);
 }
 
 void UGameEndWidget::RestartButtonFunction()
 {
-	//UKismetSystemLibrary::PrintString(GetGameInstance()->GetWorld(), TEXT("RESTART"));
 	UKismetSystemLibrary::ExecuteConsoleCommand(GetGameInstance()->GetWorld(), TEXT("RestartLevel"), GetGameInstance()->GetWorld()->GetFirstPlayerController());
 }
 
 void UGameEndWidget::QuitButtonFunction()
 {
-	UKismetSystemLibrary::PrintString(GetGameInstance()->GetWorld(), TEXT("QUIT GAME"));
-	//UGameplayStatics::OpenLevel(GetGameInstance()->GetWorld(),)
+	UGameplayStatics::OpenLevel(GetGameInstance()->GetWorld(), EndGameMapName);
 }

@@ -20,6 +20,9 @@ protected:
 
 	void NativeConstruct() override;
 
+	UPROPERTY()
+	FName EndGameMapName;
+
 	UPROPERTY(meta = (BindWidget))
 	UButton* RestartGameButton;
 

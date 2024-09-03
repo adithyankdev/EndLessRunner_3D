@@ -21,7 +21,7 @@ void URunnerGameInstance::Init()
 		//If Exist , Then Loading The Data
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
 
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Game Object Loaded"));
+		
 	}
 	else
 	{
@@ -29,7 +29,7 @@ void URunnerGameInstance::Init()
 		SaveGameObject = Cast<URunnerSaveGame>(UGameplayStatics::CreateSaveGameObject(URunnerSaveGame::StaticClass()));
 		UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName, 0);
 
-		UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Game Created"));
+		
 	}
 }
 
@@ -48,7 +48,6 @@ void URunnerGameInstance::SaveData(int32 ScoreValue)
 	SaveGameObject->HighestScore = ScoreValue;
 	UGameplayStatics::SaveGameToSlot(SaveGameObject, SlotName,0);
 
-	UKismetSystemLibrary::PrintString(GetWorld(), TEXT("Save Data Called"), true, true, FLinearColor::White);
 }
 
 URunnerSaveGame* URunnerGameInstance::GetSaveGame()

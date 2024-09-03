@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/TextRenderComponent.h"
+#include "Components/BoxComponent.h"
 #include "InitialTileActor.generated.h"
 
 UCLASS()
@@ -28,6 +29,33 @@ protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	UTextRenderComponent* HighestScoreText;
 
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* BoundaryCollision;
+
+	UPROPERTY(EditDefaultsOnly)
+	UBoxComponent* EndGameCollision;
+
+	/*Variable Responsible For Movmeent Value OF The Actor*/
+	float Speed;
+
+	/*Actor Direction For Moving*/
+	FVector MovementDirection;
+
+	/*Timer To Stop The Movement Smoothly*/
+	FTimerHandle StopActorMotionTimer;
+
+	void StartStopingMovement();
+	void StopingMovement();
+
+	UFUNCTION()
+	void OnBeginOverlap(UPrimitiveComponent* OverlapedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool FromSweap, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnBeginOverlapCollision(UPrimitiveComponent* OverlapedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool FromSweap, const FHitResult& SweepResult);
+
+	/*Binding Text On HighScoreValue*/
 	void BindText();
+
+	void DestroyActor();
 
 };
